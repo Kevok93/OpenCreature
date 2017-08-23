@@ -43,7 +43,7 @@ public class Sqlite {
 				)) == SqliteErrorCode.SQLITE_OK
 			) {
 			
-				Debug.Log ("Sqlite3_prepare('"+subquery_mod+"') = " + retc);
+				//Debug.Log ("Sqlite3_prepare('"+subquery_mod+"') = " + retc);
 				List<Dictionary<string,string>> resultset = new List<Dictionary<string,string>>();
 				results.Add (resultset);
 				#region row
@@ -67,12 +67,12 @@ public class Sqlite {
 							int size = sqlite3_column_bytes(prep_stmt,i);
 							byte[] blob = new byte[size];
 							Marshal.Copy(val_blob, blob, 0, size);
-							Debug.Log ("Sqlite3_column["+i+"]('"+key+"') = Blob["+size+"]("+blob+")");
+							//Debug.Log ("Sqlite3_column["+i+"]('"+key+"') = Blob["+size+"]("+blob+")");
 							val = (new SoapHexBinary(blob)).ToString();
 						} else {
 							IntPtr val_utf8 = sqlite3_column_text(prep_stmt,i);
 							val = Marshal.PtrToStringAnsi(val_utf8);
-							Debug.Log ("Sqlite3_column["+i+"]('"+key+"') = "+colType+"("+val+")");
+							//Debug.Log ("Sqlite3_column["+i+"]('"+key+"') = "+colType+"("+val+")");
 						}
 						row.Add(key,val);
 					}
@@ -99,11 +99,11 @@ public class Sqlite {
 		);
 		db = null_ptr;
 	}
-	
+
 	~Sqlite() {
 		if (db != null_ptr) Close ();
 	}
-	
+
 	public static string printResultSet(List<List<Dictionary<string,string>>> resultSet) {
 		string output = "";
 		foreach (List<Dictionary<string,string>> result in resultSet) {
@@ -113,7 +113,7 @@ public class Sqlite {
 		}
 		return output;
 	}
-	
+
 	public static string printResult(List<Dictionary<string,string>> resultSet) {
 		string output = "";
 		foreach (Dictionary<string,string> result in resultSet) {
@@ -123,7 +123,7 @@ public class Sqlite {
 		}
 		return output;
 	}
-	
+
 	public static string printResultRow(Dictionary<string,string> row) {
 		string output = "";
 		foreach (string key in row.Keys) {
@@ -131,7 +131,7 @@ public class Sqlite {
 		}
 		return output;
 	}
-	
+
 	public static bool getBitFromBlob(string blob, int position) {
 		int size = blob.Length * 4;
 		int realPos = size - position - 1;
@@ -140,9 +140,10 @@ public class Sqlite {
 		string hexbyte = blob.Substring(macro_pos, 2);
 		byte extractedByte = SoapHexBinary.Parse(hexbyte).Value[0];
 		bool bit = ((extractedByte & micro_pos) > 0);
-		Debug.Log("TM"+(position+1)+" = "+bit+" ["+hexbyte+"]");
+		//Debug.Log("TM"+(position+1)+" = "+bit+" ["+hexbyte+"]");
 		return bit;
 	}
+
 	#region extern
 	[DllImport ("sqlite3")]
 	private static extern SqliteErrorCode sqlite3_open_v2(byte[] filename, ref IntPtr db, SqliteOpenOpts flags, byte[] VFS);
