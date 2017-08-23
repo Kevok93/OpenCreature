@@ -21,7 +21,6 @@ public class Sqlite {
 			null
 		);
         //Debug.Log ("Sqlite3_open("+path+") = "+retc);
-        Debug.
 		if (retc != SqliteErrorCode.SQLITE_OK) db = null_ptr;
 	}
 	

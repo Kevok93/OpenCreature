@@ -7,7 +7,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
-
 public class SqliteModelWriter : MonoBehaviour {
 	public IntPtr null_ptr = (IntPtr)0;
     public Mesh source_mesh;
@@ -43,7 +42,7 @@ public class SqliteModelWriter : MonoBehaviour {
                 PRIMARY KEY(vertex_id)
              );"+"\n";
              
-		for (int i = 0; i < vertices.Count; i++) {
+        for (int i = 0; i < vertices.Count(); i++) {
             Vector3 vertex = vertices[i];
             query += "INSERT INTO vertices VALUES(" +
                 i + "," +
@@ -53,8 +52,9 @@ public class SqliteModelWriter : MonoBehaviour {
 		}
         Console.Out.WriteLine(query);
 		
-		IntPtr prep_stmt = null_ptr,
-		leftovers = null_ptr;
+		IntPtr 
+    		prep_stmt = Sqlite.null_ptr,
+    		leftovers = Sqlite.null_ptr;
 		SqliteErrorCode retc = Sqlite.sqlite3_prepare_v2 (
 			db,
 			Encoding.Default.GetBytes (query),
@@ -74,15 +74,15 @@ public class SqliteModelWriter : MonoBehaviour {
                 PRIMARY KEY(V1,V2,V3)
              );"+"\n";
              
-		for (int i = 0; i < polygons.Count; i+=3) {
+        for (int i = 0; i < polygons.Count(); i+=3) {
             query += "INSERT INTO polygons VALUES(" +
                 polygons[i+0] + "," +
 		        polygons[i+1] + "," + 
 		        polygons[i+2] + ");\n";
 		}
         Console.Out.WriteLine(query);
-		IntPtr prep_stmt = null_ptr,
-		leftovers = null_ptr;
+		IntPtr prep_stmt = Sqlite.null_ptr,
+		leftovers = Sqlite.null_ptr;
 		SqliteErrorCode retc = Sqlite.sqlite3_prepare_v2 (
 			db,
 			Encoding.Default.GetBytes (query),

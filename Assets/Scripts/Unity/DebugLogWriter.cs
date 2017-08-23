@@ -6,13 +6,13 @@ public class DebugLogWriter : TextWriter {
     public DebugLogWriter(DebugLogWriterDestination dest) {
         this.dest = dest;
         switch (dest) {
-            case dest.output: 
+            case DebugLogWriterDestination.output: 
                 File.AppendText("debug.out");
                 break;
-            case dest.error:
+            case DebugLogWriterDestination.error:
                 File.AppendText("debug.err");
                 break;
-            case dest.warning:
+            case DebugLogWriterDestination.warning:
                 File.AppendText("debug.warn");
                 break;
         }
@@ -21,13 +21,13 @@ public class DebugLogWriter : TextWriter {
         base.Write(value);
         logfile.Write(value);
         switch (dest) {
-            case dest.output:
+            case DebugLogWriterDestination.output:
                 Debug.Log(value);
                 break;
-            case dest.error:
+            case DebugLogWriterDestination.error:
                 Debug.LogError(value);
                 break;
-            case dest.warning:
+            case DebugLogWriterDestination.warning:
                 Debug.LogWarning(value);
                 break;
         }

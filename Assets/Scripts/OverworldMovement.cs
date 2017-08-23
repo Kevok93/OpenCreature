@@ -21,7 +21,7 @@ public class OverworldMovement : MonoBehaviour {
 	public GameObject model;
 	// Use this for initialization
 	void Start () {
-		model.GetComponent<MeshFilter>().mesh =  SqliteModelReader.readMesh("testmodel.db");
+		//model.GetComponent<MeshFilter>().mesh =  SqliteModelReader.readMesh("testmodel.db");
 	}
 
 	// Update is called once per frame

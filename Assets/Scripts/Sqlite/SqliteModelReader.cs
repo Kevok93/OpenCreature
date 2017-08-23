@@ -7,10 +7,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
-
+public class SqliteModel {
+    public float[][] vertices;
+    public int[] triangles;
+}
 public static class SqliteModelReader {
 	public static IntPtr null_ptr = (IntPtr)0;
-	public static Mesh readMesh(string path) {
+	public static SqliteModel readMesh(string path) {
 		IntPtr db = null_ptr;
 		SqliteErrorCode retc = Sqlite.sqlite3_open_v2(
 			Encoding.Default.GetBytes(path), 
@@ -18,23 +21,22 @@ public static class SqliteModelReader {
 			SqliteOpenOpts.SQLITE_OPEN_READONLY,
 			null
 		);
-		if (db == null_ptr) return null;
+		if (retc != SqliteErrorCode.SQLITE_OK) return null;
 		var watch = new System.Diagnostics.Stopwatch();
 		watch.Start();
-		Dictionary<int,Vector3> vertexList = readVerticies (db);
+		Dictionary<int,float[]> vertexList = readVerticies (db);
 		Console.Out.WriteLine("Read Verticies: "+watch.ElapsedMilliseconds);
 		watch.Reset(); watch.Start();
 		List<int> polyList = readPolygons (db, vertexList);
 		Console.Out.WriteLine("Read Polys: "+watch.ElapsedMilliseconds);
 		watch.Stop();
 		if (db != null_ptr) Sqlite.sqlite3_close (db);
-		Mesh mesh = new Mesh ();
-		mesh.vertices = vertexList.Values.ToArray();
-		mesh.triangles = polyList.ToArray();
-		return mesh;
-
+		SqliteModel model = new SqliteModel ();
+		model.vertices = vertexList.Values.ToArray();
+		model.triangles = polyList.ToArray();
+		return model;
 	}
-	public static Dictionary<int,Vector3> readVerticies(IntPtr db) {
+	public static Dictionary<int,float[]> readVerticies(IntPtr db) {
 		string query = "Select * from vertices;"; //TODO: Fix me
 		IntPtr prep_stmt = null_ptr,
 		leftovers = null_ptr;
@@ -46,9 +48,9 @@ public static class SqliteModelReader {
 			ref leftovers
 		);
 		string retc_string = retc.ToString();
-		Dictionary<int,Vector3> vertexList = null;
+		Dictionary<int,float[]> vertexList = null;
 		if (retc == SqliteErrorCode.SQLITE_OK) {
-			vertexList = new Dictionary<int,Vector3> ();
+			vertexList = new Dictionary<int,float[]> ();
 			while (true) {
 			    retc = Sqlite.sqlite3_step (prep_stmt);
 			    if (retc == SqliteErrorCode.SQLITE_ROW) break;
@@ -56,7 +58,7 @@ public static class SqliteModelReader {
 					x=Sqlite.sqlite3_column_int(prep_stmt,1),
 					y=Sqlite.sqlite3_column_int(prep_stmt,2),
 					z=Sqlite.sqlite3_column_int(prep_stmt,3);
-				vertexList[i] = new Vector3(x,y,z);
+                vertexList[i] = new float[] { x, y, z };
 			}
 			Sqlite.sqlite3_finalize (prep_stmt);
 			Sqlite.sqlite3_finalize (leftovers);
@@ -64,7 +66,7 @@ public static class SqliteModelReader {
 
 		return vertexList;
 	}
-	public static List<int> readPolygons(IntPtr db, Dictionary<int,Vector3> vertexList) {
+	public static List<int> readPolygons(IntPtr db, Dictionary<int,float[]> vertexList) {
 		string query = "Select * from polygons;";
 		IntPtr prep_stmt = null_ptr,
 		leftovers = null_ptr;
