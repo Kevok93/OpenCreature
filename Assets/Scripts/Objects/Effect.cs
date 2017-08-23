@@ -1,11 +1,18 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 
 public class Effect {
+	public static Effect[] EffectArray;
 	public int id;
 	public string name, description;
-	public Effect(int id, string name, string description) {
-		this.name 			= name;
-		this.id				= id;
-		this.description 	= description;
+	public bool[] misc_info;
+	public byte misc_val1, misc_val2;
+	public byte length;
+	public string text;
+
+	private Effect();
+
+	public static Effect initEffects(List<Dictionary<string,string>> results) {
 	}
+
 }

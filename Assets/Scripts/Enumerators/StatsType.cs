@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public enum StatsType {
+﻿public enum StatsType {
 	atk 	= 0,
 	def		= 1,
 	sp_atk	= 2,

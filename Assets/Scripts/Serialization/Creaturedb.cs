@@ -5,41 +5,22 @@ using System.Collections.Generic;
 public class Creaturedb {
 	private static bool init = false;
 	private static Sqlite db;
-	public static Ability[] 	abilities;
-	public static Type[]		types;
-	public static Species[] 	species;
 	
 	private Creaturedb(){}
 	public static bool initialize() {
 		if (init) return false;
 		
 		db = new Sqlite("creature.db", SqliteOpenOpts.SQLITE_OPEN_READONLY);
-		Creaturedb.initTypes();
+		Type.initTypes(
+			db["Select * from types"][0],
+			db["Select * from type_bonus"][0]
+		);
 		Creaturedb.initAbilities();
 		Creaturedb.initSpecies ();
 		
 		db.Close();
 		return true;
 	}
-	
-	private static void initTypes() {
-		var results = db["Select * from types"][0];
-		types = new Type[results.Count];
-		foreach (Dictionary<string,string> row in results) {
-			int id = System.Convert.ToInt32(row["id"]);
-			string name = row["name"];
-			types[id] = new Type(id,name, results.Count);
-		}
-		
-		results = db["Select * from type_bonus"][0];
-		foreach (Dictionary<string,string> row in results) {
-			int atk_id = System.Convert.ToInt32(row["atk_id"]);
-			int def_id = System.Convert.ToInt32(row["def_id"]);
-			float bonus = System.Convert.ToSingle(row["bonus"]);
-			types[atk_id].bonus[def_id] = bonus;
-		}
-	}
-	
 	private static void initAbilities() {
 		var results = db["Select * from abilities"][0];
 		abilities = new Ability[results.Count];
