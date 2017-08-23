@@ -10,7 +10,7 @@ public class Effect {
 	public byte length;
 	public string text;
 
-	private Effect();
+	private Effect(){}
 
 	public static Effect initEffects(List<Dictionary<string,string>> results) {
 	}
