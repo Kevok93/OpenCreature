@@ -25,86 +25,17 @@ public class Sqlite {
 	}
 	
 	public List<List<Dictionary<string,string>>> sql(string query) {
-	    //System.Diagnostics.Stopwatch watch1 = new System.Diagnostics.Stopwatch();
-	    //System.Diagnostics.Stopwatch watch2 = new System.Diagnostics.Stopwatch();
 		if (db == null_ptr) return null;
 		
 		var results = new List<List<Dictionary<string, string>>>();
-		SqliteErrorCode retc;
 		
 		string[] querytok = query.Split(delim_semi,StringSplitOptions.RemoveEmptyEntries);
 		
 		foreach (string subquery in querytok) {
 			string subquery_mod = subquery + ";";
-			
-			IntPtr 
-			    prep_stmt = null_ptr,
-			    leftovers = null_ptr;
-			    
-            retc = sqlite3_prepare_v2(
-                db,
-                Encoding.Default.GetBytes(subquery_mod), 
-                subquery_mod.Length,
-                ref prep_stmt, 
-                ref leftovers
-            );
-            
-			if (retc == SqliteErrorCode.SQLITE_OK) {
-			
-				var resultset = new List<Dictionary<string,string>>();
-				results.Add (resultset);
-				
-				int col_count = sqlite3_column_count(prep_stmt);
-                string[] keys = new string[col_count];
-                SqliteDatatype[] types = new SqliteDatatype[col_count];
-				for (int i = 0; i < col_count; i++) {
-				    IntPtr key_utf8 = sqlite3_column_name(prep_stmt,i);
-				    keys[i] = Marshal.PtrToStringAnsi(key_utf8);
-				    types[i] = sqlite3_column_type(prep_stmt,i);
-				}
-				
-				#region row
-				while (true) {
-				    retc = sqlite3_step (prep_stmt);
-				    if (retc != SqliteErrorCode.SQLITE_ROW) break;
-				    
-					var row = new Dictionary<string, string>();
-					resultset.Add (row);
-					
-					for (int i = 0; i < col_count; i++) {
-						string val = "ERROR";
-						
-						if (types[i] == SqliteDatatype.SQLITE_BLOB) {
-							IntPtr val_blob = sqlite3_column_blob(prep_stmt,i);
-                            int size = sqlite3_column_bytes(prep_stmt,i);
-							byte[] blob = new byte[size];
-							Marshal.Copy(val_blob, blob, 0, size);
-							//Debug.Log ("Sqlite3_column["+i+"]('"+key+"') = Blob["+size+"]("+blob+")");
-							val = (new SoapHexBinary(blob)).ToString();
-						} else {
-							IntPtr val_utf8 = sqlite3_column_text(prep_stmt,i);
-                            val = Marshal.PtrToStringAnsi(val_utf8);
-						}
-						
-						row.Add(keys[i],val);
-					}
-				}
-				#endregion
-				
-				sqlite3_finalize (prep_stmt);
-				sqlite3_finalize (leftovers);
-		    } else {
-                IntPtr 
-                    err_msg_utf8 = sqlite3_errmsg(db),
-                    err_str_utf8 = sqlite3_errstr(db);
-                string 
-                    err_msg = Marshal.PtrToStringAnsi(err_msg_utf8),
-                    err_str = Marshal.PtrToStringAnsi(err_str_utf8);
-                Console.Error.WriteLine("Error in sql: " + retc + "\n" + err_msg + err_str);
-		    } 
-		} //End foreach query
-		//Console.Out.WriteLine(string.Format("Parsing type: {0} milliseconds", watch1.ElapsedMilliseconds) );
-		//Console.Out.WriteLine(string.Format("Parsing value: {0} milliseconds", watch2.ElapsedMilliseconds) );
+            Console.Out.WriteLine(subquery_mod);
+            results.Add(getTable(subquery_mod));
+		} 
 					
 		return results;
 	}
@@ -180,7 +111,39 @@ public class Sqlite {
         string blobhex = (new SoapHexBinary(blob)).ToString();
         return blobhex;
 	}
-
+	public List<Dictionary<string,string>> getTable(string sql) {
+        int sizeofptr = Marshal.SizeOf(typeof(IntPtr));
+        int cols, rows;
+        IntPtr results_c;
+        byte[] error_c;
+        SqliteErrorCode retc;
+        
+        retc = sqlite3_get_table(
+            db,
+            Encoding.Default.GetBytes(sql),
+            out results_c,
+            out rows,
+            out cols,
+            out error_c
+        );
+        string[] keys = new string[cols];
+        string error = (error_c != null) ? Encoding.Default.GetString(error_c) : "No Error";
+        if (rows < 1) return new List<Dictionary<string, string>>(0);
+        List<Dictionary<string,string>> result = new List<Dictionary<string, string>>(rows-1);
+        for (int i = 0; i < cols; i++) {
+            keys[i] = Marshal.PtrToStringAnsi(Marshal.ReadIntPtr(results_c, i * sizeofptr));
+        }
+        for (int i = cols; i < rows*cols+cols; i+=cols) {
+            var row = new Dictionary<string,string>(cols);
+            for (int j = 0; j < cols; j++) {
+                row[keys[j]] = Marshal.PtrToStringAnsi(Marshal.ReadIntPtr(results_c, (i+j) * sizeofptr));
+            }
+            result.Add(row);
+        }
+        sqlite3_free_table(results_c);
+        return result;
+	}
+	
 	#region extern
 	[DllImport ("sqlite3")]
 	public static extern SqliteErrorCode sqlite3_open_v2(byte[] filename, ref IntPtr db, SqliteOpenOpts flags, byte[] VFS);
@@ -226,6 +189,12 @@ public class Sqlite {
 
 	[DllImport ("sqlite3")]
 	public static extern IntPtr sqlite3_errstr(IntPtr db);
+
+	[DllImport ("sqlite3")]
+	public static extern SqliteErrorCode sqlite3_get_table(IntPtr db, byte[] sql, out IntPtr results, out int rows, out int cols, out byte[] err);
+	
+	[DllImport ("sqlite3")]
+	public static extern void sqlite3_free_table(IntPtr tableResult);
 	
 	#endregion
 }

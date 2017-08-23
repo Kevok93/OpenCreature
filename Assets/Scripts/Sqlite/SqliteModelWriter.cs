@@ -24,15 +24,15 @@ public class SqliteModelWriter : MonoBehaviour {
 		if (db == null_ptr) return;
 		var watch = new System.Diagnostics.Stopwatch();
 		watch.Start();
-		writeVerticies (db, source_mesh.vertices);
-		Console.Out.WriteLine("Wrote Verticies: "+watch.ElapsedMilliseconds);
+		writeVertices (db, source_mesh.vertices);
+		Console.Out.WriteLine("Wrote Vertices: "+watch.ElapsedMilliseconds);
 		watch.Reset(); watch.Start();
 		writePolygons (db, source_mesh.triangles);
 		Console.Out.WriteLine("Wrote Polys: "+watch.ElapsedMilliseconds);
 		watch.Stop();
 		if (db != null_ptr) Sqlite.sqlite3_close (db);
 	}
-    public static SqliteErrorCode writeVerticies(IntPtr db, Vector3[] vertices) {
+    public static SqliteErrorCode writeVertices(IntPtr db, Vector3[] vertices) {
         string query = @"
             CREATE TABLE vertices ( 
                 vertex_id	INTEGER NOT NULL,

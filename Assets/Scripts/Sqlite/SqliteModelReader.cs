@@ -1,4 +1,3 @@
-using UnityEngine;
 using System;
 using System.Linq.Expressions;
 using System.Linq;
@@ -24,8 +23,8 @@ public static class SqliteModelReader {
 		if (retc != SqliteErrorCode.SQLITE_OK) return null;
 		var watch = new System.Diagnostics.Stopwatch();
 		watch.Start();
-		Dictionary<int,float[]> vertexList = readVerticies (db);
-		Console.Out.WriteLine("Read Verticies: "+watch.ElapsedMilliseconds);
+		Dictionary<int,float[]> vertexList = readVertices (db);
+		Console.Out.WriteLine("Read Vertices: "+watch.ElapsedMilliseconds);
 		watch.Reset(); watch.Start();
 		List<int> polyList = readPolygons (db, vertexList);
 		Console.Out.WriteLine("Read Polys: "+watch.ElapsedMilliseconds);
@@ -36,8 +35,8 @@ public static class SqliteModelReader {
 		model.triangles = polyList.ToArray();
 		return model;
 	}
-	public static Dictionary<int,float[]> readVerticies(IntPtr db) {
-		string query = "Select * from vertices;"; //TODO: Fix me
+	public static Dictionary<int,float[]> readVertices(IntPtr db) {
+		string query = "Select * from vertices;";
 		IntPtr prep_stmt = null_ptr,
 		leftovers = null_ptr;
 		SqliteErrorCode retc = Sqlite.sqlite3_prepare_v2 (
@@ -53,11 +52,11 @@ public static class SqliteModelReader {
 			vertexList = new Dictionary<int,float[]> ();
 			while (true) {
 			    retc = Sqlite.sqlite3_step (prep_stmt);
-			    if (retc == SqliteErrorCode.SQLITE_ROW) break;
-				int	i=Sqlite.sqlite3_column_int(prep_stmt,0),
-					x=Sqlite.sqlite3_column_int(prep_stmt,1),
-					y=Sqlite.sqlite3_column_int(prep_stmt,2),
-					z=Sqlite.sqlite3_column_int(prep_stmt,3);
+			    if (retc != SqliteErrorCode.SQLITE_ROW) break;
+                int i = Sqlite.sqlite3_column_int(prep_stmt, 0);
+				float   x=Sqlite.sqlite3_column_float(prep_stmt,1),
+					    y=Sqlite.sqlite3_column_float(prep_stmt,2),
+					    z=Sqlite.sqlite3_column_float(prep_stmt,3);
                 vertexList[i] = new float[] { x, y, z };
 			}
 			Sqlite.sqlite3_finalize (prep_stmt);
