@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
 using System.Linq.Expressions;
 using System.Linq;
 using System.Text;
@@ -20,8 +19,10 @@ public class Sqlite {
 			mode,
 			null
 		);
-        //Debug.Log ("Sqlite3_open("+path+") = "+retc);
-		if (retc != SqliteErrorCode.SQLITE_OK) db = null_ptr;
+        if (retc != SqliteErrorCode.SQLITE_OK) {
+            db = null_ptr;
+            throw new InvalidOperationException("Error opening SQLITE Database: SQLITE exited with code " + retc + "\n" + getError());
+        }
 	}
 	
 	public List<List<Dictionary<string,string>>> sql(string query) {
@@ -43,17 +44,11 @@ public class Sqlite {
 	public List<List<Dictionary<string,string>>> this[string query] {
 		get{return sql(query);}
 	}
-	
-	public void Close() {
-		//Debug.Log (
-		//	"Sqlite3_close() = "+
-		//	sqlite3_close (db)
-		//);
-		db = null_ptr;
-	}
 
 	~Sqlite() {
-		if (db != null_ptr) Close ();
+        try {sqlite3_close_v2(db);}
+        catch (Exception e) {}
+        db = null_ptr;
 	}
 
 	public static string printResultSet(List<List<Dictionary<string,string>>> resultSet) {
@@ -126,8 +121,11 @@ public class Sqlite {
             out cols,
             out error_c
         );
+        if (retc != SqliteErrorCode.SQLITE_OK || error_c != null) {
+            throw new ArgumentException("Error reading table; SQLITE exited with code " + retc + "\n " + Encoding.Default.GetString(error_c) + "\n" + getError());
+        }
+        
         string[] keys = new string[cols];
-        string error = (error_c != null) ? Encoding.Default.GetString(error_c) : "No Error";
         if (rows < 1) return new List<Dictionary<string, string>>(0);
         List<Dictionary<string,string>> result = new List<Dictionary<string, string>>(rows-1);
         for (int i = 0; i < cols; i++) {
@@ -144,6 +142,9 @@ public class Sqlite {
         return result;
 	}
 	
+	public string getError() {
+        return Marshal.PtrToStringAnsi(sqlite3_errmsg(db)) + "\n" + Marshal.PtrToStringAnsi(sqlite3_errstr(db));
+	}
 	#region extern
 	[DllImport ("sqlite3")]
 	public static extern SqliteErrorCode sqlite3_open_v2(byte[] filename, ref IntPtr db, SqliteOpenOpts flags, byte[] VFS);
@@ -173,7 +174,7 @@ public class Sqlite {
 	public static extern int sqlite3_column_count(IntPtr statement);
 	
 	[DllImport ("sqlite3")]
-	public static extern SqliteErrorCode sqlite3_close(IntPtr db);
+	public static extern SqliteErrorCode sqlite3_close_v2(IntPtr db);
 	
 	[DllImport ("sqlite3")]
 	public static extern SqliteDatatype sqlite3_column_type(IntPtr statement, int ColNum);

@@ -10,7 +10,6 @@ public class Ability {
 	
 	private Ability(){}
 	public static void init(List<Dictionary<string,string>> ability_defs) {
-		//var results = db["Select * from abilities"][0];
 		ABILITIES = new Dictionary<int, Ability> (ability_defs.Count);
 		foreach (Dictionary<string,string> row in ability_defs) {
 		    Ability temp = new Ability();

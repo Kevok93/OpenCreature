@@ -16,41 +16,40 @@ public class Creaturedb {
 				db["Select * from types"][0],
 				db["Select * from type_bonus"][0]
 			);
-            System.Console.Out.WriteLine("Types written");
+            System.Console.Out.WriteLine("Types loaded");
             
 			Species.init (
 				db ["Select * from species"][0],
 				db ["Select * from level_moves"][0],
 				db ["Select * from evolution"][0]
 			);
-            System.Console.Out.WriteLine("Species written");
+            System.Console.Out.WriteLine("Species loaded");
             
 			Move.init (db ["Select * from moves"][0]);
-            System.Console.Out.WriteLine("Moves written");
+            System.Console.Out.WriteLine("Moves loaded");
             
 			Ability.init (db ["Select * from abilities"] [0]);
-            System.Console.Out.WriteLine("Abilities written");
+            System.Console.Out.WriteLine("Abilities loaded");
             
 			Effect.init (db ["Select * from effects"] [0]);
-            System.Console.Out.WriteLine("Effects written");
+            System.Console.Out.WriteLine("Effects loaded");
             
 			Nature.init (db ["Select * from natures"] [0]);
-            System.Console.Out.WriteLine("Natures written");
+            System.Console.Out.WriteLine("Natures loaded");
             
 			EggGroup.init (db ["Select * from egg_groups"] [0]);
-            System.Console.Out.WriteLine("Egg Types written");
+            System.Console.Out.WriteLine("Egg Types loaded");
             
 			ItemType.init (db ["Select * from item_type"] [0]);
-            System.Console.Out.WriteLine("Item Types written");
+            System.Console.Out.WriteLine("Item Types loaded");
             
 			PlotFlag.init (db ["Select * from plot_flag"] [0]);
-            System.Console.Out.WriteLine("Plot Flags written");
+            System.Console.Out.WriteLine("Plot Flags loaded");
             
 			Npc.init (db ["Select * from npc"] [0]);
-            System.Console.Out.WriteLine("NPCs written");
+            System.Console.Out.WriteLine("NPCs loaded");
             
             init = true;
-			db.Close();
 		} catch (System.Exception e) {
             System.Console.Error.WriteLine(
                 string.Format(
@@ -58,7 +57,6 @@ public class Creaturedb {
                     string.Join("\n",new string[] { e.ToString(), e.HelpLink })
 				)
 			);
-		    if (db != null) db.Close();
 			return false;
 		}
 		return true;
