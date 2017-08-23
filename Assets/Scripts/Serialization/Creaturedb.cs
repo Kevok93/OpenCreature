@@ -1,5 +1,4 @@
-﻿//using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 public class Creaturedb {
@@ -39,6 +38,7 @@ public class Creaturedb {
 			PlotFlag.init (db ["Select * from plot_flag"] [0]);
             System.Console.Out.WriteLine("Plot Flags written");
 */
+            init = true;
 			db.Close();
 
 

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
-public class SqliteModelReader {
+public static class SqliteModelReader {
 	public static IntPtr null_ptr = (IntPtr)0;
 	public static Mesh readMesh(string path) {
 		IntPtr db = null_ptr;
@@ -49,9 +49,9 @@ public class SqliteModelReader {
 		Dictionary<int,Vector3> vertexList = null;
 		if (retc == SqliteErrorCode.SQLITE_OK) {
 			vertexList = new Dictionary<int,Vector3> ();
-			while (
-				(retc = Sqlite.sqlite3_step (prep_stmt)) == SqliteErrorCode.SQLITE_ROW
-			) {
+			while (true) {
+			    retc = Sqlite.sqlite3_step (prep_stmt);
+			    if (retc == SqliteErrorCode.SQLITE_ROW) break;
 				int	i=Sqlite.sqlite3_column_int(prep_stmt,0),
 					x=Sqlite.sqlite3_column_int(prep_stmt,1),
 					y=Sqlite.sqlite3_column_int(prep_stmt,2),

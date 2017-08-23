@@ -20,37 +20,41 @@ public class Sqlite {
 			mode,
 			null
 		);
-		//Debug.Log ("Sqlite3_open("+path+") = "+retc);
+        //Debug.Log ("Sqlite3_open("+path+") = "+retc);
+        Debug.
 		if (retc != SqliteErrorCode.SQLITE_OK) db = null_ptr;
 	}
 	
 	public List<List<Dictionary<string,string>>> sql(string query) {
-	    System.Diagnostics.Stopwatch watch1 = new System.Diagnostics.Stopwatch();
-	    System.Diagnostics.Stopwatch watch2 = new System.Diagnostics.Stopwatch();
+	    //System.Diagnostics.Stopwatch watch1 = new System.Diagnostics.Stopwatch();
+	    //System.Diagnostics.Stopwatch watch2 = new System.Diagnostics.Stopwatch();
 		if (db == null_ptr) return null;
-		//Debug.Log (db);
-		List<List<Dictionary<string,string>>> results = new List<List<Dictionary<string, string>>>();
+		
+		var results = new List<List<Dictionary<string, string>>>();
 		SqliteErrorCode retc;
 		
 		string[] querytok = query.Split(delim_semi,StringSplitOptions.RemoveEmptyEntries);
-        watch2.Start();
+		
 		foreach (string subquery in querytok) {
 			string subquery_mod = subquery + ";";
-			IntPtr prep_stmt = null_ptr,
-			leftovers = null_ptr;
-			if (
-				(retc = sqlite3_prepare_v2(
-					db,
-					Encoding.Default.GetBytes(subquery_mod),
-					subquery_mod.Length,
-					ref prep_stmt,
-					ref leftovers
-				)) == SqliteErrorCode.SQLITE_OK
-			) {
 			
-				//Debug.Log ("Sqlite3_prepare('"+subquery_mod+"') = " + retc);
-				List<Dictionary<string,string>> resultset = new List<Dictionary<string,string>>();
+			IntPtr 
+			    prep_stmt = null_ptr,
+			    leftovers = null_ptr;
+			    
+            retc = sqlite3_prepare_v2(
+                db,
+                Encoding.Default.GetBytes(subquery_mod), 
+                subquery_mod.Length,
+                ref prep_stmt, 
+                ref leftovers
+            );
+            
+			if (retc == SqliteErrorCode.SQLITE_OK) {
+			
+				var resultset = new List<Dictionary<string,string>>();
 				results.Add (resultset);
+				
 				int col_count = sqlite3_column_count(prep_stmt);
                 string[] keys = new string[col_count];
                 SqliteDatatype[] types = new SqliteDatatype[col_count];
@@ -59,21 +63,18 @@ public class Sqlite {
 				    keys[i] = Marshal.PtrToStringAnsi(key_utf8);
 				    types[i] = sqlite3_column_type(prep_stmt,i);
 				}
+				
 				#region row
-				while (
-					(retc = sqlite3_step (prep_stmt)) == SqliteErrorCode.SQLITE_ROW
-				) {
+				while (true) {
+				    retc = sqlite3_step (prep_stmt);
+				    if (retc != SqliteErrorCode.SQLITE_ROW) break;
 				    
-					//Debug.Log ("Sqlite3_step('"+subquery_mod+"') = " + retc);
-					Dictionary<string,string> row = new Dictionary<string, string>();
+					var row = new Dictionary<string, string>();
 					resultset.Add (row);
 					
-                    //Debug.Log ("Sqlite3_column_count('"+subquery_mod+"') = " + sqlite3_column_count(prep_stmt));
-					
-
-                        watch1.Start();
 					for (int i = 0; i < col_count; i++) {
 						string val = "ERROR";
+						
 						if (types[i] == SqliteDatatype.SQLITE_BLOB) {
 							IntPtr val_blob = sqlite3_column_blob(prep_stmt,i);
                             int size = sqlite3_column_bytes(prep_stmt,i);
@@ -84,23 +85,27 @@ public class Sqlite {
 						} else {
 							IntPtr val_utf8 = sqlite3_column_text(prep_stmt,i);
                             val = Marshal.PtrToStringAnsi(val_utf8);
-							//Debug.Log ("Sqlite3_column["+i+"]('"+key+"') = "+colType+"("+val+")");
 						}
+						
 						row.Add(keys[i],val);
 					}
-                        watch1.Stop();
-
 				}
-				//Debug.Log ("Sqlite3_step('"+subquery_mod+"') = " + retc);
 				#endregion
 				
 				sqlite3_finalize (prep_stmt);
 				sqlite3_finalize (leftovers);
-			} //else Debug.Log ("Sqlite3_prepare('"+subquery_mod+"') = " + retc);
-		}    
-		watch2.Stop();                
-		Console.Out.WriteLine(string.Format("Parsing type: {0} milliseconds", watch1.ElapsedMilliseconds) );
-		Console.Out.WriteLine(string.Format("Parsing value: {0} milliseconds", watch2.ElapsedMilliseconds) );
+		    } else {
+                IntPtr 
+                    err_msg_utf8 = sqlite3_errmsg(db),
+                    err_str_utf8 = sqlite3_errstr(db);
+                string 
+                    err_msg = Marshal.PtrToStringAnsi(err_msg_utf8),
+                    err_str = Marshal.PtrToStringAnsi(err_str_utf8);
+                Console.Error.WriteLine("Error in sql: " + retc + "\n" + err_msg + err_str);
+		    } 
+		} //End foreach query
+		//Console.Out.WriteLine(string.Format("Parsing type: {0} milliseconds", watch1.ElapsedMilliseconds) );
+		//Console.Out.WriteLine(string.Format("Parsing value: {0} milliseconds", watch2.ElapsedMilliseconds) );
 					
 		return results;
 	}
@@ -216,6 +221,12 @@ public class Sqlite {
 
 	[DllImport ("sqlite3")]
 	public static extern float sqlite3_column_float(IntPtr statement, int ColNum);
+
+	[DllImport ("sqlite3")]
+	public static extern IntPtr sqlite3_errmsg(IntPtr db);
+
+	[DllImport ("sqlite3")]
+	public static extern IntPtr sqlite3_errstr(IntPtr db);
 	
 	#endregion
 }
