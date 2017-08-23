@@ -4,6 +4,7 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 public class Sqlite {
 	private IntPtr db;
@@ -59,10 +60,18 @@ public class Sqlite {
 					for (; i < sqlite3_column_count(prep_stmt); i++) {
 						IntPtr key_utf8 = sqlite3_column_name(prep_stmt,i);
 						string key = Marshal.PtrToStringAnsi(key_utf8);
-						IntPtr val_utf8 = sqlite3_column_text(prep_stmt,i);
-						string val = Marshal.PtrToStringAnsi(val_utf8);
+						string val = "ERROR";
+						if (sqlite3_column_type(prep_stmt,i) == SqliteDatatype.SQLITE_BLOB) {
+							IntPtr val_blob = sqlite3_column_text(prep_stmt,i);
+							int size = 1;
+							byte[] blob = new byte[size];
+							Marshal.Copy(val_blob, blob, 0, size);
+							val = (new SoapHexBinary(blob)).ToString();
+						} else {
+							IntPtr val_utf8 = sqlite3_column_text(prep_stmt,i);
+							val = Marshal.PtrToStringAnsi(val_utf8);
+						}
 						//Debug.Log ("Sqlite3_column["+i+"]('"+key+"') = "+val);
-						
 						row.Add(key,val);
 					}
 					
@@ -75,6 +84,14 @@ public class Sqlite {
 			} else Debug.Log ("Sqlite3_prepare('"+subquery_mod+"') = " + retc);
 		}
 		return results;
+	}
+	
+	public getBitFromBlob(string blob, int position) {
+		int macro_pos = (position / 16) * 2;
+		int micro_pos = pow(2,position % 8);
+		string hexbyte = blob.substring(blob, macro_pos, 2);
+		byte extractedByte = SoapHexBinary.Parse(hexbyte).Value[0];
+		return ((extractedByte & micro_pos) > 0);
 	}
 	
 	public List<List<Dictionary<string,string>>> this[string query] {
@@ -141,7 +158,12 @@ public class Sqlite {
 	
 	[DllImport ("sqlite3")]
 	private static extern int sqlite3_column_count(IntPtr statement);
+	
 	[DllImport ("sqlite3")]
 	private static extern SqliteErrorCode sqlite3_close(IntPtr db);
+	
+	[DllImport ("sqlite3")]
+	private static extern SqliteDatatype sqlite3_column_type(IntPtr statement, int ColNum);
+	
 	#endregion
 }
