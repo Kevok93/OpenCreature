@@ -22,8 +22,12 @@ public class OverworldMovement : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Sqlite creatureDB = new Sqlite("creature.db", SqliteOpenOpts.SQLITE_OPEN_READWRITE);
-		List<List<Dictionary<string,string>>> results = creatureDB["insert into types values(20,'test');"];
-		//Debug.Log(Sqlite.printResultSet(results));
+		List<List<Dictionary<string,string>>> results = creatureDB["Select * from species;"];
+		Debug.Log(Sqlite.printResultSet(results));
+		var tms = results[0][0]["tm_list"];
+		for (int i = 0; i < 128; i++) {
+			Sqlite.getBitFromBlob(tms,i);
+		}
 		creatureDB.Close ();
 	}
 

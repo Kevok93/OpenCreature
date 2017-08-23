@@ -1,8 +1,7 @@
-public enum SqliteErrorCode
-{
-	SQLITE_INTEGER = 1
-	SQLITE_FLOAT   = 2
-	SQLITE_TEXT    = 3
-	SQLITE_BLOB    = 4
+public enum SqliteDatatype {
+	SQLITE_INTEGER = 1,
+	SQLITE_FLOAT   = 2,
+	SQLITE_TEXT    = 3,
+	SQLITE_BLOB    = 4,
 	SQLITE_NULL    = 5
 }

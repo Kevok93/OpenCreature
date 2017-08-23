@@ -61,17 +61,19 @@ public class Sqlite {
 						IntPtr key_utf8 = sqlite3_column_name(prep_stmt,i);
 						string key = Marshal.PtrToStringAnsi(key_utf8);
 						string val = "ERROR";
-						if (sqlite3_column_type(prep_stmt,i) == SqliteDatatype.SQLITE_BLOB) {
-							IntPtr val_blob = sqlite3_column_text(prep_stmt,i);
-							int size = 1;
+						SqliteDatatype colType = sqlite3_column_type(prep_stmt,i);
+						if (colType == SqliteDatatype.SQLITE_BLOB) {
+							IntPtr val_blob = sqlite3_column_blob(prep_stmt,i);
+							int size = sqlite3_column_bytes(prep_stmt,i);
 							byte[] blob = new byte[size];
 							Marshal.Copy(val_blob, blob, 0, size);
+							Debug.Log ("Sqlite3_column["+i+"]('"+key+"') = Blob["+size+"]("+blob+")");
 							val = (new SoapHexBinary(blob)).ToString();
 						} else {
 							IntPtr val_utf8 = sqlite3_column_text(prep_stmt,i);
 							val = Marshal.PtrToStringAnsi(val_utf8);
+							Debug.Log ("Sqlite3_column["+i+"]('"+key+"') = "+colType+"("+val+")");
 						}
-						//Debug.Log ("Sqlite3_column["+i+"]('"+key+"') = "+val);
 						row.Add(key,val);
 					}
 					
@@ -84,14 +86,6 @@ public class Sqlite {
 			} else Debug.Log ("Sqlite3_prepare('"+subquery_mod+"') = " + retc);
 		}
 		return results;
-	}
-	
-	public getBitFromBlob(string blob, int position) {
-		int macro_pos = (position / 16) * 2;
-		int micro_pos = pow(2,position % 8);
-		string hexbyte = blob.substring(blob, macro_pos, 2);
-		byte extractedByte = SoapHexBinary.Parse(hexbyte).Value[0];
-		return ((extractedByte & micro_pos) > 0);
 	}
 	
 	public List<List<Dictionary<string,string>>> this[string query] {
@@ -137,6 +131,18 @@ public class Sqlite {
 		}
 		return output;
 	}
+	
+	public static bool getBitFromBlob(string blob, int position) {
+		int size = blob.Length * 4;
+		int realPos = size - position - 1;
+		int macro_pos = (realPos / 8) * 2;
+		int micro_pos = 1 << 7-(realPos % 8);
+		string hexbyte = blob.Substring(macro_pos, 2);
+		byte extractedByte = SoapHexBinary.Parse(hexbyte).Value[0];
+		bool bit = ((extractedByte & micro_pos) > 0);
+		Debug.Log("TM"+(position+1)+" = "+bit+" ["+hexbyte+"]");
+		return bit;
+	}
 	#region extern
 	[DllImport ("sqlite3")]
 	private static extern SqliteErrorCode sqlite3_open_v2(byte[] filename, ref IntPtr db, SqliteOpenOpts flags, byte[] VFS);
@@ -151,11 +157,17 @@ public class Sqlite {
 	private static extern SqliteErrorCode sqlite3_step(IntPtr statement);
 
 	[DllImport ("sqlite3")]
+	private static extern IntPtr sqlite3_column_blob(IntPtr statement, int ColNum);
+
+	[DllImport ("sqlite3")]
 	private static extern IntPtr sqlite3_column_text(IntPtr statement, int ColNum);
 
 	[DllImport ("sqlite3")]
+	private static extern int sqlite3_column_bytes(IntPtr statement, int ColNum);
+
+	[DllImport ("sqlite3")]
 	private static extern IntPtr sqlite3_column_name(IntPtr statement, int ColNum);
-	
+
 	[DllImport ("sqlite3")]
 	private static extern int sqlite3_column_count(IntPtr statement);
 	
