@@ -18,8 +18,15 @@ public class Ability {
 			temp.id = Convert.ToInt32(row["id"]);
 			temp.name = row["name"];
 			temp.description = row["description"];
-			temp.battle_effect_id 
+			temp.battle_effect_id = Convert.ToInt32(row["battle_effect_id"]);
+			temp.world_effect_id = Convert.ToInt32(row["world_effect_id"]);
 			ABILITIES[temp.id] = temp;
 		}
+	}
+	public static void link() {
+	    foreach (Ability temp in ABILITIES) {
+	        temp.world_effect = Effect.EFFECTS[temp.world_effect_id];
+	        temp.battle_effect = Effect.EFFECTS[temp.battle_effect_id];
+	    }
 	}
 }
