@@ -82,7 +82,7 @@ public class Creaturedb {
 			short max_hp		= System.Convert.ToInt16(row["max_hp"]);
 			short max_speed		= System.Convert.ToInt16(row["max_speed"]);
 			string tm_list		= row["tm_list"];
-			try {spec+ies[id] = new Species(
+			try {species[id] = new Species(
 				id, name,
 				gender_ratio,
 				capture_rate,
