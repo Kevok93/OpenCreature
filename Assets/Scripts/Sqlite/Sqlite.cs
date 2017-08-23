@@ -162,7 +162,7 @@ public class Sqlite {
 	}
 	
 	public static bool[] getBitsFromBlob(string blob) {
-        return new bool[] { };
+        //return new bool[] { };
 		int size = blob.Length * 4;
 		bool[] bits = new bool[size];
 		for (int i = 0; i < size; i++) {
@@ -213,6 +213,9 @@ public class Sqlite {
 
 	[DllImport ("sqlite3")]
 	public static extern int sqlite3_column_int(IntPtr statement, int ColNum);
+
+	[DllImport ("sqlite3")]
+	public static extern float sqlite3_column_float(IntPtr statement, int ColNum);
 	
 	#endregion
 }
