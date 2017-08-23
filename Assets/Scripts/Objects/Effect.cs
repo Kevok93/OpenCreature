@@ -12,7 +12,7 @@ public class Effect {
 
 	private Effect(){}
 
-	public static Effect init(List<Dictionary<string,string>> results) {
+	public static void init(List<Dictionary<string,string>> results) {
 	    EFFECTS = new Dictionary<int, Effect>(results.Count);
 	    foreach (Dictionary<string,string> row in results) {
 	        Effect temp = new Effect();

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 public class Trainer {
-	public static Dictionary<int,Ability> TRAINERS;
+	public static Dictionary<int,Trainer> TRAINERS;
 	public int id;
 	public string name;
 	public byte trainer_style_id;
@@ -13,8 +13,8 @@ public class Trainer {
 	public bool[] misc_info;
 
 	public Trainer rematch_trainer;
-	// public Creature[] creatures;
-	// public Item[] items;
+	public Creature[] creatures;
+	public Item[] items;
 	public TrainerStyle trainer_style;
 
 	private Trainer(){}
@@ -50,7 +50,7 @@ public class Trainer {
 		}
 	}
 	public static void link() {
-		foreach (Trainer temp in TRAINERS) {
+		foreach (Trainer temp in TRAINERS.Values) {
 			temp.trainer_style = TrainerStyle.TRAINER_STYLES [temp.trainer_style_id];
 			temp.rematch_trainer = TRAINERS [temp.rematch_trainer_id];
 			temp.items = new Item[] {

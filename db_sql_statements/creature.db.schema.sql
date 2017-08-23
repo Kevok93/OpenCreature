@@ -76,7 +76,7 @@ CREATE TABLE moves (
 	`power` tinyint check (`power` between 0 and 255),
 	`accuracy` tinyint check (`accuracy` between 0 and 255),
 	`pp` tinyint check (`pp` between 0 and 255),
-	`effect_id` smallint NULL check (`effect_id` between 0 and 65535),
+	`battle_effect_id` smallint NULL check (`battle_effect_id` between 0 and 65535),
 	`world_effect_id` smallint NULL check (`world_effect_id` between 0 and 65535),
 	`affinity` tinyint check (`affinity` between 0 and 255),
 	`misc_info` blob(2) NULL,
@@ -85,7 +85,7 @@ CREATE TABLE moves (
 	`description` text,
 	constraint `pk_moves` primary key (`id`) on conflict rollback,
 	constraint `fk_type` foreign key (`type`) references types(`id`) deferrable initially deferred,
-	constraint `fk_effect_id` foreign key (`effect_id`) references effects(`id`) deferrable initially deferred,
+	constraint `fk_battle_effect_id` foreign key (`battle_effect_id`) references effects(`id`) deferrable initially deferred,
 	constraint `fk_world_effect_id` foreign key (`world_effect_id`) references effects(`id`) deferrable initially deferred,
 	constraint `fk_sfx` foreign key (`sfx`) references sounds(`id`) deferrable initially deferred
 );
@@ -98,11 +98,11 @@ CREATE TABLE type_bonus (
 	constraint `fk_def_id` foreign key (`def_id`) references types(`id`) deferrable initially deferred
 );
 CREATE TABLE level_moves (
-	`poke_id` int,
+	`species_id` int,
 	`move_id` int,
 	`level` tinyint check (`level` between 0 and 255),
-	constraint `pk_level_moves` primary key (`poke_id`,`move_id`,`level`) on conflict ignore,
-	constraint `fk_poke_id` foreign key (`poke_id`) references species(`id`) deferrable initially deferred,
+	constraint `pk_level_moves` primary key (`species_id`,`move_id`,`level`) on conflict ignore,
+	constraint `fk_species_id` foreign key (`species_id`) references species(`id`) deferrable initially deferred,
 	constraint `fk_move_id` foreign key (`move_id`) references moves(`id`) deferrable initially deferred
 );
 CREATE TABLE types (

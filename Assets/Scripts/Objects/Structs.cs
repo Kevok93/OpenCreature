@@ -42,7 +42,7 @@ public class Nature {
 				Convert.ToSByte(row["def"]),
 				Convert.ToSByte(row["spatk"]),
 				Convert.ToSByte(row["spdef"]),
-				Convert.ToSByte(row["hp"]),
+				0,
 				Convert.ToSByte(row["speed"]),
 			};
 			NATURES [temp.id] = temp;
@@ -50,7 +50,7 @@ public class Nature {
 	}
 }
 public class ItemType {
-	public Dictionary<int,ItemType> ITEM_TYPES;
+	public static Dictionary<int,ItemType> ITEM_TYPES;
 	public int id;
 	public string name;
 	public string description;

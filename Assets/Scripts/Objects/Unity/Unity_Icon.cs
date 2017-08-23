@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System;
 using UnityEngine;
-
+/*
 [Serializable]
 public class Unity_Icon : Sprite {
     public string sprite_path{set;}
@@ -11,4 +11,4 @@ public class Unity_Icon : Sprite {
         sprite = new Texture2D(0,0);
         sprite.LoadImage(image);
     }
-}
+}*/

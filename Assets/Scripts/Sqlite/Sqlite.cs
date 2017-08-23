@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System;
+using System.Linq.Expressions;
+using System.Linq;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,17 +20,20 @@ public class Sqlite {
 			mode,
 			null
 		);
-		Debug.Log ("Sqlite3_open("+path+") = "+retc);
+		//Debug.Log ("Sqlite3_open("+path+") = "+retc);
 		if (retc != SqliteErrorCode.SQLITE_OK) db = null_ptr;
 	}
 	
 	public List<List<Dictionary<string,string>>> sql(string query) {
+	    System.Diagnostics.Stopwatch watch1 = new System.Diagnostics.Stopwatch();
+	    System.Diagnostics.Stopwatch watch2 = new System.Diagnostics.Stopwatch();
 		if (db == null_ptr) return null;
 		//Debug.Log (db);
 		List<List<Dictionary<string,string>>> results = new List<List<Dictionary<string, string>>>();
 		SqliteErrorCode retc;
 		
 		string[] querytok = query.Split(delim_semi,StringSplitOptions.RemoveEmptyEntries);
+        watch2.Start();
 		foreach (string subquery in querytok) {
 			string subquery_mod = subquery + ";";
 			IntPtr prep_stmt = null_ptr,
@@ -46,45 +51,58 @@ public class Sqlite {
 				//Debug.Log ("Sqlite3_prepare('"+subquery_mod+"') = " + retc);
 				List<Dictionary<string,string>> resultset = new List<Dictionary<string,string>>();
 				results.Add (resultset);
+				int col_count = sqlite3_column_count(prep_stmt);
+                string[] keys = new string[col_count];
+                SqliteDatatype[] types = new SqliteDatatype[col_count];
+				for (int i = 0; i < col_count; i++) {
+				    IntPtr key_utf8 = sqlite3_column_name(prep_stmt,i);
+				    keys[i] = Marshal.PtrToStringAnsi(key_utf8);
+				    types[i] = sqlite3_column_type(prep_stmt,i);
+				}
 				#region row
 				while (
 					(retc = sqlite3_step (prep_stmt)) == SqliteErrorCode.SQLITE_ROW
 				) {
+				    
 					//Debug.Log ("Sqlite3_step('"+subquery_mod+"') = " + retc);
 					Dictionary<string,string> row = new Dictionary<string, string>();
 					resultset.Add (row);
 					
-					//Debug.Log ("Sqlite3_column_count('"+subquery_mod+"') = " + sqlite3_column_count(prep_stmt));
+                    //Debug.Log ("Sqlite3_column_count('"+subquery_mod+"') = " + sqlite3_column_count(prep_stmt));
 					
-					int i = 0;
-					for (; i < sqlite3_column_count(prep_stmt); i++) {
-						IntPtr key_utf8 = sqlite3_column_name(prep_stmt,i);
-						string key = Marshal.PtrToStringAnsi(key_utf8);
+
+                        watch1.Start();
+					for (int i = 0; i < col_count; i++) {
 						string val = "ERROR";
-						SqliteDatatype colType = sqlite3_column_type(prep_stmt,i);
-						if (colType == SqliteDatatype.SQLITE_BLOB) {
+						if (types[i] == SqliteDatatype.SQLITE_BLOB) {
 							IntPtr val_blob = sqlite3_column_blob(prep_stmt,i);
-							int size = sqlite3_column_bytes(prep_stmt,i);
+                            int size = sqlite3_column_bytes(prep_stmt,i);
 							byte[] blob = new byte[size];
 							Marshal.Copy(val_blob, blob, 0, size);
 							//Debug.Log ("Sqlite3_column["+i+"]('"+key+"') = Blob["+size+"]("+blob+")");
 							val = (new SoapHexBinary(blob)).ToString();
 						} else {
 							IntPtr val_utf8 = sqlite3_column_text(prep_stmt,i);
-							val = Marshal.PtrToStringAnsi(val_utf8);
+                            val = "a";
+                            //Marshal.PtrToStringAnsi(val_utf8);
 							//Debug.Log ("Sqlite3_column["+i+"]('"+key+"') = "+colType+"("+val+")");
 						}
-						row.Add(key,val);
+						row.Add(keys[i],val);
 					}
-					
+                        watch1.Stop();
+
 				}
 				//Debug.Log ("Sqlite3_step('"+subquery_mod+"') = " + retc);
 				#endregion
 				
 				sqlite3_finalize (prep_stmt);
 				sqlite3_finalize (leftovers);
-			} else Debug.Log ("Sqlite3_prepare('"+subquery_mod+"') = " + retc);
-		}
+			} //else Debug.Log ("Sqlite3_prepare('"+subquery_mod+"') = " + retc);
+		}    
+		watch2.Stop();                
+		Console.Out.WriteLine(string.Format("Parsing type: {0} milliseconds", watch1.ElapsedMilliseconds) );
+		Console.Out.WriteLine(string.Format("Parsing value: {0} milliseconds", watch2.ElapsedMilliseconds) );
+					
 		return results;
 	}
 	
@@ -93,10 +111,10 @@ public class Sqlite {
 	}
 	
 	public void Close() {
-		Debug.Log (
-			"Sqlite3_close() = "+
-			sqlite3_close (db)
-		);
+		//Debug.Log (
+		//	"Sqlite3_close() = "+
+		//	sqlite3_close (db)
+		//);
 		db = null_ptr;
 	}
 
@@ -145,12 +163,19 @@ public class Sqlite {
 	}
 	
 	public static bool[] getBitsFromBlob(string blob) {
+        return new bool[] { };
 		int size = blob.Length * 4;
 		bool[] bits = new bool[size];
 		for (int i = 0; i < size; i++) {
 			bits[i] = Sqlite.getBitFromBlob(blob, i);
 		}
 		return bits;
+	}
+	
+	public static string getBlobFromBits(bool[] bits) {
+        byte[] blob = (from x in bits select x ? (byte)0x1 : (byte)0x0).ToArray();
+        string blobhex = (new SoapHexBinary(blob)).ToString();
+        return blobhex;
 	}
 
 	#region extern

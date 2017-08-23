@@ -11,7 +11,8 @@ public class Creature {
 	public bool[] misc_info;
 	public int species_id, ability_id, held_item_id;
 	public int[] move_ids;
-	public byte nature_id;
+    public byte nature_id;
+    public byte[] pp_cur;
 	
 	public Species species;
 	public Item held_item;
@@ -19,14 +20,25 @@ public class Creature {
 	public Ability ability;
 	public Nature nature;
 	
-	private Creature(){}
+	public Creature(Species species, int level) {
+        id = -1;
+        this.species = species;
+        this.nature = Nature.NATURES[Globals.RNG.Next() % Nature.NATURES.Count];
+        
+	}
+	public short getStat(byte level, StatsType type) {
+	    int base_stat = species.base_stats[(int)type] / level;
+        int mod_pct = (100 + nature.stats_mod[(int)type])/100;
+        int mod_stat = base_stat * mod_pct;
+        return (short)mod_stat;
+	}
+	protected Creature(){}
 	public static void init(List<Dictionary<string,string>> unique_creature_defs) {
 		CREATURES = new Dictionary<int, Creature> (unique_creature_defs.Count);
 		foreach (Dictionary<string,string> row in unique_creature_defs) {
 			Creature temp = new Creature();
 			temp.id = Convert.ToInt32(row["id"]);
 			temp.nickname = row["nickname"];
-			temp.hp = Convert.ToInt16(row["description"]);
 			temp.level = Convert.ToByte(row["level"]);
 			temp.misc_info = Sqlite.getBitsFromBlob(row["misc_info"]);
 			temp.stats = new short[] {
@@ -37,6 +49,7 @@ public class Creature {
 			    Convert.ToInt16(row["hp"]),
 			    Convert.ToInt16(row["speed"]),
 			};
+			temp.hp = temp.stats[(int)StatsType.hp];
 			temp.move_ids = new int[] {
 			    Convert.ToInt32(row["move1_id"]),
 			    Convert.ToInt32(row["move2_id"]),
@@ -63,6 +76,13 @@ public class Creature {
 	            Move.MOVES[temp.move_ids[2]],
 	            Move.MOVES[temp.move_ids[3]],
 	        };
+	        temp.pp_cur = new byte[] { 
+	            (temp.moves[0] != null) ? temp.moves[0].pp : (byte)0,
+	            (temp.moves[1] != null) ? temp.moves[1].pp : (byte)0,
+	            (temp.moves[2] != null) ? temp.moves[2].pp : (byte)0,
+	            (temp.moves[3] != null) ? temp.moves[3].pp : (byte)0,
+	        };
 	    }
     }
+
 }
