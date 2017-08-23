@@ -31,9 +31,10 @@ public class Species {
 	
 	public Ability ability1, ability2;
 	public Type type1, type2;
+	public EggGroup egg_group1, egg_group2;
 	/*
 	 * public Item wild_item;
-	 * public EggGroup egg_group1, egg_group2;
+	 * 
 	 * public Sfx cry_sfx;
 	 * public Sprite sprite_def;
 	 * */
@@ -107,6 +108,9 @@ public class Species {
             temp.ability1 = Ability.ABILITIES[temp.ability_id1];
             temp.type1 = Type.TYPES[temp.type_id1];
             temp.type2 = Type.TYPES[temp.type_id2];
+			temp.egg_group1 = EggGroup.EGG_GROUPS [temp.egg_group_id1];
+			temp.egg_group2 = EggGroup.EGG_GROUPS [temp.egg_group_id2];
+
             foreach (LevelMove move in temp.level_moves) 
                 move.move = Move.MOVES[move.move_id];
             foreach (Evolution ev in temp.evolutions) 
