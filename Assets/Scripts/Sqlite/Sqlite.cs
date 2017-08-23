@@ -9,9 +9,9 @@ using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 public class Sqlite {
-	private IntPtr db;
-	static IntPtr null_ptr = (IntPtr)0;
-	static char[] delim_semi = {';'};
+	protected IntPtr db;
+	public static IntPtr null_ptr = (IntPtr)0;
+	public static char[] delim_semi = {';'};
 
 	public Sqlite(string path, SqliteOpenOpts mode = SqliteOpenOpts.SQLITE_OPEN_READONLY) {
 		SqliteErrorCode retc = sqlite3_open_v2(
@@ -83,8 +83,7 @@ public class Sqlite {
 							val = (new SoapHexBinary(blob)).ToString();
 						} else {
 							IntPtr val_utf8 = sqlite3_column_text(prep_stmt,i);
-                            val = "a";
-                            //Marshal.PtrToStringAnsi(val_utf8);
+                            val = Marshal.PtrToStringAnsi(val_utf8);
 							//Debug.Log ("Sqlite3_column["+i+"]('"+key+"') = "+colType+"("+val+")");
 						}
 						row.Add(keys[i],val);
@@ -180,37 +179,40 @@ public class Sqlite {
 
 	#region extern
 	[DllImport ("sqlite3")]
-	private static extern SqliteErrorCode sqlite3_open_v2(byte[] filename, ref IntPtr db, SqliteOpenOpts flags, byte[] VFS);
+	public static extern SqliteErrorCode sqlite3_open_v2(byte[] filename, ref IntPtr db, SqliteOpenOpts flags, byte[] VFS);
 
 	[DllImport ("sqlite3")]
-	private static extern SqliteErrorCode sqlite3_prepare_v2(IntPtr db, byte[] sql, int size, ref IntPtr statement, ref IntPtr leftovers);
+	public static extern SqliteErrorCode sqlite3_prepare_v2(IntPtr db, byte[] sql, int size, ref IntPtr statement, ref IntPtr leftovers);
 
 	[DllImport ("sqlite3")]
-	private static extern SqliteErrorCode sqlite3_finalize(IntPtr statement);
+	public static extern SqliteErrorCode sqlite3_finalize(IntPtr statement);
 
 	[DllImport ("sqlite3")]
-	private static extern SqliteErrorCode sqlite3_step(IntPtr statement);
+	public static extern SqliteErrorCode sqlite3_step(IntPtr statement);
 
 	[DllImport ("sqlite3")]
-	private static extern IntPtr sqlite3_column_blob(IntPtr statement, int ColNum);
+	public static extern IntPtr sqlite3_column_blob(IntPtr statement, int ColNum);
 
 	[DllImport ("sqlite3")]
-	private static extern IntPtr sqlite3_column_text(IntPtr statement, int ColNum);
+	public static extern IntPtr sqlite3_column_text(IntPtr statement, int ColNum);
 
 	[DllImport ("sqlite3")]
-	private static extern int sqlite3_column_bytes(IntPtr statement, int ColNum);
+	public static extern int sqlite3_column_bytes(IntPtr statement, int ColNum);
 
 	[DllImport ("sqlite3")]
-	private static extern IntPtr sqlite3_column_name(IntPtr statement, int ColNum);
+	public static extern IntPtr sqlite3_column_name(IntPtr statement, int ColNum);
 
 	[DllImport ("sqlite3")]
-	private static extern int sqlite3_column_count(IntPtr statement);
+	public static extern int sqlite3_column_count(IntPtr statement);
 	
 	[DllImport ("sqlite3")]
-	private static extern SqliteErrorCode sqlite3_close(IntPtr db);
+	public static extern SqliteErrorCode sqlite3_close(IntPtr db);
 	
 	[DllImport ("sqlite3")]
-	private static extern SqliteDatatype sqlite3_column_type(IntPtr statement, int ColNum);
+	public static extern SqliteDatatype sqlite3_column_type(IntPtr statement, int ColNum);
+
+	[DllImport ("sqlite3")]
+	public static extern int sqlite3_column_int(IntPtr statement, int ColNum);
 	
 	#endregion
 }
