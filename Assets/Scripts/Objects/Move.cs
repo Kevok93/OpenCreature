@@ -19,7 +19,7 @@ public class Move
 
 	private Move(){}
 	public static void init(List<Dictionary<string,string>> move_defs) {
-		MOVES = new Dictionary<int, Type>(move_defs.Count);
+		MOVES = new Dictionary<int, Move>(move_defs.Count);
 		foreach (Dictionary<string,string> row in move_defs) {
 			Move temp = new Move ();
 			temp.id = System.Convert.ToInt32 (row ["id"]);
@@ -39,14 +39,14 @@ public class Move
 	}
 
 	public static void link() {
-		foreach (Move temp in MOVES) {
+		foreach (Move temp in MOVES.Values) {
 			world_effect = Effect.EFFECTS[temp.world_effect_id];
 			battle_effect = Effect.EFFECTS[temp.battle_effect_id];
 			movetype = Type.TYPES[type_id];
 		}
 	}
 
-	public Move(
+	/*public Move(
 		int id,
 		string name,
 		byte pp, 
@@ -72,7 +72,7 @@ public class Move
 		this.misc_info = misc_info;
 		this.misc_value = misc_value;
 		this.description = description;
-	}
+	}*/
 
 
 }
