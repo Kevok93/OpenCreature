@@ -18,17 +18,18 @@ public class Type {
 
 	private Type() {}
 
-	public static void initTypes(
+	public static void init(
 		List<Dictionary<string,string>> type_defs, 
 		List<Dictionary<string,string>> bonuses
 	) {
 		//var results = db["Select * from types"][0];
 		TYPES = new Dictionary<int, Type>(type_defs.Count);
 		foreach (Dictionary<string,string> row in type_defs) {
-			Type temp = TYPES[id] = new Type ();
+			Type temp = new Type ();
 			temp.id = System.Convert.ToInt32 (row ["id"]);
 			temp.name = row["name"];
 			temp.bonus = new Dictionary<int, float> ();
+			TYPES[temp.id] = temp;
 		}
 		
 		//results = db["Select * from type_bonus"][0];

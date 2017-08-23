@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 public class Effect {
-	public static Effect[] EffectArray;
+	public static Dictionary<int,Effect> EFFECTS;
 	public int id;
 	public string name, description;
 	public bool[] misc_info;

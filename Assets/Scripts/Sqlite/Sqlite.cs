@@ -143,6 +143,15 @@ public class Sqlite {
 		//Debug.Log("TM"+(position+1)+" = "+bit+" ["+hexbyte+"]");
 		return bit;
 	}
+	
+	public static bool[] getBitsFromBlob(string blob) {
+		int size = blob.Length * 4;
+		bool[] bits = new bool[size];
+		for (int i = 0; i < size; i++) {
+			bits[i] = Sqlite.getBitFromBlob(blob, i);
+		}
+		return bits;
+	}
 
 	#region extern
 	[DllImport ("sqlite3")]

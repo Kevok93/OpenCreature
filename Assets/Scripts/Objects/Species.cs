@@ -1,11 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 public class Species {
+	public static Dictionary<int,Species> SPECIES;
 	public int id;
 	public string name;
-	public Ability ability1, ability2;
-	public Type type1, type2;
 	public byte 
 		gender_ratio, 
 		capture_rate,
@@ -13,10 +12,40 @@ public class Species {
 	public StatsType ev_type; 
 	public int max_exp;
 	public short[] 
-		base_stats = new short[6],
-		max_stats = new short[6];
-	public bool[] tm_list = new bool[128];
+		base_stats,
+		max_stats;
+	public bool[] tm_list;
 	
+	public Ability ability1, ability2;
+	public Type type1, type2;
+	
+	private Species(){}
+	public static void init(List<Dictionary<string,string>> species_defs) {
+		SPECIES = new Dictionary<int, Species>(species_defs.Count);
+		foreach (Dictionary<string,string> row in species_defs) {
+			Species temp = new Species();
+			temp.id = System.Convert.ToInt32 (row ["id"]);
+			temp.name = row["name"];
+			temp.gender_ratio = System.Convert.ToByte (row["gender_ratio"]);
+			temp.capture_rate = System.Convert.ToByte (row["capture_rate"]);
+			temp.ev_val = System.Convert.ToByte (row["ev_val"]);
+			temp.ev_type = (StatsType) System.Convert.ToByte (row["ev_type"]);
+			temp.max_exp = System.Convert.ToInt32 (row["max_exp"]);
+
+			temp.base_stats = new short[6];
+			temp.base_stats[StatsType.atk] = System.Convert.ToInt16(row["base_atk"]);
+			temp.base_stats[StatsType.def] = System.Convert.ToInt16(row["base_def"]);
+			temp.base_stats[StatsType.sp_atk] = System.Convert.ToInt16 (row["base_spatk"]);
+
+			temp.max_stats  = new short[6];
+
+			
+			
+			
+	
+	
+	}
+	/*
 	public Species(
 		int id,
 		string name,
@@ -74,5 +103,6 @@ public class Species {
 			this.tm_list[i] = Sqlite.getBitFromBlob(tm_list, i);
 		}
 	}
+	*/
 	
 }

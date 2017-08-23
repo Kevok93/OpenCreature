@@ -39,6 +39,7 @@ public class Creaturedb {
 		var results = db["Select * from species"][0];
 		species = new Species[results.Count];
 		foreach (Dictionary<string,string> row in results) {
+			
 			int id 				= System.Convert.ToInt32(row["id"]) - 1;
 			string name 		= row["name"];
 			int ab1 			= System.Convert.ToInt32(row["ability1"]);
