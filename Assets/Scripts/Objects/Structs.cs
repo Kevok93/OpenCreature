@@ -10,7 +10,7 @@ public class Evolution {
     public int species_id;
     public Species species;
     public EvolutionType type;
-    //public Item item;
+    public Item item;
 }
 public class EggGroup {
 	public static Dictionary<int,EggGroup> EGG_GROUPS;

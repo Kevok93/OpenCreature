@@ -1,31 +1,68 @@
 using System;
 using System.Collections.Generic;
 
-public class Ability {
-	public static Dictionary<int,Ability> ABILITIES;
+public class Creature {
+	public static Dictionary<int,Creature> CREATURES;
 	public int id;
-	public string name, description;
-	public int battle_effect_id, world_effect_id;
-	public Effect world_effect, battle_effect;
-
-	private Ability(){}
-	public static void init(List<Dictionary<string,string>> ability_defs) {
-		//var results = db["Select * from abilities"][0];
-		ABILITIES = new Dictionary<int, Ability> (ability_defs.Count);
-		foreach (Dictionary<string,string> row in ability_defs) {
-			Ability temp = new Ability();
+	public string nickname;
+	public short hp;
+	public byte level;
+	public short[] stats;
+	public bool[] misc_info;
+	public int species_id, ability_id, held_item_id;
+	public int[] move_ids;
+	public byte nature_id;
+	
+	public Species species;
+	public Item held_item;
+	public Move[] moves;
+	public Ability ability;
+	public Nature nature;
+	
+	private Creature(){}
+	public static void init(List<Dictionary<string,string>> unique_creature_defs) {
+		CREATURES = new Dictionary<int, Creature> (unique_creature_defs.Count);
+		foreach (Dictionary<string,string> row in unique_creature_defs) {
+			Creature temp = new Creature();
 			temp.id = Convert.ToInt32(row["id"]);
-			temp.name = row["name"];
-			temp.description = row["description"];
-			temp.battle_effect_id = Convert.ToInt32(row["battle_effect_id"]);
-			temp.world_effect_id = Convert.ToInt32(row["world_effect_id"]);
-			ABILITIES[temp.id] = temp;
+			temp.nickname = row["nickname"];
+			temp.hp = Convert.ToInt16(row["description"]);
+			temp.level = Convert.ToByte(row["level"]);
+			temp.misc_info = Sqlite.getBitsFromBlob(row["misc_info"]);
+			temp.stats = new short[] {
+			    Convert.ToInt16(row["atk"]),
+			    Convert.ToInt16(row["def"]),
+			    Convert.ToInt16(row["spatk"]),
+			    Convert.ToInt16(row["spdef"]),
+			    Convert.ToInt16(row["hp"]),
+			    Convert.ToInt16(row["speed"]),
+			};
+			temp.move_ids = new int[] {
+			    Convert.ToInt32(row["move1_id"]),
+			    Convert.ToInt32(row["move2_id"]),
+			    Convert.ToInt32(row["move3_id"]),
+			    Convert.ToInt32(row["move4_id"]),
+			};
+			temp.species_id = Convert.ToInt32(row["species"]);
+			temp.ability_id = Convert.ToInt32(row["ability"]);
+			temp.held_item_id = Convert.ToInt32(row["held_item"]);
+			temp.nature_id = Convert.ToByte(row["nature"]);
+			
+			CREATURES[temp.id] = temp;
 		}
 	}
-	public static void link() {
-		foreach (Ability temp in ABILITIES) {
-			temp.world_effect = Effect.EFFECTS[temp.world_effect_id];
-			temp.battle_effect = Effect.EFFECTS[temp.battle_effect_id];
-		}
-	}
+    public static void link() {
+        foreach (Creature temp in CREATURES.Values) {
+	        temp.species = Species.SPECIES[temp.species_id];
+	        temp.held_item = Item.ITEMS[temp.held_item_id];
+	        temp.ability = Ability.ABILITIES[temp.ability_id];
+	        temp.nature = Nature.NATURES[temp.nature_id];
+	        temp.moves = new Move[] {
+	            Move.MOVES[temp.move_ids[0]],
+	            Move.MOVES[temp.move_ids[1]],
+	            Move.MOVES[temp.move_ids[2]],
+	            Move.MOVES[temp.move_ids[3]],
+	        };
+	    }
+    }
 }

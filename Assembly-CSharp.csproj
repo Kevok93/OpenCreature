@@ -51,12 +51,15 @@
     <Compile Include="Assets\Scripts\Objects\Creature.cs" />
     <Compile Include="Assets\Scripts\Objects\Effect.cs" />
     <Compile Include="Assets\Scripts\Objects\Enumerators.cs" />
-    <Compile Include="Assets\Scripts\Objects\Evolution.cs" />
+    <Compile Include="Assets\Scripts\Objects\Interfaces.cs" />
+    <Compile Include="Assets\Scripts\Objects\Item.cs" />
     <Compile Include="Assets\Scripts\Objects\Move.cs" />
     <Compile Include="Assets\Scripts\Objects\Species.cs" />
     <Compile Include="Assets\Scripts\Objects\Structs.cs" />
     <Compile Include="Assets\Scripts\Objects\Trainer.cs" />
     <Compile Include="Assets\Scripts\Objects\Type.cs" />
+    <Compile Include="Assets\Scripts\Objects\Unity\Unity_Icon.cs" />
+    <Compile Include="Assets\Scripts\Objects\Unity\Unity_Model.cs" />
     <Compile Include="Assets\Scripts\OverworldMovement.cs" />
     <Compile Include="Assets\Scripts\Serialization\Creaturedb.cs" />
     <Compile Include="Assets\Scripts\Sqlite\Sqlite.cs" />
@@ -73,6 +76,9 @@
       <Project>{F0AFEDA2-3420-9C80-4E7E-2654BF0C178E}</Project>
       <Name>Assembly-UnityScript-firstpass</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\Scripts\Objects\Unity" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

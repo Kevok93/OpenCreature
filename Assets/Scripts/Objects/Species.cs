@@ -32,9 +32,8 @@ public class Species {
 	public Ability ability1, ability2;
 	public Type type1, type2;
 	public EggGroup egg_group1, egg_group2;
-	/*
-	 * public Item wild_item;
-	 * 
+	public Item wild_item;
+	/* 
 	 * public Sfx cry_sfx;
 	 * public Sprite sprite_def;
 	 * */
@@ -110,12 +109,13 @@ public class Species {
             temp.type2 = Type.TYPES[temp.type_id2];
 			temp.egg_group1 = EggGroup.EGG_GROUPS [temp.egg_group_id1];
 			temp.egg_group2 = EggGroup.EGG_GROUPS [temp.egg_group_id2];
+			temp.wild_item = Item.ITEMS[temp.wild_item_id];
 
             foreach (LevelMove move in temp.level_moves) 
                 move.move = Move.MOVES[move.move_id];
             foreach (Evolution ev in temp.evolutions) 
                 if ((ev.type == EvolutionType.Item || ev.type == EvolutionType.Trade) && ev.value != 0) 
-                    {/*ev.item = Item.ITEMS[ev.value];*/ }
+                    {ev.item = Item.ITEMS[ev.value];}
 	    }
 	}
 	/*
