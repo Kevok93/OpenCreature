@@ -226,5 +226,55 @@ CREATE TABLE trainer_style (
 	`name` varchar(10),
 	`bgm` smallint,
 	`sprite_path` text,
-	constraint `pk_trainer_style` primary key (`id`) on conflict rollback
+	constraint `pk_trainer_style` primary key (`id`) on conflict rollback,
+	constraint `fk_bgm` foreign key (`bgm`) references music(`id`) deferrable initially deferred
 );	
+CREATE TABLE npc (
+	`id` int,
+	`style` tinyint,
+	`map` smallint,
+	`x` smallint,
+	`y` smallint,
+	`text` text NULL,
+	`trainer` int NULL,
+	`plot_flag` smallint NULL,
+	`misc_info` blob NULL,
+	constraint `pk_npc` primary key (`id`) on conflict rollback,
+	constraint `fk_style` foreign key (`style`) references npc_style(`id`) deferrable initially deferred,
+	constraint `fk_map` foreign key (`map`) references map(`id`) deferrable initially deferred,
+	constraint `fk_plot_flag` foreign key (`plot_flag`) references plot_flag(`id`) deferrable initially deferred,
+	constraint `fk_trainer` foreign key (`trainer`) references trainer(`id`) deferrable initially deferred
+);
+create table npc_style (
+	`id` tinyint,
+	`name` varchar(10),
+	`sprite_path` text,
+	constraint `pk_npc_style` primary key (`id`) on conflict rollback
+);
+CREATE TABLE plot_flag (
+	`id` int,
+	`name` varchar(10),
+	constraint `pk_plot_flag` primary key (`id`) on conflict rollback
+);
+CREATE TABLE map (
+	`id` smallint,
+	`name` varchar(16) NULL,
+	`width` smallint,
+	`height` smallint,
+	`bgm` smallint,
+	`data_path` text,
+	constraint `pk_map` primary key (`id`) on conflict rollback,
+	constraint `fk_bgm` foreign key (`bgm`) references music(`id`) deferrable initially deferred
+);
+CREATE TABLE music (
+	`id` smallint,
+	`path` text,
+	constraint `pk_music` primary key (`id`) on conflict rollback
+);
+CREATE TABLE sounds (
+	`id` int,
+	`path` text,
+	constraint `pk_sounds` primary key (`id`) on conflict rollback
+);
+	
+	

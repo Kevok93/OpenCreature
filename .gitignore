@@ -1,7 +1,4 @@
 Assembly*
-*.sln
-*.suo
-*.userprefs
 Temp/
 Library/
 obj/
