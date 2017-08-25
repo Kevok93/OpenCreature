@@ -19,7 +19,8 @@ public class Move
 	public Type movetype;
 
 	private Move(){}
-	public static void init(List<Dictionary<string,string>> move_defs) {
+	public static long init(List<Dictionary<string,string>> move_defs) {
+		long count = 0;
 		MOVES = new Dictionary<int, Move>(move_defs.Count);
 		foreach (Dictionary<string,string> row in move_defs) {
 			Move temp = new Move ();
@@ -46,7 +47,9 @@ public class Move
                     break;
             }
 			MOVES[temp.id] = temp;
+			count++;
 		}
+		return count;
 	}
 
 	public static void link() {

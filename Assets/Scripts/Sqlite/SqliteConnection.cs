@@ -13,7 +13,11 @@ public class SqliteConnection {
 	protected IntPtr db;
 	public static IntPtr null_ptr = (IntPtr)0;
 	public static char[] delim_semi = {';'};
-
+	
+	public static log4net.ILog log;
+	static SqliteConnection() {
+		log = log4net.LogManager.GetLogger("SQLITE");
+	}
 	public SqliteConnection(string path, SqliteOpenOpts mode = SqliteOpenOpts.SQLITE_OPEN_READONLY) {
         if (!System.IO.File.Exists(path)) throw new FileNotFoundException(path);
 		SqliteErrorCode retc = Sqlite.sqlite3_open_v2(
@@ -37,7 +41,8 @@ public class SqliteConnection {
 		
 		foreach (string subquery in querytok) {
 			string subquery_mod = subquery + ";";
-            Console.Out.WriteWithPrefix(subquery_mod,PREFIX);
+			
+            log.Trace(subquery_mod);
             results.Add(getTable(subquery_mod));
 		} 
 					

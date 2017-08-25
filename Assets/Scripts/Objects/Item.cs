@@ -20,7 +20,8 @@ public class Item {
 	public ItemType item_type;
 	
 	private Item(){}
-	public static void init(List<Dictionary<string,string>> item_defs) {
+	public static long init(List<Dictionary<string,string>> item_defs) {
+		long count = 0;
 		//var results = db["Select * from abilities"][0];
 		ITEMS = new Dictionary<int, Item> (item_defs.Count);
 		foreach (Dictionary<string,string> row in item_defs) {
@@ -38,7 +39,9 @@ public class Item {
 			temp.sprite_path = row["sprite_path"];
 			temp.description = row["description"];
 			ITEMS[temp.id] = temp;
+			count++;
 		}
+		return count;
 	}
 	public static void link() {
 	    foreach (Item temp in ITEMS.Values) {

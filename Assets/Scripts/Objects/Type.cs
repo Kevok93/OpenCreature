@@ -8,10 +8,11 @@ public class Type {
 	private Dictionary<int,float> bonus;
 	private Type() {}
 
-	public static void init(
+	public static long init(
 		List<Dictionary<string,string>> type_defs, 
 		List<Dictionary<string,string>> bonuses
 	) {
+		long count = 0;
 		//var results = db["Select * from types"][0];
 		TYPES = new Dictionary<int, Type>(type_defs.Count);
 		foreach (Dictionary<string,string> row in type_defs) {
@@ -20,6 +21,7 @@ public class Type {
 			temp.name = row["name"];
 			temp.bonus = new Dictionary<int, float> ();
 			TYPES[temp.id] = temp;
+			count++;
 		}
 		
 		//results = db["Select * from type_bonus"][0];
@@ -29,6 +31,7 @@ public class Type {
 			float bonus = System.Convert.ToSingle(row["bonus"]);
 			TYPES[atk_id].bonus[def_id] = bonus;
 		}
+		return count;
 	}
 
 	public static float getTypeBonus(int atk_id, int def_id) {

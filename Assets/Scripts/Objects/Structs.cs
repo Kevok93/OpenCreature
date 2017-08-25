@@ -20,14 +20,17 @@ public class EggGroup {
 	public static Dictionary<int,EggGroup> EGG_GROUPS;
 	public int id;
 	public string name;
-	public static void init(List<Dictionary<string,string>> egg_group_defs) {
+	public static long init(List<Dictionary<string,string>> egg_group_defs) {
+		long count = 0;
 		EGG_GROUPS = new Dictionary<int, EggGroup> (egg_group_defs.Count);
 		foreach (Dictionary<string,string> row in egg_group_defs) {
 			EggGroup temp = new EggGroup ();
 			temp.id = Convert.ToInt32 (row ["id"]);
 			temp.name = row ["name"];
 			EGG_GROUPS [temp.id] = temp;
+			count++;
 		}
+		return count;
 	}
 }
 public class Nature {
@@ -35,7 +38,8 @@ public class Nature {
 	public int id;
 	public string name;
 	public BetterEnumArray<StatsType,sbyte> stats_mod;
-	public static void init(List<Dictionary<string,string>> nature_defs) {
+	public static long init(List<Dictionary<string,string>> nature_defs) {
+		long count = 0;
 		NATURES = new Dictionary<int, Nature> (nature_defs.Count);
 		foreach (Dictionary<string,string> row in nature_defs) {
 			Nature temp = new Nature ();
@@ -50,7 +54,9 @@ public class Nature {
 				Convert.ToSByte(row["speed"]),
 			};
 			NATURES [temp.id] = temp;
+			count++;
 		}
+		return count;
 	}
 	public override string ToString() {
 		int plus = 0, minus = 0;
@@ -73,7 +79,8 @@ public class ItemType {
 	public int id;
 	public string name;
 	public string description;
-	public static void init(List<Dictionary<string,string>> item_type_defs) {
+	public static long init(List<Dictionary<string,string>> item_type_defs) {
+		long count = 0;
 		ITEM_TYPES = new Dictionary<int, ItemType> (item_type_defs.Count);
 		foreach (Dictionary<string,string> row in item_type_defs) {
 			ItemType temp = new ItemType ();
@@ -81,7 +88,9 @@ public class ItemType {
 			temp.name = row ["name"];
 			temp.description = row ["description"];
 			ITEM_TYPES [temp.id] = temp;
+			count++;
 		}
+		return count;
 	}
 }
 public class TrainerStyle {
@@ -105,7 +114,8 @@ public class PlotFlag {
 	public int id;
 	public string name;
 	public sbyte value;
-	public static void init(List<Dictionary<string,string>> plot_flag_defs) {
+	public static long init(List<Dictionary<string,string>> plot_flag_defs) {
+		long count = 0;
 		PLOT_FLAG_ID = new Dictionary<int, PlotFlag> (plot_flag_defs.Count);
 		PLOT_FLAG_NAME = new Dictionary<string, PlotFlag> (plot_flag_defs.Count);
 		foreach (Dictionary<string,string> row in plot_flag_defs) {
@@ -115,7 +125,9 @@ public class PlotFlag {
 			temp.value = Convert.ToSByte (row ["value"]);
 			PLOT_FLAG_ID [temp.id] = temp;
 			PLOT_FLAG_NAME [temp.name] = temp;
+			count++;
 		}
+		return count;
 	}
 }
 

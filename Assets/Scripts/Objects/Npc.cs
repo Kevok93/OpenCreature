@@ -16,7 +16,8 @@ public class Npc {
     public Trainer trainer;
     
 	private Npc(){}
-	public static void init(List<Dictionary<string,string>> npc_defs) {
+	public static long init(List<Dictionary<string,string>> npc_defs) {
+		long count = 0;
 		NPCS = new Dictionary<int, Npc> (npc_defs.Count);
 		foreach (Dictionary<string,string> row in npc_defs) {
 		    Npc temp = new Npc();
@@ -30,7 +31,9 @@ public class Npc {
 			temp.trainer_id = Convert.ToInt32(row["trainer"]);
 			temp.misc_info = SqliteConnection.getBitsFromBlob(row["misc_info"]);
 			NPCS[temp.id] = temp;
+			count++;
 		}
+		return count;
 	}
 	public static void link() {
 	    foreach (Npc temp in NPCS.Values) {

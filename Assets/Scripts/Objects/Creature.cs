@@ -105,7 +105,8 @@ public class Creature {
         nature_id = caughtCreature.nature_id;
         nature = caughtCreature.nature;
 	}
-	public static void init_unique(List<Dictionary<string,string>> unique_creature_defs) {
+	public static long init_unique(List<Dictionary<string,string>> unique_creature_defs) {
+		long count = 0;
 		UNIQUE_CREATURES = new Dictionary<int, Creature> (unique_creature_defs.Count);
 		foreach (Dictionary<string,string> row in unique_creature_defs) {
 			Creature temp = new Creature();
@@ -135,7 +136,9 @@ public class Creature {
 			temp.nature_id = Convert.ToByte(row["nature"]);
 			
 			UNIQUE_CREATURES[temp.id] = temp;
+			count++;
 		}
+		return count;
 	}
     public static void link_unique() {
         foreach (Creature temp in UNIQUE_CREATURES.Values) {

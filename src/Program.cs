@@ -4,19 +4,23 @@ using System.Linq;
 using System.Reflection;
 
 class Program {
-	const string PREFIX = "MAIN";
+	static log4net.ILog log;
 	public static void Main(string[] args) {
+		//Globals.SetupLogging();
+		Globals.RNG.NextFloat();
+		log = log4net.LogManager.GetLogger("Main");
+		
 		Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
 		debugInfo();
         Creaturedb.initialize();
-	    debugCLIBattle();
+	    //debugCLIBattle();
 	}
 	
     public static void debugInfo() {
         string directory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-		Console.Out.WriteWithPrefix("Running in "+directory, PREFIX);
+		log.Debug("Running in "+directory);
         //CheckAssembly.FindConflictingReferences(directory);
-        Console.Out.WriteWithPrefix("CWD: "+ Directory.GetCurrentDirectory(), PREFIX);
+        log.Debug("CWD: "+ Directory.GetCurrentDirectory());
     }
 
     public static void debugTests() {

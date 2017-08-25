@@ -9,7 +9,8 @@ public class Ability {
 	public Effect world_effect, battle_effect;
 	
 	private Ability(){}
-	public static void init(List<Dictionary<string,string>> ability_defs) {
+	public static long init(List<Dictionary<string,string>> ability_defs) {
+		long count = 0;
 		ABILITIES = new Dictionary<int, Ability> (ability_defs.Count);
 		foreach (Dictionary<string,string> row in ability_defs) {
 		    Ability temp = new Ability();
@@ -19,7 +20,9 @@ public class Ability {
 			temp.battle_effect_id = Convert.ToInt32(row["battle_effect_id"]);
 			temp.world_effect_id = Convert.ToInt32(row["world_effect_id"]);
 			ABILITIES[temp.id] = temp;
+			count++;
 		}
+		return count;
 	}
 	public static void link() {
 	    foreach (Ability temp in ABILITIES.Values) {

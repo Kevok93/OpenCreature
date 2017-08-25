@@ -40,8 +40,9 @@ public class Species {
 	 * */
 	
 	private Species(){}
-	public static void init(List<Dictionary<string,string>> species_defs, List<Dictionary<string,string>> level_move_defs, List<Dictionary<string,string>> evolution_defs) {
+	public static long init(List<Dictionary<string,string>> species_defs, List<Dictionary<string,string>> level_move_defs, List<Dictionary<string,string>> evolution_defs) {
 		SPECIES = new Dictionary<int, Species>(species_defs.Count);
+		long count = 0;
 		foreach (Dictionary<string,string> row in species_defs) {
 			Species temp = new Species();
 			temp.id = Convert.ToInt32 (row ["id"]);
@@ -87,6 +88,7 @@ public class Species {
 			temp.level_moves = new LinkedList<LevelMove>();
             temp.evolutions = new LinkedList<Evolution>();
 			SPECIES[temp.id] = temp;
+			count++;
 		}
 		
 		foreach(Dictionary<string,string> row in level_move_defs) {
@@ -106,6 +108,7 @@ public class Species {
 		    int species_id = Convert.ToInt32(row["from_species"]);
 		    SPECIES[species_id].evolutions.AddLast(temp);
 		}
+		return count;
 	}
 	public static void link() {
 	    foreach (Species temp in SPECIES.Values) {

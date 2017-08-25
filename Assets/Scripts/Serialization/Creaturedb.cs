@@ -10,80 +10,81 @@ public class Creaturedb {
 	private Creaturedb(){}
 	public static bool initialize() {
 	    if (init) return false;
-	    Globals.init();
+	    var log = log4net.LogManager.GetLogger("Creature.db");
 	    db = new SqliteConnection("creature.db", SqliteOpenOpts.SQLITE_OPEN_READONLY);
-	    Console.Out.WriteWithPrefix("Deserializing creature.db", PREFIX);
+	    log.Info("Deserializing creature.db");
+	    long count;
 
+	    
 	    #region Init
-
-	    Type.init(
+	    count = Type.init(
 	        db["SELECT * FROM types"][0],
 	        db["SELECT * FROM type_bonus"][0]
-	        );
-	    Console.Out.WriteWithPrefix("Types loaded", PREFIX);
+	    );
+	    log.Debug(count + " Types loaded");
 
-	    Species.init(
+	    count = Species.init(
 	        db["SELECT * FROM species;"][0],
 	        db["SELECT * FROM level_moves"][0],
 	        db["SELECT * FROM evolution"][0]
-	        );
-	    Console.Out.WriteWithPrefix("Species loaded", PREFIX);
+	    );
+	    log.Debug(count + " Species loaded");
 
-	    Move.init(db["SELECT * FROM moves"][0]);
-	    Console.Out.WriteWithPrefix("Moves loaded", PREFIX);
+	    count = Move.init(db["SELECT * FROM moves"][0]);
+	    log.Debug(count + " Moves loaded");
 
-	    Ability.init(db["SELECT * FROM abilities"][0]);
-	    Console.Out.WriteWithPrefix("Abilities loaded", PREFIX);
+	    count = Ability.init(db["SELECT * FROM abilities"][0]);
+	    log.Debug(count + " Abilities loaded");
 
-	    Effect.init(db["SELECT * FROM effects"][0]);
-	    Console.Out.WriteWithPrefix("Effects loaded", PREFIX);
+	    count = Effect.init(db["SELECT * FROM effects"][0]);
+	    log.Debug(count + " Effects loaded");
 
-	    Nature.init(db["SELECT * FROM natures"][0]);
-	    Console.Out.WriteWithPrefix("Natures loaded", PREFIX);
+	    count = Nature.init(db["SELECT * FROM natures"][0]);
+	    log.Debug(count + " Natures loaded");
 
-	    EggGroup.init(db["SELECT * FROM egg_groups"][0]);
-	    Console.Out.WriteWithPrefix("Egg Types loaded", PREFIX);
+	    count = EggGroup.init(db["SELECT * FROM egg_groups"][0]);
+	    log.Debug(count + " Egg Types loaded");
 
-	    ItemType.init(db["SELECT * FROM item_type"][0]);
-	    Console.Out.WriteWithPrefix("Item Types loaded", PREFIX);
+	    count = ItemType.init(db["SELECT * FROM item_type"][0]);
+	    log.Debug(count + " Item Types loaded");
 
-	    Item.init(db["SELECT * FROM items"][0]);
-	    Console.Out.WriteWithPrefix("Items loaded", PREFIX);
+	    count = Item.init(db["SELECT * FROM items"][0]);
+	    log.Debug(count + " Items loaded");
 	    
-	    Creature.init_unique(db["SELECT * FROM unique_creature"][0]);
-	    Console.Out.WriteWithPrefix("Creatures loaded", PREFIX);
+	    count = Creature.init_unique(db["SELECT * FROM unique_creature"][0]);
+	    log.Debug(count + " Creatures loaded");
 
-	    PlotFlag.init(db["SELECT * FROM plot_flag"][0]);
-	    Console.Out.WriteWithPrefix("Plot Flags loaded", PREFIX);
+	    count = PlotFlag.init(db["SELECT * FROM plot_flag"][0]);
+	    log.Debug(count + " Plot Flags loaded");
 
-	    Npc.init(db["SELECT * FROM npc"][0]);
-	    Console.Out.WriteWithPrefix("NPCs loaded", PREFIX);
+	    count = Npc.init(db["SELECT * FROM npc"][0]);
+	    log.Debug(count + " NPCs loaded");
 
 	    #endregion
 
 	    #region Link
 
-	    Console.Out.WriteWithPrefix("Linking objects", PREFIX);
+	    log.Info("Linking objects");
 
 	    Species.link();
-	    Console.Out.WriteWithPrefix("Species linked", PREFIX);
+	    log.Debug("Species linked");
 
 	    Ability.link();
-	    Console.Out.WriteWithPrefix("Abilities linked", PREFIX);
+	    log.Debug("Abilities linked");
 
 	    Move.link();
-	    Console.Out.WriteWithPrefix("Moves linked", PREFIX);
+	    log.Debug("Moves linked");
 
 	    Npc.link();
-	    Console.Out.WriteWithPrefix("Npcs linked", PREFIX);
+	    log.Debug("Npcs linked");
 
 	    Item.link();
-	    Console.Out.WriteWithPrefix("Items linked", PREFIX);
+	    log.Debug("Items linked");
 
 	    #endregion
 
 	    init = true;
-	    Console.Out.WriteWithPrefix("Creature.db fully deserialized!", PREFIX);
+	    log.Info("Creature.db fully deserialized!");
 	    return true;
 	}
 }

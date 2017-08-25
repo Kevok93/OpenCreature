@@ -12,7 +12,8 @@ public class Effect {
 
 	private Effect(){}
 
-	public static void init(List<Dictionary<string,string>> results) {
+	public static long init(List<Dictionary<string,string>> results) {
+		long count = 0;
 	    EFFECTS = new Dictionary<int, Effect>(results.Count);
 	    foreach (Dictionary<string,string> row in results) {
 	        Effect temp = new Effect();
@@ -25,7 +26,9 @@ public class Effect {
 	        temp.misc_val2 = Convert.ToByte(row["misc_val2"]);
 	        temp.length = Convert.ToByte(row["length"]);
 	        EFFECTS[temp.id] = temp;
+	        count++;
 	    }
+	    return count;
 	}
 
 }
