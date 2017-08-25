@@ -6,6 +6,7 @@ using System.Reflection;
 class Program {
 	const string PREFIX = "MAIN";
 	public static void Main(string[] args) {
+		Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
 		debug();
         Creaturedb.initialize();
 	}

@@ -51,8 +51,8 @@ public class Move
 
 	public static void link() {
 		foreach (Move temp in MOVES.Values) {
-			temp.world_effect = Effect.EFFECTS[temp.world_effect_id];
-			temp.battle_effect = Effect.EFFECTS[temp.battle_effect_id];
+			if (temp.world_effect_id != 0)	temp.world_effect = Effect.EFFECTS[temp.world_effect_id];
+			if (temp.battle_effect_id != 0)	temp.battle_effect = Effect.EFFECTS[temp.battle_effect_id];
 			temp.movetype = Type.TYPES[temp.type_id];
 		}
 	}

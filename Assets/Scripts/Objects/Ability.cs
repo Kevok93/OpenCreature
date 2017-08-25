@@ -23,8 +23,8 @@ public class Ability {
 	}
 	public static void link() {
 	    foreach (Ability temp in ABILITIES.Values) {
-	        temp.world_effect = Effect.EFFECTS[temp.world_effect_id];
-	        temp.battle_effect = Effect.EFFECTS[temp.battle_effect_id];
+			if (temp.world_effect_id != 0)	temp.world_effect = Effect.EFFECTS[temp.world_effect_id];
+	        if (temp.battle_effect_id != 0)	temp.battle_effect = Effect.EFFECTS[temp.battle_effect_id];
 	    }
 	}
 }

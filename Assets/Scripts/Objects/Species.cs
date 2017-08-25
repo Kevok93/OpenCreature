@@ -105,13 +105,13 @@ public class Species {
 	}
 	public static void link() {
 	    foreach (Species temp in SPECIES.Values) {
-            temp.ability1 = Ability.ABILITIES[temp.ability_id1];
-            temp.ability1 = Ability.ABILITIES[temp.ability_id1];
-            temp.type1 = Type.TYPES[temp.type_id1];
-            temp.type2 = Type.TYPES[temp.type_id2];
-			temp.egg_group1 = EggGroup.EGG_GROUPS [temp.egg_group_id1];
-			temp.egg_group2 = EggGroup.EGG_GROUPS [temp.egg_group_id2];
-			temp.wild_item = Item.ITEMS[temp.wild_item_id];
+			if (temp.ability_id1 != 0) 		temp.ability1 	= Ability.ABILITIES[temp.ability_id1];
+            if (temp.ability_id2 != 0) 		temp.ability2 	= Ability.ABILITIES[temp.ability_id2];
+            if (temp.type_id1 != 0) 		temp.type1 		= Type.TYPES[temp.type_id1];
+            if (temp.type_id2 != 0) 		temp.type2 		= Type.TYPES[temp.type_id2];
+            if (temp.egg_group_id1 != 0)	temp.egg_group1 = EggGroup.EGG_GROUPS [temp.egg_group_id1];
+			if (temp.egg_group_id2 != 0)	temp.egg_group2 = EggGroup.EGG_GROUPS [temp.egg_group_id2];
+			if (temp.wild_item_id != 0)		temp.wild_item 	= Item.ITEMS[temp.wild_item_id];
 
             foreach (LevelMove move in temp.level_moves) 
                 move.move = Move.MOVES[move.move_id];
