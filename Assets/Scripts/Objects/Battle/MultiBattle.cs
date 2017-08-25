@@ -27,11 +27,8 @@ public class MultiBattle : Battle {
 		if (activeCreatures[0] == null && activeCreatures[1] == null) return 2;
 		return 0;
 	}
-		public override Attack queueAttack(Creature c, LearnedMove m, sbyte target = -1) {
-        Attack newAttack;
-        newAttack.attacker = c;
-        newAttack.usedMove = m;
-		newAttack.speed = c.stats [(int)StatsType.speed];
+	public override Attack queueAttack(Creature c, LearnedMove m, sbyte target = -1) {
+		Attack newAttack = base.queueAttack(c, m, target);
 		if (m.moveDef.misc_info [(int)MoveData.Target_Single]) {
 		    if (target >= 0) throw new System.InvalidOperationException ("Using a single target move without a valid target!");
 		    else newAttack.targets = new byte[] {(byte)target};
@@ -82,6 +79,7 @@ public class MultiBattle : Battle {
         		default: 
         		    throw new System.InvalidOperationException("Invalid turn number for a single battle: "+turn);
 		} else throw new System.InvalidOperationException ("Move does not have a valid target flag: " + m.moveDef.name + m.moveDef.id);
+		turn++;
         return newAttack;
 	}
 }

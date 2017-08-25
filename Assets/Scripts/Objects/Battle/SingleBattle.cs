@@ -1,6 +1,7 @@
 ﻿
 public class SingleBattle : Battle {
     public SingleBattle(Trainer t1, Trainer t2) {
+		attacks = new System.Collections.Generic.List<Attack>();
         type = BattleType.SingleBattle;
 		trainers = new Trainer[] { t1,t2 };
         
@@ -21,11 +22,7 @@ public class SingleBattle : Battle {
 	}
 
 	public override Attack queueAttack(Creature c, LearnedMove m, sbyte target = -1) {
-		Attack attack;
-		attack.attacker = c;
-		attack.usedMove = m;
-		attack.speed = c.stats [(int)StatsType.speed];
-
+		Attack attack = base.queueAttack(c, m, target);
 		bool targetSelf = m.moveDef.misc_info [(int)MoveData.Target_Self];
 		switch (turn) {
             case 0:
@@ -37,6 +34,7 @@ public class SingleBattle : Battle {
     		default: 
     		    throw new System.InvalidOperationException("Invalid turn number for a single battle: "+turn);
 		}
+		turn++;
 		return attack;
 	}
 }

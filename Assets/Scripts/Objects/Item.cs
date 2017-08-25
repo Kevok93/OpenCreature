@@ -38,10 +38,13 @@ public class Item {
 	}
 	public static void link() {
 	    foreach (Item temp in ITEMS.Values) {
-	        temp.world_effect = Effect.EFFECTS[temp.world_effect_id];
-	        temp.battle_effect = Effect.EFFECTS[temp.battle_effect_id];
-	        temp.held_effect = Effect.EFFECTS[temp.held_effect_id];
-	        temp.item_type = ItemType.ITEM_TYPES[temp.item_type_id];
+	        if (temp.world_effect_id != 0)		temp.world_effect = Effect.EFFECTS[temp.world_effect_id];
+	        if (temp.battle_effect_id != 0)		temp.battle_effect = Effect.EFFECTS[temp.battle_effect_id];
+	        if (temp.held_effect_id != 0)		temp.held_effect = Effect.EFFECTS[temp.held_effect_id];
+	        if (temp.item_type_id != 0)			temp.item_type = ItemType.ITEM_TYPES[temp.item_type_id];
 	    }
+	}
+	public override string ToString() {
+		return String.Format("{0} (${1}): {2}", name, price, description);
 	}
 }

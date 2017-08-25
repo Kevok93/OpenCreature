@@ -9,7 +9,9 @@ class Program {
 		Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
 		debug();
         //Creaturedb.initialize();
-    	(new Tests.SingleBattleTest()).Initialize();
+        var sbt = new Tests.SingleBattleTest();
+    	sbt.Initialize();
+    	sbt.Attack();
 	}
 	
     public static void debug() {

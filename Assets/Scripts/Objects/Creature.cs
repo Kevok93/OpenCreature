@@ -65,11 +65,13 @@ public class Creature {
 			held_item = null;
 			held_item_id = 0;
 		}
+		
+		this.nickname = species.name;
 	}
 	public short getStat(byte level, StatsType type) {
-	    int base_stat = species.base_stats[(int)type] / level;
+	    int base_stat = species.base_stats[(int)type] * level / 50;
         int mod_pct = (100 + nature.stats_mod[(int)type])/100;
-        int mod_stat = base_stat * mod_pct;
+        int mod_stat = (base_stat+5) * mod_pct;
         return (short)mod_stat;
 	}
 	protected Creature(){}
@@ -137,5 +139,8 @@ public class Creature {
 	        };
 	    }
     }
+	public override string ToString() {
+		return String.Format("{0} lv{1} ({2})", nickname, level, species.name);
+	}
 
 }

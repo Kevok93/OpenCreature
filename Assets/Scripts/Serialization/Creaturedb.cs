@@ -47,7 +47,7 @@ public class Creaturedb {
 		ItemType.init (db ["SELECT * FROM item_type"] [0]);
         Console.Out.WriteWithPrefix("Item Types loaded",PREFIX);
         
-		Item.init(db["Select * from items"][0]);
+		Item.init(db["SELECT * FROM items"][0]);
         Console.Out.WriteWithPrefix("Items loaded",PREFIX);
         
 		PlotFlag.init (db ["SELECT * FROM plot_flag"] [0]);
@@ -71,6 +71,9 @@ public class Creaturedb {
 		
 		Npc.link();
 		Console.Out.WriteWithPrefix("Npcs linked", PREFIX);
+		
+		Item.link();
+		Console.Out.WriteWithPrefix("Items linked", PREFIX);
 		#endregion
 		
         init = true;

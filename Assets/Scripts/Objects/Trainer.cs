@@ -88,5 +88,8 @@ public class Trainer {
 	    }
         return null;
 	}
+	public override string ToString() {
+		return String.Format("{0}", name);
+	}
 }
 

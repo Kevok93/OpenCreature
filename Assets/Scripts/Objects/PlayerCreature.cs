@@ -16,7 +16,7 @@ public class PlayerCreature : Creature {
         //secret_ot = Globals.CURRENT_PLAYER.secret_ot; TODO
         evs = new short[] { 0, 0, 0, 0, 0, 0 };
         ivs = new short[] { 0, 0, 0, 0, 0, 0 };
-        //happiness = species.base_happiness; TODO
+        happiness = species.base_happiness;
         exp = 0; //TODO are we truncating or aggregating?
     }
 	public static void init(List<Dictionary<string,string>> player_creature_defs) {

@@ -17,4 +17,7 @@ public static class Globals {
     public static IEnumerable<t> Randomize<t>(this IEnumerable<t> target){
         return target.OrderBy(x=>(RNG.Next()));
     }   
+    public static float NextFloat(this Random rng) {
+		return (float)rng.NextDouble();
+    }
 }
