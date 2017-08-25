@@ -27,17 +27,22 @@ public static class Globals {
 		Directory.GetFiles(binary_directory).AsEnumerable().ToList().ForEach(Console.Error.WriteLine);
     }
     
-    public static void WriteWithPrefix(this TextWriter output, string value, string prefix) {
-        log = log4net.LogManager.GetLogger("|"+prefix);
-        log.Info(value);
-    }
     public static IEnumerable<t> Randomize<t>(this IEnumerable<t> target){
         return target.OrderBy(x=>(RNG.Next()));
     }   
     public static float NextFloat(this Random rng) {
 		return (float)rng.NextDouble();
     }
-    
+    public static float NextFloatBetween(this Random rng, float min, float max) {
+    	float range = Math.Abs(max - min);
+    	return (rng.NextFloat() * range) + min;
+    }
+    public static t_val Dequeue<t_val>(this SortedSet<t_val> queue) {
+    	t_val value = queue.FirstOrDefault();
+    	queue.Remove(value);
+    	return value;
+    }
+
     public static void SetupLogging() {
         var hierarchy = (log4net.Repository.Hierarchy.Hierarchy)LogManager.GetRepository();
 

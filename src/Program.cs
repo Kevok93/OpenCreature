@@ -56,8 +56,8 @@ class Program {
         );
         var battle = new SingleBattle(ash, gary);
         do {
-            var creature1 = battle.activeCreatures[0];
-            var creature2 = battle.activeCreatures[1];
+            var creature1 = battle.battleSlots[1].activeCreature;
+            var creature2 = battle.battleSlots[2].activeCreature;
             Console.WriteLine(
                 String.Format(
 <<<<<<< HEAD
@@ -132,6 +132,7 @@ class Program {
             }
 			battle.queueAttack(creature2, creature2.moves[0]);
             Console.WriteLine("asdf");
+<<<<<<< HEAD
         } while (!battle.executeAttacks());
         
         
@@ -145,5 +146,8 @@ class Program {
             );
         } while (false);//battle.executeAttacks());
 >>>>>>> ccffb5f... Replacing the 'BetterEnum' class with a 'BetterEnumArray' class, allowing arrays to be indexed by enums.
+=======
+        } while (!battle.executeAttackQueue());
+>>>>>>> 0d244c8... Rewrite of battle class. Move attack into separate file.
     }
 }

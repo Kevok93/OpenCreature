@@ -79,6 +79,9 @@ public class Trainer : DeserializedElement {
 				Creature.UNIQUE_CREATURES[temp.creatures_id[4]],
 				Creature.UNIQUE_CREATURES[temp.creatures_id[5]],
 			};
+			foreach (Creature c in temp.creatures) {
+				c.owner = temp;
+			}
 		}
 	}
 	

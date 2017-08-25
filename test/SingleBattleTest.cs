@@ -58,19 +58,20 @@ namespace Tests
 		[Test]
 		public void Attack_Correct() {
 			var single_battle = new SingleBattle(ash, gary);
-			var t1_c = single_battle.activeCreatures[0];
-			var t2_c = single_battle.activeCreatures[1];
+			var t1_c = single_battle.battleSlots[1].activeCreature;
+			var t2_c = single_battle.battleSlots[2].activeCreature;
 			
 			single_battle.queueAttack(t1_c, t1_c.moves[0]);
 			single_battle.queueAttack(t2_c, t2_c.moves[0]);
-			single_battle.executeAttacks();
+			single_battle.executeAttackQueue();
+			Assert.IsEmpty(single_battle.attackQueue);
 		}
 		
 		//todo: order shouldn't matter for queue		
 		[Test]
 		public void Attack_TooManyQueued() {
 			var single_battle = new SingleBattle(ash, gary);
-			var t1_c = single_battle.activeCreatures[0];
+			var t1_c = single_battle.battleSlots[1].activeCreature;
 			single_battle.queueAttack(t1_c, t1_c.moves[0]);
 			Assert.Throws<InvalidOperationException>(delegate {single_battle.queueAttack(t1_c, t1_c.moves[0]);});
 		}
@@ -78,37 +79,38 @@ namespace Tests
 		[Test]
 		public void Attack_OrderDoesntMatter() {
 			var single_battle = new SingleBattle(ash, gary);
-			var t1_c = single_battle.activeCreatures[0];
-			var t2_c = single_battle.activeCreatures[1];
+			var t1_c = single_battle.battleSlots[1].activeCreature;
+			var t2_c = single_battle.battleSlots[2].activeCreature;
 			
 			single_battle.queueAttack(t1_c, t1_c.moves[0]);
 			single_battle.queueAttack(t2_c, t2_c.moves[0]);
-			single_battle.executeAttacks();
+			single_battle.executeAttackQueue();
 			
 			single_battle.queueAttack(t2_c, t2_c.moves[0]);
 			single_battle.queueAttack(t1_c, t1_c.moves[0]);
-			single_battle.executeAttacks();
+			single_battle.executeAttackQueue();
 		}
 				
 		[Test]
 		public void Attack_InvalidQueue() {
 			var single_battle = new SingleBattle(ash, gary);
-			var t1_c = single_battle.activeCreatures[0];
-			var t2_c = single_battle.activeCreatures[1];
+			var t1_c = single_battle.battleSlots[1].activeCreature;
+			var t2_c = single_battle.battleSlots[2].activeCreature;
 			
 			//queue empty
-			Assert.Throws<InvalidOperationException>(delegate {single_battle.executeAttacks();});
+			Assert.Throws<InvalidOperationException>(delegate {single_battle.executeAttackQueue();});
 			
 			//queue half-full
 			single_battle.queueAttack(t1_c, t1_c.moves[0]);
-			Assert.Throws<InvalidOperationException>(delegate {single_battle.executeAttacks();});
+			Assert.Throws<InvalidOperationException>(delegate {single_battle.executeAttackQueue();});
 			
 			//queue full: should succeed
 			single_battle.queueAttack(t2_c, t2_c.moves[0]);
-			single_battle.executeAttacks();
+			single_battle.executeAttackQueue();
+			
 			
 			//queue empty again
-			Assert.Throws<InvalidOperationException>(delegate {single_battle.executeAttacks();});
+			Assert.Throws<InvalidOperationException>(delegate {single_battle.executeAttackQueue();});
 		}
 		
 		

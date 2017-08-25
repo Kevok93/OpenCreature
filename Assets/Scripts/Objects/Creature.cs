@@ -14,6 +14,7 @@ namespace opencreature {
 	public int species_id, ability_id, held_item_id;
 	public int[] move_ids;
     public byte nature_id;
+    public Trainer owner;
 	
 	public Species species;
 	public Item held_item;

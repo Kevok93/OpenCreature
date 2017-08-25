@@ -1,68 +1,84 @@
 using System.Collections.Generic;
+using System.Collections;
+using System;
 using System.Linq;
+using UnityEditor;
 
 namespace opencreature {
 public abstract class Battle {
-    public class Attack {
-    	public Creature attacker;
-    	public byte[] targets;
-    	public LearnedMove usedMove;
-    	public short speed;
-    }
-    public Trainer[] trainers;
-    public Creature[] activeCreatures;
-    public int turn = 0;
-	public List<Attack> attacks;
+    public Dictionary<int,BattleSlot> battleSlots;
+    public Dictionary<int,List<BattleSlot>> teamAssignment;
+	public SortedSet<Attack> attackQueue;
 	protected Battle() {
 	}
 	
-	public virtual Attack queueAttack(Creature c, LearnedMove m, sbyte target = -1) {
-		if (turn >= activeCreatures.Count()) throw new System.InvalidOperationException("Too many moves queued!");
-		if (activeCreatures[turn] != c) throw new System.InvalidOperationException("Move is queued out of turn!");
-		foreach (Attack a in attacks) {
-			if (a.attacker == c) throw new System.InvalidOperationException("Creature has already queued an attack!");
+	public class BattleSlot {
+		public Creature activeCreature;
+		public Trainer slotOwner;
+	}
+	
+		
+	public int checkVictory() {
+		foreach (int teamId in teamAssignment.Keys) {
+			bool enemyTeamAlive = teamAssignment
+				.Where(pair => pair.Key != teamId)
+				.Select(pair => checkTeamAlive(pair.Key))
+				.Any(x => x);
+			if (!enemyTeamAlive) return teamId;
 		}
-		Attack q_attack = new Attack();
-		q_attack.attacker = c;
-		q_attack.usedMove = m;
-		q_attack.speed = c.stats [StatsType.speed];
-		attacks.Add(q_attack);
+		return 0;
+	}
+	
+	public bool startupCheck() {
+		foreach (KeyValuePair<int,BattleSlot> slot in battleSlots.AsEnumerable()) {
+			if (slot.Value == null) {
+				throw new System.InvalidOperationException(String.Format(
+					"Trainer {0} entered a battle with no valid creatures!",slot.Key
+				));
+			}
+		}
+		return true;
+	}
+	
+	public bool checkTeamAlive(int teamId) {
+		return teamAssignment[teamId].Any(slot=>slot.activeCreature != null);
+	}
+	
+	public virtual Attack queueAttack(Creature c, LearnedMove m, sbyte target = -1) {
+			
+		if (attackQueue.Any(attack => attack.attacker == c))
+			throw new System.InvalidOperationException("Creature has already queued an attack!");
+		
+		Attack q_attack = new Attack() {
+			attacker = c,
+			usedMove = m,
+			speed = c.stats [StatsType.speed],
+		};
+		attackQueue.Add(q_attack);
 		return q_attack;
 	}
 	
-	public void switchCreature(int activeCreatureIndex, int trainerCreatureIndex) {
-		activeCreatures[activeCreatureIndex] = trainers[activeCreatureIndex].creatures[trainerCreatureIndex];
-	}
-	public virtual void replaceCreature(int index) {
-		activeCreatures[index] = trainers[index].getNextCreature();
-	}
-	public abstract int checkVictory();
+//	public void switchCreature(int activeCreatureIndex, int trainerCreatureIndex) {
+//		activeCreatures[activeCreatureIndex].Item2 = activeCreatures[activeCreatureIndex].Item1.getNextCreature();
+//	}
 	
-	public bool executeAttacks() {
-		if (attacks.Count() != activeCreatures.Count()) throw new System.InvalidOperationException("Executing attacks before all creatures are ready!");
-		turn = 0;
-		var sorted_attacks = attacks.OrderByDescending(x => x.speed).ToArray();
-		for (int i = 0; i < sorted_attacks.Count(); i++) {
-        	Attack a = sorted_attacks[i];
-        	if (a == null) continue;
-			foreach (int index in a.targets) {
-				Creature defender = activeCreatures[index];
-				if (defender != null && attack(a.attacker, a.usedMove, defender)) {
-					System.Console.WriteLine("Creature died!: " + defender);
-					for (int j = i; j < sorted_attacks.Count(); j++)
-						if (sorted_attacks[j].attacker == defender) {
-							attacks.Remove(sorted_attacks[j]);
-							sorted_attacks[j] = null;
-						}
-					replaceCreature(index);
-					if (checkVictory() != 0) return true;
-				}
-			}
-			attacks.Remove(a);
+	public virtual void replaceCreature(int index) {
+		//activeCreatures[index] = trainers[index].getNextCreature();
+	}
+	
+	public bool executeAttackQueue() {
+		if (attackQueue.Count() != battleSlots.Values.Count(slot => slot.activeCreature != null))
+			throw new System.InvalidOperationException("Executing attacks before all creatures are ready!");
+		
+		Attack attack;
+		while ((attack = attackQueue.Dequeue()) != null) {
+        	attack.execute(battleSlots);
+        	checkForDeath();
 		}
 		return false;
 	}
 	
+<<<<<<< HEAD
 	public bool attack(Creature attacker, LearnedMove usedMove, Creature target) {
 <<<<<<< HEAD
 		if (usedMove.moveDef.power > 0) {
@@ -127,6 +143,28 @@ public abstract class Battle {
 		target.hp -= damage;
 >>>>>>> ccffb5f... Replacing the 'BetterEnum' class with a 'BetterEnumArray' class, allowing arrays to be indexed by enums.
 		return target.hp <= 0;
+=======
+	public void checkForDeath() {
+    	foreach (int j in Enumerable.Range(1,attackQueue.Count))
+			if (battleSlots[j].activeCreature.hp <= 0) 
+				killCreatureAtIndex(j);
+	}
+	
+	public void killCreatureAtIndex(int index) {
+    	Creature deadCreature = battleSlots[index].activeCreature;
+		System.Console.WriteLine("Creature died!: " + deadCreature);
+		removeCreatureAttacks(deadCreature);
+		replaceCreature(index);
+	}
+	
+	public void removeCreatureAttacks(Creature removedCreature) {
+		attackQueue.RemoveWhere(attack=>attack.attacker == removedCreature);
+		
+	}
+	
+	public int getBattleSlotFromCreature(Creature c) {
+		return battleSlots.First(pair => pair.Value.activeCreature == c).Key;
+>>>>>>> 0d244c8... Rewrite of battle class. Move attack into separate file.
 	}
 }
 }
