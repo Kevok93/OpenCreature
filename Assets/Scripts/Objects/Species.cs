@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System;
 
-public class Species {
+
+namespace opencreature {
+public class Species : DeserializedElement {
 	public static Dictionary<int,Species> SPECIES;
-	public int id;
 	public string name;
 	public short ability_id1, ability_id2;
 	public byte type_id1, type_id2;
@@ -31,7 +32,7 @@ public class Species {
 	public LinkedList<Evolution> evolutions;
 	
 	public Ability ability1, ability2;
-	public Type type1, type2;
+	public Element type1, type2;
 	public EggGroup egg_group1, egg_group2;
 	public Item wild_item;
 	/* 
@@ -114,8 +115,8 @@ public class Species {
 	    foreach (Species temp in SPECIES.Values) {
 			if (temp.ability_id1 != 0) 		temp.ability1 	= Ability.ABILITIES[temp.ability_id1];
             if (temp.ability_id2 != 0) 		temp.ability2 	= Ability.ABILITIES[temp.ability_id2];
-            if (temp.type_id1 != 0) 		temp.type1 		= Type.TYPES[temp.type_id1];
-            if (temp.type_id2 != 0) 		temp.type2 		= Type.TYPES[temp.type_id2];
+            if (temp.type_id1 != 0) 		temp.type1 		= Element.TYPES[temp.type_id1];
+            if (temp.type_id2 != 0) 		temp.type2 		= Element.TYPES[temp.type_id2];
             if (temp.egg_group_id1 != 0)	temp.egg_group1 = EggGroup.EGG_GROUPS [temp.egg_group_id1];
 			if (temp.egg_group_id2 != 0)	temp.egg_group2 = EggGroup.EGG_GROUPS [temp.egg_group_id2];
 			if (temp.wild_item_id != 0)		temp.wild_item 	= Item.ITEMS[temp.wild_item_id];
@@ -130,4 +131,5 @@ public class Species {
 	public override string ToString() {
 		return name;
 	}
+}
 }

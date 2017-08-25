@@ -1,4 +1,5 @@
 
+namespace opencreature {
 public class MultiBattle : Battle {
 	protected MultiBattle() {}
     public MultiBattle(Trainer t1, Trainer t2, Trainer t3, Trainer t4) {
@@ -96,5 +97,5 @@ public class MultiBattle : Battle {
         return newAttack;
 	}
 }
-
+}
 

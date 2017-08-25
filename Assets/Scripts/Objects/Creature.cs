@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq; 
 
-public class Creature {
+namespace opencreature {
+	public class Creature : DeserializedElement {
 
 	public static Dictionary<int,Creature> UNIQUE_CREATURES;
-	public int id;
 	public string nickname;
 	public short hp;
 	public byte level;
@@ -158,4 +158,5 @@ public class Creature {
 		return String.Format("{0} lv{1} ({2})", nickname, level, species.name);
 	}
 
+}
 }

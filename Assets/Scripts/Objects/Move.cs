@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Move
-{
+namespace opencreature {
+public class Move : DeserializedElement {
 	public static Dictionary<int,Move> MOVES;
-	public int id;
 	public string name;
 	public byte pp, power, accuracy;
 	public int type_id;
@@ -16,7 +15,7 @@ public class Move
 	public string description;
 	
 	public Effect world_effect, battle_effect;
-	public Type movetype;
+	public Element movetype;
 
 	private Move(){}
 	public static long init(List<Dictionary<string,string>> move_defs) {
@@ -56,11 +55,11 @@ public class Move
 		foreach (Move temp in MOVES.Values) {
 			if (temp.world_effect_id != 0)	temp.world_effect = Effect.EFFECTS[temp.world_effect_id];
 			if (temp.battle_effect_id != 0)	temp.battle_effect = Effect.EFFECTS[temp.battle_effect_id];
-			temp.movetype = Type.TYPES[temp.type_id];
+			temp.movetype = Element.TYPES[temp.type_id];
 		}
 	}
 	public override string ToString() {
 		return System.String.Format("{0} ({1}/{2})", name, power, accuracy);
 	}
 }
-
+}

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
+namespace opencreature {
 public class Creaturedb {
 	const string PREFIX = "CREATURE.DB";
 	private static bool init = false;
@@ -11,17 +12,17 @@ public class Creaturedb {
 	public static bool initialize() {
 	    if (init) return false;
 	    var log = log4net.LogManager.GetLogger("Creature.db");
-	    db = new SqliteConnection("creature.db", SqliteOpenOpts.SQLITE_OPEN_READONLY);
+	    db = new SqliteConnection(Globals.binary_location+"creature.db", SqliteOpenOpts.SQLITE_OPEN_READONLY);
 	    log.Info("Deserializing creature.db");
 	    long count;
 
 	    
 	    #region Init
-	    count = Type.init(
+	    count = Element.init(
 	        db["SELECT * FROM types"][0],
 	        db["SELECT * FROM type_bonus"][0]
 	    );
-	    log.Debug(count + " Types loaded");
+	    log.Debug(count + " Elements loaded");
 
 	    count = Species.init(
 	        db["SELECT * FROM species;"][0],
@@ -85,6 +86,7 @@ public class Creaturedb {
 
 	    init = true;
 	    log.Info("Creature.db fully deserialized!");
-	    return true;
+	    return init;
 	}
+}
 }

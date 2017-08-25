@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 
-public class Trainer {
+
+namespace opencreature {
+public class Trainer : DeserializedElement {
 	public static Dictionary<int,Trainer> TRAINERS;
-	public int id;
 	public string name;
 	public byte trainer_style_id;
 	public int[] creatures_id, items_id;
@@ -92,4 +93,4 @@ public class Trainer {
 		return String.Format("{0}", name);
 	}
 }
-
+}

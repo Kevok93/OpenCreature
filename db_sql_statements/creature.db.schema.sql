@@ -93,7 +93,7 @@ CREATE TABLE moves (
 CREATE TABLE type_bonus (
 	`atk_id` tinyint check (`atk_id` between 0 and 255),
 	`def_id` tinyint check (`def_id` between 0 and 255),
-	`bonus` decimal(2,1),
+	`bonus`  tinyint check (`bonus`  between 0 and 200),
 	constraint `pk_type_bonus` primary key (`atk_id`,`def_id`) on conflict rollback,
 	constraint `fk_atk_id` foreign key (`atk_id`) references types(`id`) deferrable initially deferred,
 	constraint `fk_def_id` foreign key (`def_id`) references types(`id`) deferrable initially deferred

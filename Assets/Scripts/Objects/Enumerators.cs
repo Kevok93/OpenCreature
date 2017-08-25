@@ -47,6 +47,8 @@ public class BetterEnumArray<T1,T2> {
 	}
 >>>>>>> ccffb5f... Replacing the 'BetterEnum' class with a 'BetterEnumArray' class, allowing arrays to be indexed by enums.
 }
+
+namespace opencreature {
 public enum MoveAffinity  {
     Physical	    = 1,
     Special		    = 2,
@@ -126,4 +128,5 @@ public enum TrainerStatsType {
     Surf            = 2,
     HM_Locked       = 3,
     
+}
 }

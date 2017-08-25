@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using System;
+
+
+namespace opencreature {
 public class LevelMove {
     public byte level;
     public int move_id;
@@ -16,9 +19,8 @@ public class Evolution {
     public Item item;
     public override string ToString() {return "=> "+species;}
 }
-public class EggGroup {
+public class EggGroup : DeserializedElement {
 	public static Dictionary<int,EggGroup> EGG_GROUPS;
-	public int id;
 	public string name;
 	public static long init(List<Dictionary<string,string>> egg_group_defs) {
 		long count = 0;
@@ -33,9 +35,8 @@ public class EggGroup {
 		return count;
 	}
 }
-public class Nature {
+public class Nature : DeserializedElement {
 	public static Dictionary<int,Nature> NATURES;
-	public int id;
 	public string name;
 	public BetterEnumArray<StatsType,sbyte> stats_mod;
 	public static long init(List<Dictionary<string,string>> nature_defs) {
@@ -74,9 +75,8 @@ public class Nature {
        );
 	}
 }
-public class ItemType {
+public class ItemType : DeserializedElement {
 	public static Dictionary<int,ItemType> ITEM_TYPES;
-	public int id;
 	public string name;
 	public string description;
 	public static long init(List<Dictionary<string,string>> item_type_defs) {
@@ -93,25 +93,22 @@ public class ItemType {
 		return count;
 	}
 }
-public class TrainerStyle {
+public class TrainerStyle : DeserializedElement {
 	public static Dictionary<int,TrainerStyle> TRAINER_STYLES;
-	public byte id;
 	public string name;
 	public string sprite_path;
 	/*	public Sprite sprite;
 	 * public music bgm;*/
 }
-public class NPCStyle {
+public class NPCStyle : DeserializedElement {
 	public static Dictionary<int,NPCStyle> NPC_STYLES;
-	public int id;
 	public string name;
 	public string sprite_path;
 	/*public Sprite sprite;*/
 }
-public class PlotFlag {
+public class PlotFlag : DeserializedElement {
 	public static Dictionary<string,PlotFlag> PLOT_FLAG_NAME;
 	public static Dictionary<int,PlotFlag> PLOT_FLAG_ID;
-	public int id;
 	public string name;
 	public sbyte value;
 	public static long init(List<Dictionary<string,string>> plot_flag_defs) {
@@ -147,4 +144,5 @@ public struct LearnedMove {
     public override string ToString() {
     	return String.Format("{0} [{1}/{2}]",moveDef, pp_cur, pp_max);
     }
+}
 }

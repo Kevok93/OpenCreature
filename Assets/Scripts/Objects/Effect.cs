@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 
-public class Effect {
+
+namespace opencreature {
+public class Effect : DeserializedElement {
 	public static Dictionary<int,Effect> EFFECTS;
-	public int id;
 	public string name, description;
 	public BetterEnumArray<EffectData,bool> misc_info;
 	public byte misc_val1, misc_val2;
@@ -31,4 +32,5 @@ public class Effect {
 	    return count;
 	}
 
+}
 }

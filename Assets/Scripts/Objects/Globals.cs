@@ -7,18 +7,21 @@ using log4net;
 using log4net.Core;
 using log4net.Appender;
 using log4net.Layout;
-using log4net.Util;
+using System.Reflection;
 
+namespace opencreature {
 public static class Globals {
     public static Random RNG;
     public static uint LAST_CAUGHT_ID = 0;
     public static ILog log;
+    public static String binary_location;
     
     static Globals() {
         SetupLogging();
         log = log4net.LogManager.GetLogger("OpenCreature");
         log.Debug("Logger initialized");
-        RNG = new Random(57760);
+        RNG = new Random(57760); 
+        binary_location = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + Path.DirectorySeparatorChar;
     }
     
     public static void WriteWithPrefix(this TextWriter output, string value, string prefix) {
@@ -60,23 +63,9 @@ public static class Globals {
         console.Layout = patternLayout;
         hierarchy.Root.AddAppender(unity);
         
-
         hierarchy.Root.Level = Level.Trace;
         hierarchy.Configured = true;
     }
     
-    public static void Trace(this ILog log, string message, Exception exception) {
-		log.Logger.Log(
-    		typeof(LogImpl), log4net.Core.Level.Trace, message, exception
-		);
-    }
-    public static void Verbose(this ILog log, string message, Exception exception) {
-        log.Logger.Log(
-    		typeof(LogImpl), log4net.Core.Level.Verbose, message, exception
-        );
-    }
-
-    public static void Trace(this ILog log, string message) {log.Trace(message, null);}
-    public static void Verbose(this ILog log, string message) {log.Verbose(message, null);}
-
+}
 }

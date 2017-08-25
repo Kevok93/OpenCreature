@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+
+namespace opencreature {
 public abstract class Battle {
     public class Attack {
     	public Creature attacker;
@@ -20,12 +22,12 @@ public abstract class Battle {
 		foreach (Attack a in attacks) {
 			if (a.attacker == c) throw new System.InvalidOperationException("Creature has already queued an attack!");
 		}
-		Attack attack = new Attack();
-		attack.attacker = c;
-		attack.usedMove = m;
-		attack.speed = c.stats [StatsType.speed];
-		attacks.Add(attack);
-		return attack;
+		Attack q_attack = new Attack();
+		q_attack.attacker = c;
+		q_attack.usedMove = m;
+		q_attack.speed = c.stats [StatsType.speed];
+		attacks.Add(q_attack);
+		return q_attack;
 	}
 	
 	public void switchCreature(int activeCreatureIndex, int trainerCreatureIndex) {
@@ -67,8 +69,8 @@ public abstract class Battle {
 			float crit_chance = .85f; //TODO: Crit bonuses
 			float crit_bonus = Globals.RNG.NextDouble() > crit_chance ? 2f : 1f;
 			float type_bonus = 
-				Type.getTypeBonus(usedMove.moveDef.type_id, target.species.type_id1) *
-				Type.getTypeBonus(usedMove.moveDef.type_id, target.species.type_id2);
+				Element.getTypeBonus(usedMove.moveDef.type_id, target.species.type_id1) *
+				Element.getTypeBonus(usedMove.moveDef.type_id, target.species.type_id2);
 			float power_mod = 1f; //TODO: mod power
 			float stab_bonus = (
                 usedMove.moveDef.movetype == attacker.species.type1 ||
@@ -126,4 +128,5 @@ public abstract class Battle {
 >>>>>>> ccffb5f... Replacing the 'BetterEnum' class with a 'BetterEnumArray' class, allowing arrays to be indexed by enums.
 		return target.hp <= 0;
 	}
+}
 }

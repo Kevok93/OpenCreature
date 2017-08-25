@@ -1,4 +1,5 @@
 
+namespace opencreature {
 public class SingleBattle : Battle {
     public SingleBattle(Trainer t1, Trainer t2) {
 		attacks = new System.Collections.Generic.List<Attack>();
@@ -37,4 +38,4 @@ public class SingleBattle : Battle {
 		return attack;
 	}
 }
-
+}

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-public class Item {
+namespace opencreature {
+public class Item : DeserializedElement {
 	public static Dictionary<int,Item> ITEMS;
-	public int id;
 	public string name, description;
 	public short price;
 	public sbyte misc_val1, misc_val2;
@@ -54,4 +54,5 @@ public class Item {
 	public override string ToString() {
 		return String.Format("{0} (${1}): {2}", name, price, description);
 	}
+}
 }

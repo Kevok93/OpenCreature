@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+namespace opencreature {
 public class OverworldMovement : MonoBehaviour {
 	public static byte
 		movement_count = 16,	//Number of steps per tile
@@ -78,4 +79,5 @@ public class OverworldMovement : MonoBehaviour {
 
 		
 	}
+}
 }

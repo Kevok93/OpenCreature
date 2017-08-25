@@ -6,19 +6,17 @@ using System.Reflection;
 class Program {
 	static log4net.ILog log;
 	public static void Main(string[] args) {
-		//Globals.SetupLogging();
-		Globals.RNG.NextFloat();
+        Creaturedb.initialize();
 		log = log4net.LogManager.GetLogger("Main");
 		
 		Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
 		debugInfo();
-        Creaturedb.initialize();
-	    //debugCLIBattle();
+	    debugCLIBattle();
 	}
 	
     public static void debugInfo() {
-        string directory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-		log.Debug("Running in "+directory);
+        string Location = Assembly.GetEntryAssembly().Location;
+		log.Debug("BIN: "+ Location);
         //CheckAssembly.FindConflictingReferences(directory);
         log.Debug("CWD: "+ Directory.GetCurrentDirectory());
     }
@@ -31,30 +29,31 @@ class Program {
 
     public static void debugCLIBattle() {
         Creaturedb.initialize();
+        
         var ash = new Trainer(
             new Creature[6] {
-        			new Creature(Creature.UNIQUE_CREATURES[0]),
-					new Creature(Creature.UNIQUE_CREATURES[0]),
-					null,null,null,null
-				},
+				new Creature (Species.SPECIES [2],30),
+				new Creature (Species.SPECIES [2],30),
+				null,null,null,null
+			},
             new Item[6],
-            null,//TrainerStyle.TRAINER_STYLES[0],
+            null, //TrainerStyle.TRAINER_STYLES[0],
             0, "victory_ash", "ash",
             new bool[6]
         );
+        
         var gary = new Trainer(
             new Creature[6] {
-					new Creature (Species.SPECIES [2],30),
-					new Creature (Species.SPECIES [2],30),
-					null,null,null,null
-				},
+				new Creature (Species.SPECIES [2],30),
+				new Creature (Species.SPECIES [2],30),
+				null,null,null,null
+			},
             new Item[6],
-            null,//TrainerStyle.TRAINER_STYLES[0],
+            null, //TrainerStyle.TRAINER_STYLES[0],
             10, "victory_gary", "gary",
             new bool[6]
         );
         var battle = new SingleBattle(ash, gary);
-
         do {
             var creature1 = battle.activeCreatures[0];
             var creature2 = battle.activeCreatures[1];

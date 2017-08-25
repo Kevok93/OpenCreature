@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+
+
+namespace opencreature {
 public class PlayerCreature : Creature {
     public static Dictionary<int,PlayerCreature> PLAYER_CREATURES;
     
@@ -167,4 +170,5 @@ public class PlayerCreature : Creature {
         }
 	    return false;
     }
+}
 }

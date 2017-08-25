@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-public class Npc {
+namespace opencreature {
+public class Npc  : DeserializedElement {
 	public static Dictionary<int,Npc> NPCS;
-	public int id;
     public byte style_id;
     public short map_id;
     public short x, y;
@@ -42,4 +42,5 @@ public class Npc {
 	        
 	    }
 	}
+}
 }

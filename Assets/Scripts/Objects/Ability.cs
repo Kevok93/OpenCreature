@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-public class Ability {
+namespace opencreature {
+public class Ability : DeserializedElement {
 	public static Dictionary<int,Ability> ABILITIES;
-	public int id;
 	public string name, description;
 	public int battle_effect_id, world_effect_id;
 	public Effect world_effect, battle_effect;
@@ -31,6 +31,7 @@ public class Ability {
 	    }
 	}
 	public override string ToString() {
-		return String.Format("{0}: {1}", name, description);
+		return String.Format("{0}", name);
 	}
+}
 }
