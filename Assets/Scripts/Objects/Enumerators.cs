@@ -1,4 +1,9 @@
-﻿public enum MoveAffinity {
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Linq;
+
+public enum MoveAffinity  {
     Physical	    = 1,
     Special		    = 2,
     Other 		    = 3
@@ -55,20 +60,21 @@ public enum MoveData {
     Target_Both     = 1,
     Target_Self     = 2,
     Target_Ally     = 3,
-    Two_Turns       = 4,
-    Need_Recharge   = 5,
-    No_Miss         = 6,
-    Switch_user     = 7,
-    Metronome       = 8,
-    No_Metronome    = 9,
-    Recoil          = 10,
-    Fixed_Dmg       = 11,
-    Go_first        = 12,
-    Go_last         = 13,
-    Curse           = 14,
-    Multiple_Hits   = 15,
-    HM              = 16,
-    Bonus_Crit      = 17,
+    Target_Single   = 4,
+    Two_Turns       = 5,
+    Need_Recharge   = 6,
+    No_Miss         = 7,
+    Switch_user     = 8,
+    Metronome       = 9,
+    No_Metronome    = 10,
+    Recoil          = 11,
+    Fixed_Dmg       = 12,
+    Go_first        = 13,
+    Go_last         = 14,
+    Curse           = 15,
+    Multiple_Hits   = 16,
+    HM              = 17,
+    Bonus_Crit      = 18,
 }
 public enum TrainerStatsType {
     Repel           = 0,
