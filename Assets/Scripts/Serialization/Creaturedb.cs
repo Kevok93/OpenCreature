@@ -7,6 +7,7 @@ public class Creaturedb {
 	const string PREFIX = "CREATURE.DB";
 	private static bool init = false;
 	private static SqliteConnection db;
+    public static Dictionary<string, TypeCastDictionary<int, DeserializedElement>> TABLE_OBJECTS;
 	
 	private Creaturedb(){}
 	public static bool initialize() {
@@ -83,6 +84,20 @@ public class Creaturedb {
 	    log.Debug("Items linked");
 
 	    #endregion
+
+        TABLE_OBJECTS = new Dictionary<string, TypeCastDictionary<int, DeserializedElement>>() {
+                {"Elements"     ,opencreature.Element.TYPES         },
+                {"Abilities"    ,opencreature.Ability.ABILITIES     },
+                {"Egg Groups"   ,opencreature.EggGroup.EGG_GROUPS   },
+                {"Items"        ,opencreature.Item.ITEMS            },
+                {"Item Classes" ,opencreature.ItemType.ITEM_TYPES   },
+                {"Moves"        ,opencreature.Move.MOVES            },
+                {"Natures"      ,opencreature.Nature.NATURES        },
+                {"Effects"      ,opencreature.Effect.EFFECTS        },
+                {"Species"      ,opencreature.Species.SPECIES       },
+                {"NPCs"         ,opencreature.Npc.NPCS              },
+                {"Plot Flags"   ,opencreature.PlotFlag.PLOT_FLAG_ID },
+        };
 
 	    init = true;
 	    log.Info("Creature.db fully deserialized!");
