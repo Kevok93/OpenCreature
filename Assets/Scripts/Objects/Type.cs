@@ -36,4 +36,7 @@ public class Type {
 			return 1f;
 		return TYPES [atk_id].bonus [def_id];
 	}
+    public override string ToString() {
+    	return name;
+    }
 }

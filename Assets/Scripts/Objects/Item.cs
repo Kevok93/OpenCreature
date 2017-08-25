@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class Item {
 	public static Dictionary<int,Item> ITEMS;
 	public int id;
-	public string name;
+	public string name, description;
 	public short price;
 	public sbyte misc_val1, misc_val2;
 	public bool[] misc_info;
@@ -30,8 +30,9 @@ public class Item {
 			temp.battle_effect_id = Convert.ToInt32(row["battle_effect"]);
 			temp.world_effect_id = Convert.ToInt32(row["world_effect"]);
 			temp.held_effect_id = Convert.ToInt32(row["held_effect"]);
-			temp.item_type_id = Convert.ToByte(row["item_type"]);
+			temp.item_type_id = Convert.ToByte(row["type"]);
 			temp.sprite_path = row["sprite_path"];
+			temp.description = row["description"];
 			ITEMS[temp.id] = temp;
 		}
 	}

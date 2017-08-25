@@ -4,6 +4,9 @@ public class LevelMove {
     public byte level;
     public int move_id;
     public Move move;
+    public override string ToString() {
+    	return String.Format("{0,2}: {1}",level, move);
+    }
 }
 public class Evolution {
     public int value; //can be level, happiness, or item id
@@ -11,6 +14,7 @@ public class Evolution {
     public Species species;
     public EvolutionType type;
     public Item item;
+    public override string ToString() {return "=> "+species;}
 }
 public class EggGroup {
 	public static Dictionary<int,EggGroup> EGG_GROUPS;
@@ -47,6 +51,21 @@ public class Nature {
 			};
 			NATURES [temp.id] = temp;
 		}
+	}
+	public override string ToString() {
+		int plus = 0, minus = 0;
+		for (int i = 0; i < 6; i++) {
+			if (stats_mod[i] > 0) plus = i;
+			if (stats_mod[i] < 0) minus = i;
+		}
+		return String.Format(
+			"{0}: {1}+{2} {3}{4}", 
+			name,
+            (StatsType)plus,
+            stats_mod[plus],
+            (StatsType)minus,
+            stats_mod[minus]
+       );
 	}
 }
 public class ItemType {
@@ -113,4 +132,7 @@ public struct LearnedMove {
 		this.moveDef = moveDef;
 		this.pp_cur = this.pp_max = moveDef.pp;
 	}
+    public override string ToString() {
+    	return String.Format("{0} [{1}/{2}]",moveDef, pp_cur, pp_max);
+    }
 }

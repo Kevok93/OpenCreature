@@ -27,4 +27,7 @@ public class Ability {
 	        if (temp.battle_effect_id != 0)	temp.battle_effect = Effect.EFFECTS[temp.battle_effect_id];
 	    }
 	}
+	public override string ToString() {
+		return String.Format("{0}: {1}", name, description);
+	}
 }

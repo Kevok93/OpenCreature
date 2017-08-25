@@ -56,5 +56,8 @@ public class Move
 			temp.movetype = Type.TYPES[temp.type_id];
 		}
 	}
+	public override string ToString() {
+		return System.String.Format("{0} ({1}/{2})", name, power, accuracy);
+	}
 }
 

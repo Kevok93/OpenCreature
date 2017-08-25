@@ -23,8 +23,48 @@ public class Creature {
 	
 	public Creature(Species species, int level) {
         id = -1;
+        
         this.species = species;
+		this.species_id = species.id;
+		
         this.nature = Nature.NATURES[Globals.RNG.Next() % Nature.NATURES.Count];
+        this.level = (byte)level;
+        
+        this.stats = new short[6];
+        for (int i =0; i<6;i++) {
+        	this.stats[i] = getStat((byte)level, (StatsType)i);
+        }
+		this.hp = stats[(int)StatsType.hp];
+		
+		List<Move> availableMoves = new List<Move>(species.level_moves.Count);
+		foreach(LevelMove lm in species.level_moves) {
+			if (lm.level <= level) availableMoves.Add(lm.move);
+		}
+		availableMoves.Randomize();
+		this.moves = new LearnedMove[4];
+		for (int i = 0; i < 3; i++) {
+			Move m = (availableMoves.Count > 0) ? availableMoves[0] : null;
+			if (m == null) break;
+			availableMoves.RemoveAt(0);
+			this.moves[i] = new LearnedMove(m);
+		}
+		this.move_ids = new int[] {
+			(moves[0].moveDef != null) ? moves[0].moveDef.id : 0,
+			(moves[1].moveDef != null) ? moves[1].moveDef.id : 0,
+			(moves[2].moveDef != null) ? moves[2].moveDef.id : 0,
+			(moves[3].moveDef != null) ? moves[3].moveDef.id : 0,
+		};
+		
+		this.ability = (Globals.RNG.Next()%2 == 1) ? species.ability1 : species.ability2;
+		this.ability_id = ability.id;
+		
+		if (Globals.RNG.Next() % 255 < species.wild_item_pct) { 
+			this.held_item = species.wild_item;
+			this.held_item_id = species.wild_item_id;
+		} else {
+			held_item = null;
+			held_item_id = 0;
+		}
 	}
 	public short getStat(byte level, StatsType type) {
 	    int base_stat = species.base_stats[(int)type] / level;

@@ -48,11 +48,15 @@ public class Species {
 			temp.name = row["name"];
 			temp.gender_ratio = Convert.ToByte (row["gender_ratio"]);
 			temp.capture_rate = Convert.ToByte (row["capture_rate"]);
+			temp.type_id1 = Convert.ToByte(row["type1"]);
+			temp.type_id2 = Convert.ToByte(row["type2"]);
 			temp.ev_val = Convert.ToByte (row["ev_val"]);
 			temp.ev_type = (StatsType) Convert.ToByte (row["ev_type"]);
 			temp.max_exp = Convert.ToInt32 (row["max_exp"]);
 			temp.tm_list = SqliteConnection.getBitsFromBlob(row["tm_list"]);
 			temp.misc_info = SqliteConnection.getBitsFromBlob(row["misc_info"]);
+			temp.ability_id1 = Convert.ToByte(row["ability1"]);
+			temp.ability_id2 = Convert.ToByte(row["ability2"]);
 			temp.egg_steps = Convert.ToUInt16(row["egg_steps"]);
 			temp.egg_group_id1 = Convert.ToByte(row["egg_group1"]);
 			temp.egg_group_id2 = Convert.ToByte(row["egg_group2"]);
@@ -119,5 +123,8 @@ public class Species {
                 if ((ev.type == EvolutionType.Item || ev.type == EvolutionType.Trade) && ev.value != 0) 
                     {ev.item = Item.ITEMS[ev.value];}
 	    }
+	}
+	public override string ToString() {
+		return name;
 	}
 }
