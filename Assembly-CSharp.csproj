@@ -8,7 +8,7 @@
     <ProjectGuid>{DA511180-072F-9E92-DCB8-5ACD43BD0C51}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <AssemblyName>opencreature</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>Assets</BaseDirectory>
@@ -17,7 +17,7 @@
     <SignAssembly>False</SignAssembly>
     <DelaySign>False</DelaySign>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <NoStdLib>False</NoStdLib>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
@@ -86,6 +86,7 @@
     <Compile Include="Assets\Scripts\Objects\Battle\MultiBattle.cs" />
     <Compile Include="Assets\Scripts\Objects\Battle\SingleBattle.cs" />
     <Compile Include="Assets\Scripts\Objects\Creature.cs" />
+    <Compile Include="Assets\Scripts\Objects\DeserializedElementDictionary.cs" />
     <Compile Include="Assets\Scripts\Objects\Effect.cs" />
     <Compile Include="Assets\Scripts\Objects\Enumerators.cs" />
     <Compile Include="Assets\Scripts\Objects\Globals.cs" />

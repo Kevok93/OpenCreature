@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace opencreature {
 public class Item : DeserializedElement {
-	public static Dictionary<int,Item> ITEMS;
+	public static TypeCastDictionary<int,DeserializedElement> ITEMS;
 	public string name, description;
 	public short price;
 	public sbyte misc_val1, misc_val2;
@@ -21,9 +21,7 @@ public class Item : DeserializedElement {
 	
 	private Item(){}
 	public static long init(List<Dictionary<string,string>> item_defs) {
-		long count = 0;
-		//var results = db["Select * from abilities"][0];
-		ITEMS = new Dictionary<int, Item> (item_defs.Count);
+		ITEMS = new TypeCastDictionary<int,DeserializedElement> (typeof(Item), item_defs.Count);
 		foreach (Dictionary<string,string> row in item_defs) {
 		    Item temp = new Item();
 			temp.id = Convert.ToInt32(row["id"]);
@@ -39,9 +37,8 @@ public class Item : DeserializedElement {
 			temp.sprite_path = row["sprite_path"];
 			temp.description = row["description"];
 			ITEMS[temp.id] = temp;
-			count++;
 		}
-		return count;
+		return ITEMS.Count;
 	}
 	public static void link() {
 	    foreach (Item temp in ITEMS.Values) {

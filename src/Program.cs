@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using opencreature;
 
 class Program {
 	static log4net.ILog log;
@@ -24,7 +25,7 @@ class Program {
     public static void debugTests() {
         var sbt = new Tests.SingleBattleTest();
         sbt.Initialize();
-        sbt.Attack();
+        //sbt.Attack();
     }
 
     public static void debugCLIBattle() {

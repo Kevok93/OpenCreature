@@ -4,7 +4,7 @@ using System;
 
 namespace opencreature {
 public class Species : DeserializedElement {
-	public static Dictionary<int,Species> SPECIES;
+	public static TypeCastDictionary<int,DeserializedElement> SPECIES;
 	public string name;
 	public short ability_id1, ability_id2;
 	public byte type_id1, type_id2;
@@ -42,8 +42,7 @@ public class Species : DeserializedElement {
 	
 	private Species(){}
 	public static long init(List<Dictionary<string,string>> species_defs, List<Dictionary<string,string>> level_move_defs, List<Dictionary<string,string>> evolution_defs) {
-		SPECIES = new Dictionary<int, Species>(species_defs.Count);
-		long count = 0;
+		SPECIES = new TypeCastDictionary<int,DeserializedElement>(typeof(Species),species_defs.Count);
 		foreach (Dictionary<string,string> row in species_defs) {
 			Species temp = new Species();
 			temp.id = Convert.ToInt32 (row ["id"]);
@@ -89,7 +88,6 @@ public class Species : DeserializedElement {
 			temp.level_moves = new LinkedList<LevelMove>();
             temp.evolutions = new LinkedList<Evolution>();
 			SPECIES[temp.id] = temp;
-			count++;
 		}
 		
 		foreach(Dictionary<string,string> row in level_move_defs) {
@@ -109,7 +107,7 @@ public class Species : DeserializedElement {
 		    int species_id = Convert.ToInt32(row["from_species"]);
 		    SPECIES[species_id].evolutions.AddLast(temp);
 		}
-		return count;
+		return SPECIES.Count;
 	}
 	public static void link() {
 	    foreach (Species temp in SPECIES.Values) {

@@ -12,7 +12,7 @@ public class Creaturedb {
 	public static bool initialize() {
 	    if (init) return false;
 	    var log = log4net.LogManager.GetLogger("Creature.db");
-	    db = new SqliteConnection(Globals.binary_location+"creature.db", SqliteOpenOpts.SQLITE_OPEN_READONLY);
+	    db = new SqliteConnection(Globals.binary_directory+"creature.db", SqliteOpenOpts.SQLITE_OPEN_READONLY);
 	    log.Info("Deserializing creature.db");
 	    long count;
 

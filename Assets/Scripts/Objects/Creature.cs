@@ -5,7 +5,7 @@ using System.Linq;
 namespace opencreature {
 	public class Creature : DeserializedElement {
 
-	public static Dictionary<int,Creature> UNIQUE_CREATURES;
+	public static TypeCastDictionary<int,DeserializedElement> UNIQUE_CREATURES;
 	public string nickname;
 	public short hp;
 	public byte level;
@@ -106,8 +106,8 @@ namespace opencreature {
         nature = caughtCreature.nature;
 	}
 	public static long init_unique(List<Dictionary<string,string>> unique_creature_defs) {
-		long count = 0;
-		UNIQUE_CREATURES = new Dictionary<int, Creature> (unique_creature_defs.Count);
+		UNIQUE_CREATURES = new TypeCastDictionary<int,DeserializedElement> 
+			(typeof(Creature),unique_creature_defs.Count);
 		foreach (Dictionary<string,string> row in unique_creature_defs) {
 			Creature temp = new Creature();
 			temp.id = Convert.ToInt32(row["id"]);
@@ -136,9 +136,8 @@ namespace opencreature {
 			temp.nature_id = Convert.ToByte(row["nature"]);
 			
 			UNIQUE_CREATURES[temp.id] = temp;
-			count++;
 		}
-		return count;
+		return UNIQUE_CREATURES.Count;
 	}
     public static void link_unique() {
         foreach (Creature temp in UNIQUE_CREATURES.Values) {

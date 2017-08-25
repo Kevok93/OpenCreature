@@ -7,10 +7,21 @@
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace opencreature
 {
-	public abstract class DeserializedElement {
+	public class DeserializedElement {
 		public int id;
+		
+		public static Dictionary<int,DeserializedElement> getGenericCollection<t>(Dictionary<int,t> complex) where t : DeserializedElement {
+			return complex.ToDictionary(
+				item => item.Key, 
+				item => (DeserializedElement)item.Value
+			);
+		}
+		
 	}
+	
 }

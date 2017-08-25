@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace opencreature {
 public class PlayerCreature : Creature {
-    public static Dictionary<int,PlayerCreature> PLAYER_CREATURES;
+    public static TypeCastDictionary<int,DeserializedElement> PLAYER_CREATURES;
     
     public int exp;
     public short ot, secret_ot;
@@ -27,8 +27,8 @@ public class PlayerCreature : Creature {
         happiness = species.base_happiness;
         exp = 0; //TODO are we truncating or aggregating?
     }
-	public static void init(List<Dictionary<string,string>> player_creature_defs) {
-		PLAYER_CREATURES = new Dictionary<int, PlayerCreature> (player_creature_defs.Count);
+	public static long init(List<Dictionary<string,string>> player_creature_defs) {
+    	PLAYER_CREATURES = new TypeCastDictionary<int,DeserializedElement> (typeof(PlayerCreature), player_creature_defs.Count);
 		foreach (Dictionary<string,string> row in player_creature_defs) {
 			PlayerCreature temp = new PlayerCreature();
 			temp.id = Convert.ToInt32(row["id"]);
@@ -88,6 +88,7 @@ public class PlayerCreature : Creature {
 			
 			PLAYER_CREATURES[temp.id] = temp;
 		}
+		return PLAYER_CREATURES.Count;
 	}
     public static void link() {
         foreach (PlayerCreature temp in PLAYER_CREATURES.Values) {
