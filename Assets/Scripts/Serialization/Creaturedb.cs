@@ -52,10 +52,11 @@ public class Creaturedb {
             Console.Out.WriteWithPrefix("NPCs loaded",PREFIX);
             
             init = true;
+			Console.Out.WriteWithPrefix("Creature.db fully deserialized!",PREFIX);
 		} catch (Exception e) {
             Console.Error.WriteWithPrefix(
                 string.Format(
-                    "Error Serializing Creaturedb: \n{0}", 
+                    "Error Deserializing Creaturedb: \n{0}", 
                     string.Join("\n",new string[] { e.ToString(), e.HelpLink })
 				), PREFIX
 			);

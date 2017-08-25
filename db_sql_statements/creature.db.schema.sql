@@ -1,3 +1,4 @@
+BEGIN;
 CREATE TABLE species (
     `id` int,
     `name` varchar(16),
@@ -278,3 +279,4 @@ CREATE TABLE sounds (
 );
 	
 	
+COMMIT;

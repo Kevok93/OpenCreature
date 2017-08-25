@@ -1,3 +1,4 @@
+BEGIN;
 INSERT INTO "natures" VALUES(0,'Adamant',10,0,-10,0,0);
 INSERT INTO "natures" VALUES(1,'Bashful',0,0,0,0,0);
 INSERT INTO "natures" VALUES(2,'Bold',-10,10,0,0,0);
@@ -977,5 +978,7 @@ INSERT INTO "type_bonus" VALUES(17,9,0.5);
 INSERT INTO "type_bonus" VALUES(17,15,2);
 INSERT INTO "type_bonus" VALUES(17,16,2);
 INSERT INTO "species" VALUES(1,'Bulbasaur',104,17,223,11,3,45,1059860,3,1,49,49,65,65,45,45,103,103,135,135,200,95,'800014C48B8010808023341084398720','00',32767,0,0,0,0,2.6,50,'Bulb','BulbaBulba',0,'asdf');
-INSERT INTO "species" VALUES(2,'Ivysaur',104,17,223,11,3,45,1059860,3,1,62,63,80,80,60,60,129,131,165,165,230,125,'000000000000000000000000000000000','00',5120,0,0,0,0,1,13,'Seed','When the bud on its back starts swelling, a sweet aroma wafts to indicate the flower''s coming bloom.',0,'asdf');
+INSERT INTO "species" VALUES(2,'Ivysaur',104,17,223,11,3,45,1059860,3,1,62,63,80,80,60,60,129,131,165,165,230,125,'00000000000000000000000000000000','00',5120,0,0,0,0,1,13,'Seed','When the bud on its back starts swelling, a sweet aroma wafts to indicate the flower''s coming bloom.',0,'asdf');
 INSERT INTO "evolution" VALUES(1,2,1,16);
+
+COMMIT;
