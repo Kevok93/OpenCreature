@@ -4,3 +4,5 @@ Library/
 obj/
 Assembly-UnityScript*
 bin/
+*.db
+*.exe

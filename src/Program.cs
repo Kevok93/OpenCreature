@@ -29,8 +29,8 @@ class Program {
         Creaturedb.initialize();
         var ash = new Trainer(
             new Creature[6] {
-					new Creature (Species.SPECIES [1],40),
-					new Creature (Species.SPECIES [1],40),
+        			new Creature(Creature.UNIQUE_CREATURES[0]),
+					new Creature(Creature.UNIQUE_CREATURES[0]),
 					null,null,null,null
 				},
             new Item[6],

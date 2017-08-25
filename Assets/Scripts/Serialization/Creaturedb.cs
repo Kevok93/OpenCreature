@@ -49,6 +49,9 @@ public class Creaturedb {
 
 	    Item.init(db["SELECT * FROM items"][0]);
 	    Console.Out.WriteWithPrefix("Items loaded", PREFIX);
+	    
+	    Creature.init_unique(db["SELECT * FROM unique_creature"][0]);
+	    Console.Out.WriteWithPrefix("Creatures loaded", PREFIX);
 
 	    PlotFlag.init(db["SELECT * FROM plot_flag"][0]);
 	    Console.Out.WriteWithPrefix("Plot Flags loaded", PREFIX);

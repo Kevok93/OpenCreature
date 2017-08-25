@@ -87,7 +87,7 @@ public class Creature {
         return (short)mod_stat;
 	}
 	protected Creature(){}
-	protected Creature(Creature caughtCreature){
+	public Creature(Creature caughtCreature){
         id = caughtCreature.id;
         nickname = caughtCreature.nickname;
         hp = caughtCreature.hp;
@@ -113,13 +113,13 @@ public class Creature {
 			temp.nickname = row["nickname"];
 			temp.level = Convert.ToByte(row["level"]);
 			temp.misc_info = SqliteConnection.getBitsFromBlob(row["misc_info"]);
-            temp.hp = Convert.ToInt16(row["hp"]);
+            temp.hp = Convert.ToInt16(row["hp_max"]);
 			temp.stats = new short[] {
 			    Convert.ToInt16(row["atk"]),
 			    Convert.ToInt16(row["def"]),
 			    Convert.ToInt16(row["spatk"]),
 			    Convert.ToInt16(row["spdef"]),
-			    Convert.ToInt16(row["hp"]),
+			    Convert.ToInt16(row["hp_max"]),
 			    Convert.ToInt16(row["speed"]),
 			};
 			temp.hp = temp.stats[StatsType.hp];
@@ -129,7 +129,7 @@ public class Creature {
 			    Convert.ToInt32(row["move3_id"]),
 			    Convert.ToInt32(row["move4_id"]),
 			};
-			temp.species_id = Convert.ToInt32(row["species"]);
+			temp.species_id = Convert.ToInt32(row["species_id"]);
 			temp.ability_id = Convert.ToInt32(row["ability"]);
 			temp.held_item_id = Convert.ToInt32(row["held_item"]);
 			temp.nature_id = Convert.ToByte(row["nature"]);

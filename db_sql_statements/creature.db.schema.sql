@@ -256,6 +256,7 @@ create table npc_style (
 CREATE TABLE plot_flag (
 	`id` int,
 	`name` varchar(10),
+	`value` tinyint,
 	constraint `pk_plot_flag` primary key (`id`) on conflict rollback
 );
 CREATE TABLE map (
