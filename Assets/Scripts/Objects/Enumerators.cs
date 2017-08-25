@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 
+public class BetterEnum<T> {
+    public T value;
+
+    BetterEnum(T value) { this.value = value; }
+    public static implicit operator BetterEnum<T>(T value) { return new BetterEnum<T>(value); }
+    public static implicit operator int(BetterEnum<T> type) { return Convert.ToInt32(type.value); }
+    public static implicit operator T(BetterEnum<T> type) { return type.value; }
+}
 public enum MoveAffinity  {
     Physical	    = 1,
     Special		    = 2,

@@ -9,8 +9,8 @@ public class Move
 	public byte pp, power, accuracy;
 	public int type_id;
 	public int world_effect_id, battle_effect_id;
-	public MoveAffinity affinity;
-    public StatsType atkAffinity, defAffinity;
+	public BetterEnum<MoveAffinity> affinity;
+    public BetterEnum<StatsType> atkAffinity, defAffinity;
 	public bool[] misc_info;
 	public byte misc_value;
 	public string description;
@@ -35,7 +35,7 @@ public class Move
 			temp.misc_info = SqliteConnection.getBitsFromBlob(row["misc_info"]);
 			temp.misc_value = System.Convert.ToByte(row["misc_val"]);
 			temp.description = row["description"];
-            switch (temp.affinity) {
+            switch (temp.affinity.value) {
                 case MoveAffinity.Physical:
                     temp.atkAffinity = StatsType.atk;
                     temp.defAffinity = StatsType.def;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
@@ -14,6 +15,7 @@ public class SqliteConnection {
 	public static char[] delim_semi = {';'};
 
 	public SqliteConnection(string path, SqliteOpenOpts mode = SqliteOpenOpts.SQLITE_OPEN_READONLY) {
+        if (!System.IO.File.Exists(path)) throw new FileNotFoundException(path);
 		SqliteErrorCode retc = Sqlite.sqlite3_open_v2(
 			Encoding.Default.GetBytes(path), 
 			ref db,
@@ -106,7 +108,7 @@ public class SqliteConnection {
         string blobhex = (new SoapHexBinary(blob)).ToString();
         return blobhex;
 	}
-	public List<Dictionary<string,string>> getTable(string sql) {
+	private List<Dictionary<string,string>> getTable(string sql) {
         int sizeofptr = Marshal.SizeOf(typeof(IntPtr));
         int cols, rows;
         IntPtr results_c;

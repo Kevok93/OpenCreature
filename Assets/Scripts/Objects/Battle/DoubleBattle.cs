@@ -1,7 +1,6 @@
 ﻿
 public class DoubleBattle : MultiBattle {
     public DoubleBattle(Trainer t1, Trainer t2) {
-        type = BattleType.SingleBattle;
 		trainers = new Trainer[] {t1,t1,t2,t2};
         
         Creature c1,c2,c3,c4;

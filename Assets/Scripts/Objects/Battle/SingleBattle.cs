@@ -2,7 +2,6 @@
 public class SingleBattle : Battle {
     public SingleBattle(Trainer t1, Trainer t2) {
 		attacks = new System.Collections.Generic.List<Attack>();
-        type = BattleType.SingleBattle;
 		trainers = new Trainer[] { t1,t2 };
         
         Creature c1,c2;

@@ -20,4 +20,5 @@ public static class Globals {
     public static float NextFloat(this Random rng) {
 		return (float)rng.NextDouble();
     }
+
 }

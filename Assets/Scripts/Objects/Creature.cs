@@ -31,10 +31,9 @@ public class Creature {
         this.level = (byte)level;
         
         this.stats = new short[6];
-        for (int i =0; i<6;i++) {
-        	this.stats[i] = getStat((byte)level, (StatsType)i);
-        }
-		this.hp = stats[(int)StatsType.hp];
+	    for (int i = 0; i < 6; i++)
+	        this.stats[i] = getStat((byte) level, (StatsType) i);
+	    this.hp = stats[(int)StatsType.hp];
 		
 		List<Move> availableMoves = new List<Move>(species.level_moves.Count);
 		foreach(LevelMove lm in species.level_moves) {

@@ -2,7 +2,6 @@
 public class MultiBattle : Battle {
 	protected MultiBattle() {}
     public MultiBattle(Trainer t1, Trainer t2, Trainer t3, Trainer t4) {
-        type = BattleType.SingleBattle;
 		trainers = new Trainer[] { t1, t2,t3,t4};
 		
 		Creature c1,c2,c3,c4;

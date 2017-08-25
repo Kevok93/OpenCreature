@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 public abstract class Battle {
-    public enum BattleType {
-        SingleBattle,DoubleBattle,MultiBattle
-    }
     public class Attack {
     	public Creature attacker;
     	public byte[] targets;
@@ -13,7 +10,6 @@ public abstract class Battle {
     public Trainer[] trainers;
     public Creature[] activeCreatures;
     public int turn = 0;
-    public BattleType type;
 	public List<Attack> attacks;
 	protected Battle() {
 	}
@@ -27,7 +23,7 @@ public abstract class Battle {
 		Attack attack = new Attack();
 		attack.attacker = c;
 		attack.usedMove = m;
-		attack.speed = c.stats [(int)StatsType.speed];
+		attack.speed = c.stats [BetterEnum<StatsType>.speed];
 		attacks.Add(attack);
 		return attack;
 	}
