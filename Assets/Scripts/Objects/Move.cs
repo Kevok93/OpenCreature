@@ -10,12 +10,13 @@ public class Move
 	public int type_id;
 	public int world_effect_id, battle_effect_id;
 	public MoveAffinity affinity;
+    public StatsType atkAffinity, defAffinity;
 	public bool[] misc_info;
 	public byte misc_value;
 	public string description;
 	
-	Effect world_effect, battle_effect;
-	Type movetype;
+	public Effect world_effect, battle_effect;
+	public Type movetype;
 
 	private Move(){}
 	public static void init(List<Dictionary<string,string>> move_defs) {
@@ -34,6 +35,16 @@ public class Move
 			temp.misc_info = SqliteConnection.getBitsFromBlob(row["misc_info"]);
 			temp.misc_value = System.Convert.ToByte(row["misc_val"]);
 			temp.description = row["description"];
+            switch (temp.affinity) {
+                case MoveAffinity.Physical:
+                    temp.atkAffinity = StatsType.atk;
+                    temp.defAffinity = StatsType.def;
+                    break;
+                case MoveAffinity.Special:
+                    temp.atkAffinity = StatsType.sp_atk;
+                    temp.defAffinity = StatsType.sp_def;
+                    break;
+            }
 			MOVES[temp.id] = temp;
 		}
 	}

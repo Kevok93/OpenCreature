@@ -78,7 +78,7 @@ public class NPCStyle {
 	public int id;
 	public string name;
 	public string sprite_path;
-	/*	public Sprite sprite;*/
+	/*public Sprite sprite;*/
 }
 public class PlotFlag {
 	public static Dictionary<string,PlotFlag> PLOT_FLAG_NAME;
@@ -97,5 +97,20 @@ public class PlotFlag {
 			PLOT_FLAG_ID [temp.id] = temp;
 			PLOT_FLAG_NAME [temp.name] = temp;
 		}
+	}
+}
+
+public struct LearnedMove {
+	public short pp_cur;
+	public short pp_max;
+	public Move moveDef;
+	public LearnedMove(Move moveDef, short pp_max, short pp_cur) {
+		this.pp_cur = pp_cur;
+		this.pp_max = pp_max;
+		this.moveDef = moveDef;
+	}
+	public LearnedMove(Move moveDef) {
+		this.moveDef = moveDef;
+		this.pp_cur = this.pp_max = moveDef.pp;
 	}
 }

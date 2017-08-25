@@ -13,14 +13,20 @@ public class SingleBattle : Battle {
 			throw new System.InvalidOperationException ("Trainer 2 entered a battle with no valid creatures!");
 		activeCreatures = new Creature[] { c1,c2 };
 	}
+	
+	public override int checkVictory() {
+		if (activeCreatures[1] == null) return 1;
+		if (activeCreatures[0] == null) return 2;
+		return 0;
+	}
 
-	public override Attack queueAttack(Creature c, Move m, sbyte target = -1) {
+	public override Attack queueAttack(Creature c, LearnedMove m, sbyte target = -1) {
 		Attack attack;
 		attack.attacker = c;
 		attack.usedMove = m;
 		attack.speed = c.stats [(int)StatsType.speed];
 
-		bool targetSelf = m.misc_info [(int)MoveData.Target_Self];
+		bool targetSelf = m.moveDef.misc_info [(int)MoveData.Target_Self];
 		switch (turn) {
             case 0:
 		        attack.targets = new byte[] {(byte) (targetSelf ? 0 : 1)};

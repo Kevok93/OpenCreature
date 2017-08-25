@@ -5,16 +5,15 @@ public class PlayerCreature : Creature {
     
     public int exp;
     public short ot, secret_ot;
-    public byte[] pp_max;
     public short[] evs;
     public short[] ivs;
+	private byte[] pp_cur, pp_max;
     public short happiness;
     
     protected PlayerCreature(){}
     public PlayerCreature(Creature caughtCreature) : base(caughtCreature) {
         //ot = Globals.CURRENT_PLAYER.ot; TODO
         //secret_ot = Globals.CURRENT_PLAYER.secret_ot; TODO
-        pp_max = new byte[] { this.pp_cur[0], this.pp_cur[1], this.pp_cur[2], this.pp_cur[3], };
         evs = new short[] { 0, 0, 0, 0, 0, 0 };
         ivs = new short[] { 0, 0, 0, 0, 0, 0 };
         //happiness = species.base_happiness; TODO
@@ -88,11 +87,11 @@ public class PlayerCreature : Creature {
 	        temp.held_item = Item.ITEMS[temp.held_item_id];
 	        temp.ability = Ability.ABILITIES[temp.ability_id];
 	        temp.nature = Nature.NATURES[temp.nature_id];
-	        temp.moves = new Move[] {
-	            Move.MOVES[temp.move_ids[0]],
-	            Move.MOVES[temp.move_ids[1]],
-	            Move.MOVES[temp.move_ids[2]],
-	            Move.MOVES[temp.move_ids[3]],
+	        temp.moves = new LearnedMove[] {
+	        	new LearnedMove(Move.MOVES[temp.move_ids[0]],temp.pp_max[0],temp.pp_cur[0]),
+	        	new LearnedMove(Move.MOVES[temp.move_ids[1]],temp.pp_max[1],temp.pp_cur[1]),
+	        	new LearnedMove(Move.MOVES[temp.move_ids[2]],temp.pp_max[2],temp.pp_cur[2]),
+	        	new LearnedMove(Move.MOVES[temp.move_ids[3]],temp.pp_max[3],temp.pp_cur[3]),
 	        };
 	    }
     }

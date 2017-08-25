@@ -1,5 +1,6 @@
 ﻿
 public class MultiBattle : Battle {
+	protected MultiBattle() {}
     public MultiBattle(Trainer t1, Trainer t2, Trainer t3, Trainer t4) {
         type = BattleType.SingleBattle;
 		trainers = new Trainer[] { t1, t2,t3,t4};
@@ -21,62 +22,67 @@ public class MultiBattle : Battle {
 			throw new System.InvalidOperationException ("Trainer 4 entered a battle with no valid creatures!");
 		activeCreatures = new Creature[] {c1,c2,c3,c4};
     }
-	public override Attack queueAttack(Creature c, Move m, sbyte target = -1) {
-        Attack attack;
-        attack.attacker = c;
-        attack.usedMove = m;
-		attack.speed = c.stats [(int)StatsType.speed];
-		if (m.misc_info [(int)MoveData.Target_Single]) {
+	public override int checkVictory() {
+		if (activeCreatures[2] == null && activeCreatures[3] == null) return 1;
+		if (activeCreatures[0] == null && activeCreatures[1] == null) return 2;
+		return 0;
+	}
+		public override Attack queueAttack(Creature c, LearnedMove m, sbyte target = -1) {
+        Attack newAttack;
+        newAttack.attacker = c;
+        newAttack.usedMove = m;
+		newAttack.speed = c.stats [(int)StatsType.speed];
+		if (m.moveDef.misc_info [(int)MoveData.Target_Single]) {
 		    if (target >= 0) throw new System.InvalidOperationException ("Using a single target move without a valid target!");
-		    else attack.targets = new byte[] {(byte)target};
-		} else if (m.misc_info [(int)MoveData.Target_All])
+		    else newAttack.targets = new byte[] {(byte)target};
+		} else if (m.moveDef.misc_info [(int)MoveData.Target_All])
 			switch (turn) {
 			    case 0:
-			        attack.targets = new byte[] { 1, 2, 3 };
+			        newAttack.targets = new byte[] { 1, 2, 3 };
                     break;
 			    case 1:
-			        attack.targets = new byte[] { 0, 2, 3 };
+			        newAttack.targets = new byte[] { 0, 2, 3 };
                     break;
 			    case 2:
-			        attack.targets = new byte[] { 1, 0, 3 };
+			        newAttack.targets = new byte[] { 1, 0, 3 };
                     break;
 			    case 3:
-			        attack.targets = new byte[] { 1, 2, 0 };
+			        newAttack.targets = new byte[] { 1, 2, 0 };
                     break;
         		default: 
         		    throw new System.InvalidOperationException("Invalid turn number for a single battle: "+turn);
-		} else if (m.misc_info [(int)MoveData.Target_Both])
+		} else if (m.moveDef.misc_info [(int)MoveData.Target_Both])
             switch (turn) {
                 case 0:
                 case 1:
-                    attack.targets = new byte[] { 2, 3 };
+                    newAttack.targets = new byte[] { 2, 3 };
                     break;
                 case 2:
                 case 3:
-                    attack.targets = new byte[] { 0, 1 };
+                    newAttack.targets = new byte[] { 0, 1 };
                     break;
                 default: 
                     throw new System.InvalidOperationException("Invalid turn number for a single battle: " + turn);
-		} else if (m.misc_info[(int)MoveData.Target_Self]) {
-		  attack.targets = new byte[] { (byte) turn };
-		} else if (m.misc_info[(int)MoveData.Target_Ally])
+		} else if (m.moveDef.misc_info[(int)MoveData.Target_Self]) {
+		  newAttack.targets = new byte[] { (byte) turn };
+		} else if (m.moveDef.misc_info[(int)MoveData.Target_Ally])
 			switch (turn) {
 			    case 0:
-			        attack.targets = new byte[] { 1 };
+			        newAttack.targets = new byte[] { 1 };
                     break;
 			    case 1:
-			        attack.targets = new byte[] { 0 };
+			        newAttack.targets = new byte[] { 0 };
                     break;
 			    case 2:
-			        attack.targets = new byte[] { 3 };
+			        newAttack.targets = new byte[] { 3 };
                     break;
 			    case 3:
-			        attack.targets = new byte[] { 2 };
+			        newAttack.targets = new byte[] { 2 };
                     break;
         		default: 
         		    throw new System.InvalidOperationException("Invalid turn number for a single battle: "+turn);
-		} else throw new System.InvalidOperationException ("Move does not have a valid target flag: " + m.name + m.id);
-        return attack;
+		} else throw new System.InvalidOperationException ("Move does not have a valid target flag: " + m.moveDef.name + m.moveDef.id);
+        return newAttack;
 	}
 }
 

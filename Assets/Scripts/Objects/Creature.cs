@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 public class Creature {
+
 	public static Dictionary<int,Creature> UNIQUE_CREATURES;
 	public int id;
 	public string nickname;
@@ -12,11 +13,10 @@ public class Creature {
 	public int species_id, ability_id, held_item_id;
 	public int[] move_ids;
     public byte nature_id;
-    public byte[] pp_cur;
 	
 	public Species species;
 	public Item held_item;
-	public Move[] moves;
+	public LearnedMove[] moves;
 	public Ability ability;
 	public Nature nature;
 	
@@ -49,7 +49,6 @@ public class Creature {
         moves = caughtCreature.moves;
         nature_id = caughtCreature.nature_id;
         nature = caughtCreature.nature;
-        pp_cur = caughtCreature.pp_cur;
 	}
 	public static void init_unique(List<Dictionary<string,string>> unique_creature_defs) {
 		UNIQUE_CREATURES = new Dictionary<int, Creature> (unique_creature_defs.Count);
@@ -89,17 +88,11 @@ public class Creature {
 	        temp.held_item = Item.ITEMS[temp.held_item_id];
 	        temp.ability = Ability.ABILITIES[temp.ability_id];
 	        temp.nature = Nature.NATURES[temp.nature_id];
-	        temp.moves = new Move[] {
-	            Move.MOVES[temp.move_ids[0]],
-	            Move.MOVES[temp.move_ids[1]],
-	            Move.MOVES[temp.move_ids[2]],
-	            Move.MOVES[temp.move_ids[3]],
-	        };
-	        temp.pp_cur = new byte[] { 
-	            (temp.moves[0] != null) ? temp.moves[0].pp : (byte)0,
-	            (temp.moves[1] != null) ? temp.moves[1].pp : (byte)0,
-	            (temp.moves[2] != null) ? temp.moves[2].pp : (byte)0,
-	            (temp.moves[3] != null) ? temp.moves[3].pp : (byte)0,
+	        temp.moves = new LearnedMove[] {
+	        	(new LearnedMove(Move.MOVES[temp.move_ids[0]])),
+	        	(new LearnedMove(Move.MOVES[temp.move_ids[1]])),
+	        	(new LearnedMove(Move.MOVES[temp.move_ids[2]])),
+	        	(new LearnedMove(Move.MOVES[temp.move_ids[3]])),
 	        };
 	    }
     }
