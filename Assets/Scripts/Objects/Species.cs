@@ -12,6 +12,7 @@ public class Species {
 		capture_rate,
 		ev_val;
 	public StatsType ev_type;
+    public short base_happiness;
 	public bool[] misc_info;
 	public ushort egg_steps;
 	public byte egg_group_id1, egg_group_id2;
@@ -43,7 +44,6 @@ public class Species {
 		SPECIES = new Dictionary<int, Species>(species_defs.Count);
 		foreach (Dictionary<string,string> row in species_defs) {
 			Species temp = new Species();
-			temp.level_moves = new LinkedList<LevelMove>();
 			temp.id = Convert.ToInt32 (row ["id"]);
 			temp.name = row["name"];
 			temp.gender_ratio = Convert.ToByte (row["gender_ratio"]);
@@ -80,6 +80,8 @@ public class Species {
 			temp.max_stats[(int)StatsType.sp_def] = Convert.ToInt16 (row["max_spdef"]);
 			temp.max_stats[(int)StatsType.hp] = Convert.ToInt16(row["max_hp"]);
 			temp.max_stats[(int)StatsType.speed] = Convert.ToInt16(row["max_speed"]);
+			temp.level_moves = new LinkedList<LevelMove>();
+            temp.evolutions = new LinkedList<Evolution>();
 			SPECIES[temp.id] = temp;
 		}
 		

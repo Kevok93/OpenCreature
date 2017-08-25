@@ -11,7 +11,16 @@ public class PlayerCreature : Creature {
     public short happiness;
     
     protected PlayerCreature(){}
-	public static new void init(List<Dictionary<string,string>> player_creature_defs) {
+    public PlayerCreature(Creature caughtCreature) : base(caughtCreature) {
+        //ot = Globals.CURRENT_PLAYER.ot; TODO
+        //secret_ot = Globals.CURRENT_PLAYER.secret_ot; TODO
+        pp_max = new byte[] { this.pp_cur[0], this.pp_cur[1], this.pp_cur[2], this.pp_cur[3], };
+        evs = new short[] { 0, 0, 0, 0, 0, 0 };
+        ivs = new short[] { 0, 0, 0, 0, 0, 0 };
+        //happiness = species.base_happiness; TODO
+        exp = 0; //TODO are we truncating or aggregating?
+    }
+	public static void init(List<Dictionary<string,string>> player_creature_defs) {
 		PLAYER_CREATURES = new Dictionary<int, PlayerCreature> (player_creature_defs.Count);
 		foreach (Dictionary<string,string> row in player_creature_defs) {
 			PlayerCreature temp = new PlayerCreature();
@@ -73,7 +82,7 @@ public class PlayerCreature : Creature {
 			PLAYER_CREATURES[temp.id] = temp;
 		}
 	}
-    public static new void link() {
+    public static void link() {
         foreach (PlayerCreature temp in PLAYER_CREATURES.Values) {
 	        temp.species = Species.SPECIES[temp.species_id];
 	        temp.held_item = Item.ITEMS[temp.held_item_id];

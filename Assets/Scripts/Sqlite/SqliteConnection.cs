@@ -34,7 +34,7 @@ public class SqliteConnection {
 		
 		foreach (string subquery in querytok) {
 			string subquery_mod = subquery + ";";
-            Console.Out.WriteLine(subquery_mod);
+            Console.Out.WriteLine("SQLITE: "+subquery_mod);
             results.Add(getTable(subquery_mod));
 		} 
 					

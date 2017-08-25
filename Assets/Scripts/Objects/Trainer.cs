@@ -62,14 +62,22 @@ public class Trainer {
 				Item.ITEMS[temp.items_id[5]],
 			};
 			temp.creatures = new Creature[] {
-				Creature.CREATURES[temp.creatures_id[0]],
-				Creature.CREATURES[temp.creatures_id[1]],
-				Creature.CREATURES[temp.creatures_id[2]],
-				Creature.CREATURES[temp.creatures_id[3]],
-				Creature.CREATURES[temp.creatures_id[4]],
-				Creature.CREATURES[temp.creatures_id[5]],
+				Creature.UNIQUE_CREATURES[temp.creatures_id[0]],
+				Creature.UNIQUE_CREATURES[temp.creatures_id[1]],
+				Creature.UNIQUE_CREATURES[temp.creatures_id[2]],
+				Creature.UNIQUE_CREATURES[temp.creatures_id[3]],
+				Creature.UNIQUE_CREATURES[temp.creatures_id[4]],
+				Creature.UNIQUE_CREATURES[temp.creatures_id[5]],
 			};
 		}
+	}
+	
+	public Creature getNextCreature(Creature activeCreature = null) {
+	    foreach (Creature c in creatures) {
+            if (c == activeCreature) continue;
+            if (c.hp > 0) return c;
+	    }
+        return null;
 	}
 }
 
