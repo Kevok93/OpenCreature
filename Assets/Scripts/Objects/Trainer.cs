@@ -16,8 +16,17 @@ public class Trainer {
 	public Creature[] creatures;
 	public Item[] items;
 	public TrainerStyle trainer_style;
-
 	private Trainer(){}
+	public Trainer(Creature[] creatures, Item[] items, TrainerStyle style, int reward, string victory_quote, string name, bool[] misc_info){
+		id = 0;
+		this.name = name;
+		this.trainer_style = style;
+		this.reward = reward;
+		this.creatures = creatures;
+		this.items = items;
+		this.victory_quote = victory_quote;
+		this.misc_info = misc_info;
+	}
 	public static void init(List<Dictionary<string,string>> trainer_defs) {
 		//var results = db["Select * from trainer"][0];
 		TRAINERS = new Dictionary<int, Trainer> (trainer_defs.Count);

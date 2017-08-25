@@ -10,7 +10,8 @@ public class Creaturedb {
 	private Creaturedb(){}
 	public static bool initialize() {
 		if (init) return false;
-		
+
+		Globals.init ();
 		db = new SqliteConnection("creature.db", SqliteOpenOpts.SQLITE_OPEN_READONLY);
         Console.Out.WriteWithPrefix("Deserializing creature.db",PREFIX);
         

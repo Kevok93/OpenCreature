@@ -8,7 +8,8 @@ class Program {
 	public static void Main(string[] args) {
 		Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
 		debug();
-        Creaturedb.initialize();
+        //Creaturedb.initialize();
+    	(new Tests.SingleBattleTest()).Initialize();
 	}
 	
     public static void debug() {
