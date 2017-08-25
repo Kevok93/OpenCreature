@@ -26,3 +26,4 @@ using System.Runtime.InteropServices;
 // Build Numbers by using the '*' as shown below:
 [assembly: AssemblyVersion ("1.0.*")]
 [assembly: Guid ("36c14d02-5375-42a2-ace6-c66f9c86194d")]
+[assembly: AssemblyFlags (AssemblyNameFlags.PublicKey | AssemblyNameFlags.EnableJITcompileTracking)]

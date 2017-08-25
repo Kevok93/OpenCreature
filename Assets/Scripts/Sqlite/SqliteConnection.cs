@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 public class SqliteConnection {
+	const string PREFIX = "SQLITE";
 	protected IntPtr db;
 	public static IntPtr null_ptr = (IntPtr)0;
 	public static char[] delim_semi = {';'};
@@ -34,7 +35,7 @@ public class SqliteConnection {
 		
 		foreach (string subquery in querytok) {
 			string subquery_mod = subquery + ";";
-            Console.Out.WriteLine("SQLITE: "+subquery_mod);
+            Console.Out.WriteWithPrefix(subquery_mod,PREFIX);
             results.Add(getTable(subquery_mod));
 		} 
 					
