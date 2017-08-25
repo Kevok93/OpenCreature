@@ -6,3 +6,8 @@ Assembly-UnityScript*
 bin/
 *.db
 *.exe
+.idea*
+OpenCover*
+testrunner_out*
+*.suo
+*.pdb

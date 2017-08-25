@@ -6,22 +6,20 @@ using UnityEditor;
 
 namespace opencreature {
 public abstract class Battle {
-    public Dictionary<int,BattleSlot> battleSlots;
-    public Dictionary<int,List<BattleSlot>> teamAssignment;
-	public SortedSet<Attack> attackQueue;
-	protected Battle() {
-	}
+    public Dictionary<int,BattleSlot>       battleSlots    ;
+    public Dictionary<int,List<BattleSlot>> teamAssignment ;
+	public SortedSet<Attack>                attackQueue    ;
 	
 	public class BattleSlot {
-		public Creature activeCreature;
-		public Trainer slotOwner;
+        public Creature activeCreature;
+        public Trainer  slotOwner;
 	}
 	
 		
 	public int checkVictory() {
 		foreach (int teamId in teamAssignment.Keys) {
 			bool enemyTeamAlive = teamAssignment
-				.Where(pair => pair.Key != teamId)
+				.Where( pair => pair.Key != teamId)
 				.Select(pair => checkTeamAlive(pair.Key))
 				.Any(x => x);
 			if (!enemyTeamAlive) return teamId;
@@ -31,11 +29,9 @@ public abstract class Battle {
 	
 	public bool startupCheck() {
 		foreach (KeyValuePair<int,BattleSlot> slot in battleSlots.AsEnumerable()) {
-			if (slot.Value == null) {
-				throw new System.InvalidOperationException(String.Format(
-					"Trainer {0} entered a battle with no valid creatures!",slot.Key
-				));
-			}
+			if (slot.Value == null) throw new InvalidOperationException(
+				String.Format("Trainer {0} entered a battle with no valid creatures!",slot.Key)
+			);
 		}
 		return true;
 	}
@@ -68,7 +64,7 @@ public abstract class Battle {
 	
 	public bool executeAttackQueue() {
 		if (attackQueue.Count() != battleSlots.Values.Count(slot => slot.activeCreature != null))
-			throw new System.InvalidOperationException("Executing attacks before all creatures are ready!");
+			throw new InvalidOperationException("Executing attacks before all creatures are ready!");
 		
 		Attack attack;
 		while ((attack = attackQueue.Dequeue()) != null) {
@@ -151,9 +147,9 @@ public abstract class Battle {
 	}
 	
 	public void killCreatureAtIndex(int index) {
-    	Creature deadCreature = battleSlots[index].activeCreature;
-		System.Console.WriteLine("Creature died!: " + deadCreature);
-		removeCreatureAttacks(deadCreature);
+    	Creature TargetCreature = battleSlots[index].activeCreature;
+		Console.WriteLine("Creature died!: " + TargetCreature);
+		removeCreatureAttacks(TargetCreature);
 		replaceCreature(index);
 	}
 	

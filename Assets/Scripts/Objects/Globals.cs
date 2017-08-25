@@ -51,18 +51,20 @@ public static class Globals {
         patternLayout.ActivateOptions();
         
         var console = new ManagedColoredConsoleAppender();
-        var TRACE = new ManagedColoredConsoleAppender.LevelColors(); TRACE.Level = Level.Trace; TRACE.ForeColor = ConsoleColor.White  ;
-        var DEBUG = new ManagedColoredConsoleAppender.LevelColors(); DEBUG.Level = Level.Debug; DEBUG.ForeColor = ConsoleColor.Green  ;
-        var INFO  = new ManagedColoredConsoleAppender.LevelColors(); INFO .Level = Level.Info ; INFO .ForeColor = ConsoleColor.Cyan ;
-        var WARN  = new ManagedColoredConsoleAppender.LevelColors(); WARN .Level = Level.Warn ; WARN .ForeColor = ConsoleColor.Yellow;
-        var ERROR = new ManagedColoredConsoleAppender.LevelColors(); ERROR.Level = Level.Error; ERROR.ForeColor = ConsoleColor.Magenta   ;
-        var FATAL = new ManagedColoredConsoleAppender.LevelColors(); FATAL.Level = Level.Fatal; FATAL.ForeColor = ConsoleColor.Red   ;
-        console.AddMapping(TRACE);
-        console.AddMapping(DEBUG);
-        console.AddMapping(INFO );
-        console.AddMapping(WARN );
-        console.AddMapping(ERROR);
-        console.AddMapping(FATAL);
+        var TRACE   = new ManagedColoredConsoleAppender.LevelColors(); TRACE.Level = Level.Trace; TRACE.ForeColor = ConsoleColor.White  ;
+        var DEBUG   = new ManagedColoredConsoleAppender.LevelColors(); DEBUG.Level = Level.Debug; DEBUG.ForeColor = ConsoleColor.Green  ;
+        var INFO    = new ManagedColoredConsoleAppender.LevelColors(); INFO .Level = Level.Info ; INFO .ForeColor = ConsoleColor.Cyan ;
+        var WARN    = new ManagedColoredConsoleAppender.LevelColors(); WARN .Level = Level.Warn ; WARN .ForeColor = ConsoleColor.Yellow;
+        var ERROR   = new ManagedColoredConsoleAppender.LevelColors(); ERROR.Level = Level.Error; ERROR.ForeColor = ConsoleColor.Magenta   ;
+        var FATAL   = new ManagedColoredConsoleAppender.LevelColors(); FATAL.Level = Level.Fatal; FATAL.ForeColor = ConsoleColor.Red   ;
+
+        console.AddMapping( TRACE );
+        console.AddMapping( DEBUG );
+        console.AddMapping( INFO  );
+        console.AddMapping( WARN  );
+        console.AddMapping( ERROR );
+        console.AddMapping( FATAL );
+
         console.ActivateOptions();
         console.Layout = patternLayout;
         hierarchy.Root.AddAppender(console);

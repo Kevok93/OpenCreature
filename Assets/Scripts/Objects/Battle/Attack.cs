@@ -13,11 +13,11 @@ namespace opencreature {
 			foreach (int index in targets) {
 				Creature defender = battleslots[index].activeCreature;
 				if (defender == null) continue;
-				executeAttackCreature(attacker, usedMove, defender);
+				executeAgainstCreature(defender);
 			}
 		}
     	
-		public void executeAttackCreature(Creature attacker, LearnedMove usedMove, Creature target) {
+		public void executeAgainstCreature(Creature target) {
 			if (usedMove.moveDef.power > 0) {
 				
 				//ATTACK vs DEFENCE or SPATK vs SPDEF
@@ -48,7 +48,6 @@ namespace opencreature {
 					stab_bonus * type_bonus * crit_bonus * power_mod  *
 					Globals.RNG.NextFloatBetween(0.70f, 1.00f);
 				short damage = (short)(base_damage * mod_damage);
-				System.Console.WriteLine(System.String.Format("{0} did {1} damage to {2}", attacker, damage, target));
 				target.hp -= damage;
 			}
 		}

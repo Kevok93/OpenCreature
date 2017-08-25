@@ -147,5 +147,31 @@ public struct LearnedMove {
     	return String.Format("{0} [{1}/{2}]",moveDef, pp_cur, pp_max);
     }
 }
+	
+	public class point3D {
+		public float x,y,z;
+		public point3D(float x, float y, float z) {
+			this.x=x; this.y=y; this.z=z;
+		}
+	}
+	
+	public class point2D {
+		public float x,y;
+		public point2D(float x, float y) {
+			this.x=x; this.y=y; 
+		}
+	}
+	public class tri3D {
+		public point3D a,b,c;
+		public tri3D(point3D a, point3D b, point3D c) {
+			this.a=a; this.b=b; this.c=c;
+		}
+	}
+	public class tri2D {
+		public point2D a,b,c;
+		public tri2D(point2D a, point2D b, point2D c) {
+			this.a=a; this.b=b; this.c=c;
+		}
+	}
 
 }

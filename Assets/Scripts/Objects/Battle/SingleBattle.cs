@@ -1,6 +1,11 @@
 using System.Collections.Generic;
 namespace opencreature {
 public class SingleBattle : Battle {
+	public enum BattleSlotName {
+		PLAYER1=1,
+		PLAYER2=2,
+	};
+		
     public SingleBattle(Trainer t1, Trainer t2) {
 		attackQueue = new SortedSet<Attack>();
         
@@ -24,16 +29,14 @@ public class SingleBattle : Battle {
 	public override Attack queueAttack(Creature c, LearnedMove m, sbyte target = -1) {
 		Attack attack = base.queueAttack(c, m, target);
 		bool targetSelf = m.moveDef.misc_info [MoveData.Target_Self];
-		int turn = getBattleSlotFromCreature(c);
-		switch (turn) {
-            case 1:
+		BattleSlotName battleSlotName = (BattleSlotName) getBattleSlotFromCreature(c);
+		switch (battleSlotName) {
+            case BattleSlotName.PLAYER1:
 		        attack.targets = new byte[] {(byte) (targetSelf ? 1 : 2)};
                 break;
-		    case 2: 
+		    case BattleSlotName.PLAYER2: 
                 attack.targets = new byte[] {(byte) (targetSelf ? 2 : 1)};
                 break;
-    		default: 
-    		    throw new System.InvalidOperationException("Invalid turn number for a single battle: "+turn);
 		}
 		return attack;
 	}
