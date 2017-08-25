@@ -40,7 +40,7 @@ public class Creature {
 			temp.id = Convert.ToInt32(row["id"]);
 			temp.nickname = row["nickname"];
 			temp.level = Convert.ToByte(row["level"]);
-			temp.misc_info = Sqlite.getBitsFromBlob(row["misc_info"]);
+			temp.misc_info = SqliteConnection.getBitsFromBlob(row["misc_info"]);
 			temp.stats = new short[] {
 			    Convert.ToInt16(row["atk"]),
 			    Convert.ToInt16(row["def"]),

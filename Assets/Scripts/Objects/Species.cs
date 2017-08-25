@@ -51,8 +51,8 @@ public class Species {
 			temp.ev_val = Convert.ToByte (row["ev_val"]);
 			temp.ev_type = (StatsType) Convert.ToByte (row["ev_type"]);
 			temp.max_exp = Convert.ToInt32 (row["max_exp"]);
-			temp.tm_list = Sqlite.getBitsFromBlob(row["tm_list"]);
-			temp.misc_info = Sqlite.getBitsFromBlob(row["misc_info"]);
+			temp.tm_list = SqliteConnection.getBitsFromBlob(row["tm_list"]);
+			temp.misc_info = SqliteConnection.getBitsFromBlob(row["misc_info"]);
 			temp.egg_steps = Convert.ToUInt16(row["egg_steps"]);
 			temp.egg_group_id1 = Convert.ToByte(row["egg_group1"]);
 			temp.egg_group_id2 = Convert.ToByte(row["egg_group2"]);

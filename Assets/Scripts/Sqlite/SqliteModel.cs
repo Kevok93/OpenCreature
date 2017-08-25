@@ -142,8 +142,8 @@ public class SqliteModel {
         Console.Out.WriteLine(query);
 		
 		IntPtr 
-    		prep_stmt = Sqlite.null_ptr,
-    		leftovers = Sqlite.null_ptr;
+    		prep_stmt = SqliteConnection.null_ptr,
+    		leftovers = SqliteConnection.null_ptr;
 		SqliteErrorCode retc = Sqlite.sqlite3_prepare_v2 (
 			db,
 			Encoding.Default.GetBytes (query),
@@ -170,8 +170,8 @@ public class SqliteModel {
 		        polygons[i+2] + ");\n";
 		}
         Console.Out.WriteLine(query);
-		IntPtr prep_stmt = Sqlite.null_ptr,
-		leftovers = Sqlite.null_ptr;
+		IntPtr prep_stmt = SqliteConnection.null_ptr,
+		leftovers = SqliteConnection.null_ptr;
 		SqliteErrorCode retc = Sqlite.sqlite3_prepare_v2 (
 			db,
 			Encoding.Default.GetBytes (query),

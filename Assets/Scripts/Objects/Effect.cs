@@ -20,7 +20,7 @@ public class Effect {
 	        temp.name = row["name"];
 	        temp.description = row["description"];
 	        temp.text = row["text"];
-	        temp.misc_info = Sqlite.getBitsFromBlob(row["misc_info"]);
+	        temp.misc_info = SqliteConnection.getBitsFromBlob(row["misc_info"]);
 	        temp.misc_val1 = Convert.ToByte(row["misc_val1"]);
 	        temp.misc_val2 = Convert.ToByte(row["misc_val2"]);
 	        temp.length = Convert.ToByte(row["length"]);
