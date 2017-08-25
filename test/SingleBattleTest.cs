@@ -8,7 +8,7 @@ namespace Tests
 	{
 		Trainer ash,gary,oak;
 		SingleBattle single_battle;
-		DoubleBattle double_battle;
+		//DoubleBattle double_battle;
 		
 		[SetUp]
 		[Test]

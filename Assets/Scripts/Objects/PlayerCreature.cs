@@ -1,12 +1,17 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 public class PlayerCreature : Creature {
     public static Dictionary<int,PlayerCreature> PLAYER_CREATURES;
     
     public int exp;
     public short ot, secret_ot;
+<<<<<<< HEAD
     public short[] evs;
     public short[] ivs;
+=======
+	public BetterEnumArray<StatsType,short> evs;
+	public BetterEnumArray<StatsType,short> ivs;
+>>>>>>> ccffb5f... Replacing the 'BetterEnum' class with a 'BetterEnumArray' class, allowing arrays to be indexed by enums.
 	private byte[] pp_cur, pp_max;
     public short happiness;
     
@@ -124,24 +129,28 @@ public class PlayerCreature : Creature {
                     ""+c.pp_cur[3],
                     ""+c.pp_max[3],
                     ""+c.hp,
-                    ""+c.stats[(int)StatsType.hp],
-                    ""+c.stats[(int)StatsType.atk],
-                    ""+c.stats[(int)StatsType.def],
-                    ""+c.stats[(int)StatsType.sp_atk],
-                    ""+c.stats[(int)StatsType.sp_def],
-                    ""+c.stats[(int)StatsType.speed],
-                    ""+c.evs[(int)StatsType.atk],
-                    ""+c.evs[(int)StatsType.def],
-                    ""+c.evs[(int)StatsType.sp_atk],
-                    ""+c.evs[(int)StatsType.sp_def],
-                    ""+c.evs[(int)StatsType.hp],
-                    ""+c.evs[(int)StatsType.speed],
-                    ""+c.ivs[(int)StatsType.atk],
-                    ""+c.ivs[(int)StatsType.def],
-                    ""+c.ivs[(int)StatsType.sp_atk],
-                    ""+c.ivs[(int)StatsType.sp_def],
-                    ""+c.ivs[(int)StatsType.hp],
-                    ""+c.ivs[(int)StatsType.speed],
+                    ""+c.stats[StatsType.hp],
+                    ""+c.stats[StatsType.atk],
+                    ""+c.stats[StatsType.def],
+                    ""+c.stats[StatsType.sp_atk],
+                    ""+c.stats[StatsType.sp_def],
+                    ""+c.stats[StatsType.speed],
+                    ""+c.evs[StatsType.atk],
+                    ""+c.evs[StatsType.def],
+                    ""+c.evs[StatsType.sp_atk],
+                    ""+c.evs[StatsType.sp_def],
+                    ""+c.evs[StatsType.hp],
+                    ""+c.evs[StatsType.speed],
+                    ""+c.ivs[StatsType.atk],
+                    ""+c.ivs[StatsType.def],
+                    ""+c.ivs[StatsType.sp_atk],
+                    ""+c.ivs[StatsType.sp_def],
+                    ""+c.ivs[StatsType.hp],
+                    ""+c.ivs[StatsType.speed],
+<<<<<<< HEAD
+>>>>>>> ccffb5f... Replacing the 'BetterEnum' class with a 'BetterEnumArray' class, allowing arrays to be indexed by enums.
+=======
+>>>>>>> b16250a... Missed a couple of diff tags
                     ""+c.happiness,
                     ""+SqliteConnection.getBlobFromBits(c.misc_info)
                 }

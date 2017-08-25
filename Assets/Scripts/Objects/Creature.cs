@@ -9,8 +9,8 @@ public class Creature {
 	public string nickname;
 	public short hp;
 	public byte level;
-	public short[] stats;
-	public bool[] misc_info;
+	public BetterEnumArray<StatsType,short> stats;
+	public BetterEnumArray<UniqueCreatureData,bool> misc_info;
 	public int species_id, ability_id, held_item_id;
 	public int[] move_ids;
     public byte nature_id;
@@ -33,7 +33,11 @@ public class Creature {
         this.stats = new short[6];
 	    for (int i = 0; i < 6; i++)
 	        this.stats[i] = getStat((byte) level, (StatsType) i);
-	    this.hp = stats[(int)StatsType.hp];
+	    this.hp = stats[StatsType.hp];
+<<<<<<< HEAD
+>>>>>>> ccffb5f... Replacing the 'BetterEnum' class with a 'BetterEnumArray' class, allowing arrays to be indexed by enums.
+=======
+>>>>>>> b16250a... Missed a couple of diff tags
 		
 		List<Move> availableMoves = new List<Move>(species.level_moves.Count);
 		foreach(LevelMove lm in species.level_moves) {
@@ -68,9 +72,18 @@ public class Creature {
 		this.nickname = species.name;
 	}
 	public short getStat(byte level, StatsType type) {
-	    int base_stat = species.base_stats[(int)type] * level / 50;
-        int mod_pct = (100 + nature.stats_mod[(int)type])/100;
+	    int base_stat = species.base_stats[type] * level / 50;
+<<<<<<< HEAD
+        int mod_pct = (100 + nature.stats_mod[type])/100;
         int mod_stat = (base_stat+5) * mod_pct;
+<<<<<<< HEAD
+>>>>>>> ccffb5f... Replacing the 'BetterEnum' class with a 'BetterEnumArray' class, allowing arrays to be indexed by enums.
+=======
+>>>>>>> b16250a... Missed a couple of diff tags
+=======
+        float mod_pct = (100f + nature.stats_mod[type])/100f;
+        int mod_stat = (int)((base_stat+5) * mod_pct);
+>>>>>>> 78b9222... Adding changes that were lost during the merge (?)
         return (short)mod_stat;
 	}
 	protected Creature(){}
@@ -109,7 +122,7 @@ public class Creature {
 			    Convert.ToInt16(row["hp"]),
 			    Convert.ToInt16(row["speed"]),
 			};
-			temp.hp = temp.stats[(int)StatsType.hp];
+			temp.hp = temp.stats[StatsType.hp];
 			temp.move_ids = new int[] {
 			    Convert.ToInt32(row["move1_id"]),
 			    Convert.ToInt32(row["move2_id"]),

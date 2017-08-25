@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System;
 public class LevelMove {
     public byte level;
@@ -34,7 +34,7 @@ public class Nature {
 	public static Dictionary<int,Nature> NATURES;
 	public int id;
 	public string name;
-	public sbyte[] stats_mod;
+	public BetterEnumArray<StatsType,sbyte> stats_mod;
 	public static void init(List<Dictionary<string,string>> nature_defs) {
 		NATURES = new Dictionary<int, Nature> (nature_defs.Count);
 		foreach (Dictionary<string,string> row in nature_defs) {

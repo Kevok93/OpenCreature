@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System;
 
 public class Species {
@@ -13,7 +13,7 @@ public class Species {
 		ev_val;
 	public StatsType ev_type;
     public short base_happiness;
-	public bool[] misc_info;
+	public BetterEnumArray<UniqueCreatureData,bool> misc_info;
 	public ushort egg_steps;
 	public byte egg_group_id1, egg_group_id2;
 	public int wild_item_id;
@@ -22,7 +22,7 @@ public class Species {
 	public string classification, dex_entry;
 	public int cry_sfx_id;
 	public string path_to_sprites;
-	public short[] 
+	public BetterEnumArray<StatsType,short> 
 		base_stats,
 		max_stats;
 	public int max_exp;
@@ -70,20 +70,20 @@ public class Species {
 			temp.path_to_sprites = row["sprite_path"];
 			
 			temp.base_stats = new short[6];
-			temp.base_stats[(int)StatsType.atk] = Convert.ToInt16(row["base_atk"]);
-			temp.base_stats[(int)StatsType.def] = Convert.ToInt16(row["base_def"]);
-			temp.base_stats[(int)StatsType.sp_atk] = Convert.ToInt16 (row["base_spatk"]);
-			temp.base_stats[(int)StatsType.sp_def] = Convert.ToInt16 (row["base_spdef"]);
-			temp.base_stats[(int)StatsType.hp] = Convert.ToInt16(row["base_hp"]);
-			temp.base_stats[(int)StatsType.speed] = Convert.ToInt16(row["base_speed"]);
+			temp.base_stats[StatsType.atk] = Convert.ToInt16(row["base_atk"]);
+			temp.base_stats[StatsType.def] = Convert.ToInt16(row["base_def"]);
+			temp.base_stats[StatsType.sp_atk] = Convert.ToInt16 (row["base_spatk"]);
+			temp.base_stats[StatsType.sp_def] = Convert.ToInt16 (row["base_spdef"]);
+			temp.base_stats[StatsType.hp] = Convert.ToInt16(row["base_hp"]);
+			temp.base_stats[StatsType.speed] = Convert.ToInt16(row["base_speed"]);
 			
 			temp.max_stats  = new short[6];
-			temp.max_stats[(int)StatsType.atk] = Convert.ToInt16(row["max_atk"]);
-			temp.max_stats[(int)StatsType.def] = Convert.ToInt16(row["max_def"]);
-			temp.max_stats[(int)StatsType.sp_atk] = Convert.ToInt16 (row["max_spatk"]);
-			temp.max_stats[(int)StatsType.sp_def] = Convert.ToInt16 (row["max_spdef"]);
-			temp.max_stats[(int)StatsType.hp] = Convert.ToInt16(row["max_hp"]);
-			temp.max_stats[(int)StatsType.speed] = Convert.ToInt16(row["max_speed"]);
+			temp.max_stats[StatsType.atk] = Convert.ToInt16(row["max_atk"]);
+			temp.max_stats[StatsType.def] = Convert.ToInt16(row["max_def"]);
+			temp.max_stats[StatsType.sp_atk] = Convert.ToInt16 (row["max_spatk"]);
+			temp.max_stats[StatsType.sp_def] = Convert.ToInt16 (row["max_spdef"]);
+			temp.max_stats[StatsType.hp] = Convert.ToInt16(row["max_hp"]);
+			temp.max_stats[StatsType.speed] = Convert.ToInt16(row["max_speed"]);
 			temp.level_moves = new LinkedList<LevelMove>();
             temp.evolutions = new LinkedList<Evolution>();
 			SPECIES[temp.id] = temp;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 public class Item {
@@ -7,7 +7,11 @@ public class Item {
 	public string name, description;
 	public short price;
 	public sbyte misc_val1, misc_val2;
+<<<<<<< HEAD
 	public bool[] misc_info;
+=======
+	public BetterEnumArray<ItemData,bool> misc_info;
+>>>>>>> ccffb5f... Replacing the 'BetterEnum' class with a 'BetterEnumArray' class, allowing arrays to be indexed by enums.
 	public string sprite_path;
 	
 	public byte item_type_id;

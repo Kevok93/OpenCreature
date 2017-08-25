@@ -1,4 +1,4 @@
-﻿
+
 public class DoubleBattle : MultiBattle {
     public DoubleBattle(Trainer t1, Trainer t2) {
 		trainers = new Trainer[] {t1,t1,t2,t2};

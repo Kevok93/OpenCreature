@@ -44,7 +44,7 @@ public class SqliteModel {
 			ref prep_stmt,
 			ref leftovers
 		);
-		string retc_string = retc.ToString();
+		//string retc_string = retc.ToString();
 		Dictionary<int,float[]> vertexList = null;
 		if (retc == SqliteErrorCode.SQLITE_OK) {
 			vertexList = new Dictionary<int,float[]> ();

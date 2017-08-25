@@ -10,7 +10,7 @@ public class Trainer {
 	public int reward;
 	public int rematch_trainer_id;
 	public string victory_quote;
-	public bool[] misc_info;
+	public BetterEnumArray<TrainerData,bool> misc_info;
 
 	public Trainer rematch_trainer;
 	public Creature[] creatures;

@@ -1,4 +1,4 @@
-﻿
+
 public class MultiBattle : Battle {
 	protected MultiBattle() {}
     public MultiBattle(Trainer t1, Trainer t2, Trainer t3, Trainer t4) {
@@ -28,7 +28,11 @@ public class MultiBattle : Battle {
 	}
 	public override Attack queueAttack(Creature c, LearnedMove m, sbyte target = -1) {
 		Attack newAttack = base.queueAttack(c, m, target);
+<<<<<<< HEAD
 		if (m.moveDef.misc_info [(int)MoveData.Target_Single]) {
+=======
+		if (m.moveDef.misc_info [MoveData.Target_Single]) {
+>>>>>>> ccffb5f... Replacing the 'BetterEnum' class with a 'BetterEnumArray' class, allowing arrays to be indexed by enums.
 		    if (target >= 0) throw new System.InvalidOperationException ("Using a single target move without a valid target!");
 		    else newAttack.targets = new byte[] {(byte)target};
 		} else if (m.moveDef.misc_info [(int)MoveData.Target_All])
@@ -47,7 +51,11 @@ public class MultiBattle : Battle {
                     break;
         		default: 
         		    throw new System.InvalidOperationException("Invalid turn number for a single battle: "+turn);
+<<<<<<< HEAD
 		} else if (m.moveDef.misc_info [(int)MoveData.Target_Both])
+=======
+		} else if (m.moveDef.misc_info [MoveData.Target_Both])
+>>>>>>> ccffb5f... Replacing the 'BetterEnum' class with a 'BetterEnumArray' class, allowing arrays to be indexed by enums.
             switch (turn) {
                 case 0:
                 case 1:
@@ -59,9 +67,15 @@ public class MultiBattle : Battle {
                     break;
                 default: 
                     throw new System.InvalidOperationException("Invalid turn number for a single battle: " + turn);
+<<<<<<< HEAD
 		} else if (m.moveDef.misc_info[(int)MoveData.Target_Self]) {
 		  newAttack.targets = new byte[] { (byte) turn };
 		} else if (m.moveDef.misc_info[(int)MoveData.Target_Ally])
+=======
+		} else if (m.moveDef.misc_info[MoveData.Target_Self]) {
+		  newAttack.targets = new byte[] { (byte) turn };
+		} else if (m.moveDef.misc_info[MoveData.Target_Ally])
+>>>>>>> ccffb5f... Replacing the 'BetterEnum' class with a 'BetterEnumArray' class, allowing arrays to be indexed by enums.
 			switch (turn) {
 			    case 0:
 			        newAttack.targets = new byte[] { 1 };

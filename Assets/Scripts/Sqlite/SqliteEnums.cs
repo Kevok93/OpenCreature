@@ -1,4 +1,4 @@
-﻿// These are the options to the internal sqlite3_config call.
+// These are the options to the internal sqlite3_config call.
 public enum SqliteOpenOpts {
 	SQLITE_OPEN_READONLY = 1,  // Ok for sqlite3_open_v2()
 	SQLITE_OPEN_READWRITE = 2,  // Ok for sqlite3_open_v2()

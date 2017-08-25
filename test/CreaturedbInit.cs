@@ -10,6 +10,7 @@ namespace Tests{
 		[SetUp()]
 		public void Initialization () {
 			Creaturedb.initialize();
+			Assert.False(Creaturedb.initialize());
 		}
 	}
 }

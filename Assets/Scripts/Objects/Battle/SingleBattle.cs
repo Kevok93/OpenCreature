@@ -1,4 +1,4 @@
-﻿
+
 public class SingleBattle : Battle {
     public SingleBattle(Trainer t1, Trainer t2) {
 		attacks = new System.Collections.Generic.List<Attack>();
@@ -22,7 +22,7 @@ public class SingleBattle : Battle {
 
 	public override Attack queueAttack(Creature c, LearnedMove m, sbyte target = -1) {
 		Attack attack = base.queueAttack(c, m, target);
-		bool targetSelf = m.moveDef.misc_info [(int)MoveData.Target_Self];
+		bool targetSelf = m.moveDef.misc_info [MoveData.Target_Self];
 		switch (turn) {
             case 0:
 		        attack.targets = new byte[] {(byte) (targetSelf ? 0 : 1)};

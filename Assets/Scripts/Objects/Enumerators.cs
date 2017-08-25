@@ -1,15 +1,51 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 
+<<<<<<< HEAD
 public class BetterEnum<T> {
+    public T value;
+
+    BetterEnum(T value) { this.value = value; }
+    BetterEnum(int value) { this.value = (T)(typeof(T).GetEnumValues()).GetValue(value); }
+    public static implicit operator BetterEnum<T>(int value) { return new BetterEnum<T>(value); }
+    public static implicit operator BetterEnum<T>(T value) { return new BetterEnum<T>(value); }
+    public static implicit operator int(BetterEnum<T> type) { return Convert.ToInt32(type.value); }
+    public static implicit operator T(BetterEnum<T> type) { return type.value; }
+    public override string ToString() {return value.ToString();}
+=======
+/*public class BetterEnum<T> {
     public T value;
 
     BetterEnum(T value) { this.value = value; }
     public static implicit operator BetterEnum<T>(T value) { return new BetterEnum<T>(value); }
     public static implicit operator int(BetterEnum<T> type) { return Convert.ToInt32(type.value); }
     public static implicit operator T(BetterEnum<T> type) { return type.value; }
+}*/
+
+public class BetterEnumArray<T1,T2> {
+	T2[] array;
+	BetterEnumArray() {
+		array = new T2[((int[])Enum.GetValues (typeof(T1))).Count ()];
+	}
+	public static implicit operator BetterEnumArray<T1,T2>(T2[] value) { 
+		var temp = new BetterEnumArray<T1,T2> ();
+		temp.array = value;
+		return temp;
+	}
+	public static implicit operator T2[](BetterEnumArray<T1,T2> value) {
+		return value.array;
+	}
+	public T2 this[T1 i] {
+		get{return array[Convert.ToInt32(i)];}
+		set{array[Convert.ToInt32(i)] = value;}
+	}
+	public T2 this[int i] {
+		get{return array[i];}
+		set{array[i] = value;}
+	}
+>>>>>>> ccffb5f... Replacing the 'BetterEnum' class with a 'BetterEnumArray' class, allowing arrays to be indexed by enums.
 }
 public enum MoveAffinity  {
     Physical	    = 1,
