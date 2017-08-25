@@ -23,7 +23,7 @@ public abstract class Battle {
 		Attack attack = new Attack();
 		attack.attacker = c;
 		attack.usedMove = m;
-		attack.speed = c.stats [BetterEnum<StatsType>.speed];
+		attack.speed = c.stats [(int)StatsType.speed];
 		attacks.Add(attack);
 		return attack;
 	}
