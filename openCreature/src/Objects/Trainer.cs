@@ -55,7 +55,7 @@ public class Trainer : DeserializedElement {
 				Convert.ToInt32(row["item5"]),
 				Convert.ToInt32(row["item6"]),
 			};
-			temp.misc_info = SqliteConnection.getBitsFromBlob (row ["misc_info"]);
+			temp.misc_info = SqliteWrapper.getBitsFromBlob (row ["misc_info"]);
 			TRAINERS[temp.id] = temp;
 		}
 	}

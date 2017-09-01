@@ -23,7 +23,7 @@ public static class Globals {
         log.Debug("Logger initialized");
         RNG = new Random(57760); 
         binary_location = Assembly.GetCallingAssembly().Location;
-        binary_directory = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar;
+	    binary_directory = Path.GetDirectoryName(binary_location) + Path.DirectorySeparatorChar;
 		Directory.GetFiles(binary_directory).AsEnumerable().ToList().ForEach(Console.Error.WriteLine);
     }
     
@@ -51,12 +51,12 @@ public static class Globals {
         patternLayout.ActivateOptions();
         
         var console = new ManagedColoredConsoleAppender();
-        var TRACE   = new ManagedColoredConsoleAppender.LevelColors(); TRACE.Level = Level.Trace; TRACE.ForeColor = ConsoleColor.White  ;
-        var DEBUG   = new ManagedColoredConsoleAppender.LevelColors(); DEBUG.Level = Level.Debug; DEBUG.ForeColor = ConsoleColor.Green  ;
-        var INFO    = new ManagedColoredConsoleAppender.LevelColors(); INFO .Level = Level.Info ; INFO .ForeColor = ConsoleColor.Cyan ;
-        var WARN    = new ManagedColoredConsoleAppender.LevelColors(); WARN .Level = Level.Warn ; WARN .ForeColor = ConsoleColor.Yellow;
-        var ERROR   = new ManagedColoredConsoleAppender.LevelColors(); ERROR.Level = Level.Error; ERROR.ForeColor = ConsoleColor.Magenta   ;
-        var FATAL   = new ManagedColoredConsoleAppender.LevelColors(); FATAL.Level = Level.Fatal; FATAL.ForeColor = ConsoleColor.Red   ;
+        var TRACE   = new ManagedColoredConsoleAppender.LevelColors{Level = Level.Trace, ForeColor = ConsoleColor.White   } ;
+        var DEBUG   = new ManagedColoredConsoleAppender.LevelColors{Level = Level.Debug, ForeColor = ConsoleColor.Green   } ;
+        var INFO    = new ManagedColoredConsoleAppender.LevelColors{Level = Level.Info , ForeColor = ConsoleColor.Cyan    } ;
+        var WARN    = new ManagedColoredConsoleAppender.LevelColors{Level = Level.Warn , ForeColor = ConsoleColor.Yellow  } ;
+        var ERROR   = new ManagedColoredConsoleAppender.LevelColors{Level = Level.Error, ForeColor = ConsoleColor.Magenta } ;
+        var FATAL   = new ManagedColoredConsoleAppender.LevelColors{Level = Level.Fatal, ForeColor = ConsoleColor.Red     } ;
 
         console.AddMapping( TRACE );
         console.AddMapping( DEBUG );
@@ -69,13 +69,19 @@ public static class Globals {
         console.Layout = patternLayout;
         hierarchy.Root.AddAppender(console);
         
-        var unity = new UnityLogAppender();
-        console.Layout = patternLayout;
-        hierarchy.Root.AddAppender(unity);
-        
         hierarchy.Root.Level = Level.Trace;
         hierarchy.Configured = true;
     }
+
+	public static sbyte toRoundedSbyte(Object byte_obj) {
+		byte byte_val = Convert.ToByte(byte_obj);
+		sbyte sbyte_val = (sbyte)(
+			(byte_val > sbyte.MaxValue) 
+				? byte_val - 256
+				: byte_val
+		);
+		return sbyte_val;
+	}
     
 }
 }

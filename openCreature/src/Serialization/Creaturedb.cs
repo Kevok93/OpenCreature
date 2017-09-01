@@ -6,60 +6,66 @@ namespace opencreature {
 public class Creaturedb {
 	const string PREFIX = "CREATURE.DB";
 	private static bool init = false;
-	private static SqliteConnection db;
+	private static SqliteWrapper db;
     public static Dictionary<string, TypeCastDictionary<int, DeserializedElement>> TABLE_OBJECTS;
 	
 	private Creaturedb(){}
 	public static bool initialize() {
 	    if (init) return false;
 	    var log = log4net.LogManager.GetLogger("Creature.db");
-	    db = new SqliteConnection(Globals.binary_directory+"creature.db", SqliteOpenOpts.SQLITE_OPEN_READONLY);
+		log.Debug(Globals.binary_location);
+	    db = new SqliteWrapper(
+			"Data Source="+Globals.binary_directory+"creature.db;"+
+		    "Version=3;"+
+			"Read Only=True;"+
+			"FailIfMissing=True;"
+	    );
 	    log.Info("Deserializing creature.db");
 	    long count;
 
 	    
 	    #region Init
 	    count = Element.init(
-	        db["SELECT * FROM types"][0],
-	        db["SELECT * FROM type_bonus"][0]
+	        db["SELECT * FROM types"],
+	        db["SELECT * FROM type_bonus"]
 	    );
 	    log.Debug(count + " Elements loaded");
 
 	    count = Species.init(
-	        db["SELECT * FROM species;"][0],
-	        db["SELECT * FROM level_moves"][0],
-	        db["SELECT * FROM evolution"][0]
+	        db["SELECT * FROM species;"],
+	        db["SELECT * FROM level_moves"],
+	        db["SELECT * FROM evolution"]
 	    );
 	    log.Debug(count + " Species loaded");
 
-	    count = Move.init(db["SELECT * FROM moves"][0]);
+	    count = Move.init(db["SELECT * FROM moves"]);
 	    log.Debug(count + " Moves loaded");
 
-	    count = Ability.init(db["SELECT * FROM abilities"][0]);
+	    count = Ability.init(db["SELECT * FROM abilities"]);
 	    log.Debug(count + " Abilities loaded");
 
-	    count = Effect.init(db["SELECT * FROM effects"][0]);
+	    count = Effect.init(db["SELECT * FROM effects"]);
 	    log.Debug(count + " Effects loaded");
 
-	    count = Nature.init(db["SELECT * FROM natures"][0]);
+	    count = Nature.init(db["SELECT * FROM natures"]);
 	    log.Debug(count + " Natures loaded");
 
-	    count = EggGroup.init(db["SELECT * FROM egg_groups"][0]);
+	    count = EggGroup.init(db["SELECT * FROM egg_groups"]);
 	    log.Debug(count + " Egg Types loaded");
 
-	    count = ItemType.init(db["SELECT * FROM item_type"][0]);
+	    count = ItemType.init(db["SELECT * FROM item_type"]);
 	    log.Debug(count + " Item Types loaded");
 
-	    count = Item.init(db["SELECT * FROM items"][0]);
+	    count = Item.init(db["SELECT * FROM items"]);
 	    log.Debug(count + " Items loaded");
 	    
-	    count = Creature.init_unique(db["SELECT * FROM unique_creature"][0]);
+	    count = Creature.init_unique(db["SELECT * FROM unique_creature"]);
 	    log.Debug(count + " Creatures loaded");
 
-	    count = PlotFlag.init(db["SELECT * FROM plot_flag"][0]);
+	    count = PlotFlag.init(db["SELECT * FROM plot_flag"]);
 	    log.Debug(count + " Plot Flags loaded");
 
-	    count = Npc.init(db["SELECT * FROM npc"][0]);
+	    count = Npc.init(db["SELECT * FROM npc"]);
 	    log.Debug(count + " NPCs loaded");
 
 	    #endregion
@@ -86,17 +92,17 @@ public class Creaturedb {
 	    #endregion
 
         TABLE_OBJECTS = new Dictionary<string, TypeCastDictionary<int, DeserializedElement>>() {
-                {"Elements"     ,opencreature.Element.TYPES         },
-                {"Abilities"    ,opencreature.Ability.ABILITIES     },
-                {"Egg Groups"   ,opencreature.EggGroup.EGG_GROUPS   },
-                {"Items"        ,opencreature.Item.ITEMS            },
-                {"Item Classes" ,opencreature.ItemType.ITEM_TYPES   },
-                {"Moves"        ,opencreature.Move.MOVES            },
-                {"Natures"      ,opencreature.Nature.NATURES        },
-                {"Effects"      ,opencreature.Effect.EFFECTS        },
-                {"Species"      ,opencreature.Species.SPECIES       },
-                {"NPCs"         ,opencreature.Npc.NPCS              },
-                {"Plot Flags"   ,opencreature.PlotFlag.PLOT_FLAG_ID },
+                {"Elements"     , Element.TYPES         },
+                {"Abilities"    , Ability.ABILITIES     },
+                {"Egg Groups"   , EggGroup.EGG_GROUPS   },
+                {"Items"        , Item.ITEMS            },
+                {"Item Classes" , ItemType.ITEM_TYPES   },
+                {"Moves"        , Move.MOVES            },
+                {"Natures"      , Nature.NATURES        },
+                {"Effects"      , Effect.EFFECTS        },
+                {"Species"      , Species.SPECIES       },
+                {"NPCs"         , Npc.NPCS              },
+                {"Plot Flags"   , PlotFlag.PLOT_FLAG_ID },
         };
 
 	    init = true;

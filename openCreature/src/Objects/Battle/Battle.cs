@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Collections;
 using System;
 using System.Linq;
-using UnityEditor;
 
 namespace opencreature {
 public abstract class Battle {
@@ -73,73 +72,44 @@ public abstract class Battle {
 		}
 		return false;
 	}
-	
-<<<<<<< HEAD
+
 	public bool attack(Creature attacker, LearnedMove usedMove, Creature target) {
-<<<<<<< HEAD
 		if (usedMove.moveDef.power > 0) {
 			float crit_chance = .85f; //TODO: Crit bonuses
 			float crit_bonus = Globals.RNG.NextDouble() > crit_chance ? 2f : 1f;
-			float type_bonus = 
+			float type_bonus =
 				Element.getTypeBonus(usedMove.moveDef.type_id, target.species.type_id1) *
 				Element.getTypeBonus(usedMove.moveDef.type_id, target.species.type_id2);
 			float power_mod = 1f; //TODO: mod power
 			float stab_bonus = (
-                usedMove.moveDef.movetype == attacker.species.type1 ||
-                usedMove.moveDef.movetype == attacker.species.type2
-            ) ? 1.5f : 1f;
+				usedMove.moveDef.movetype == attacker.species.type1 ||
+				usedMove.moveDef.movetype == attacker.species.type2
+			)
+				? 1.5f
+				: 1f;
 			float atk_def_ratio = 0f;
-			if (usedMove.moveDef.affinity != MoveAffinity.Other) atk_def_ratio = 
-				(float)attacker.stats[usedMove.moveDef.atkAffinity] /
-				(float)target.stats[usedMove.moveDef.defAffinity];
+			if (usedMove.moveDef.affinity != MoveAffinity.Other)
+				atk_def_ratio =
+					(float) attacker.stats[usedMove.moveDef.atkAffinity] /
+					(float) target.stats[usedMove.moveDef.defAffinity];
 			float base_damage = (
-                usedMove.moveDef.power
-                * atk_def_ratio
-                * ((2 * attacker.level + 10) / 250f)
-            ) + 2;
-			float mod_damage = 
+				usedMove.moveDef.power
+				* atk_def_ratio
+				* ((2 * attacker.level + 10) / 250f)
+			) + 2;
+			float mod_damage =
 				stab_bonus *
 				type_bonus *
 				crit_bonus *
 				power_mod *
 				(Globals.RNG.NextFloat() * .15f + .85f);
-			short damage = (short)(base_damage * mod_damage);
+			short damage = (short) (base_damage * mod_damage);
 			System.Console.WriteLine(System.String.Format("{0} did {1} damage to {2}", attacker, damage, target));
 			target.hp -= damage;
 		}
-=======
-		float crit_chance = .85f; //TODO: Crit bonuses
-		float crit_bonus = Globals.RNG.NextDouble() > crit_chance ? 2f : 1f;
-		float type_bonus = 
-			Type.getTypeBonus(usedMove.moveDef.type_id, target.species.type_id1) *
-			Type.getTypeBonus(usedMove.moveDef.type_id, target.species.type_id2);
-		float power_mod = 1f; //TODO: mod power
-		float stab_bonus = (
-			usedMove.moveDef.movetype == attacker.species.type1 || 
-			usedMove.moveDef.movetype == attacker.species.type2
-		) ? 1.5f : 1f;
-		float atk_def_ratio = 
-			(float)(attacker.stats[usedMove.moveDef.atkAffinity]) /
-			(float)(target.stats[usedMove.moveDef.defAffinity]);
-			
-		float base_damage = (
-            usedMove.moveDef.power
-            * atk_def_ratio
-            * ((2 * attacker.level + 10) / 250f)
-        ) + 2;
-        
-		float mod_damage = 
-			stab_bonus *
-			type_bonus *
-			crit_bonus *
-			power_mod *
-			(Globals.RNG.NextFloat() * .15f + .85f);
-		short damage = (short)( base_damage * mod_damage);
-			
-		target.hp -= damage;
->>>>>>> ccffb5f... Replacing the 'BetterEnum' class with a 'BetterEnumArray' class, allowing arrays to be indexed by enums.
 		return target.hp <= 0;
-=======
+	}
+
 	public void checkForDeath() {
     	foreach (int j in Enumerable.Range(1,attackQueue.Count))
 			if (battleSlots[j].activeCreature.hp <= 0) 
@@ -160,7 +130,6 @@ public abstract class Battle {
 	
 	public int getBattleSlotFromCreature(Creature c) {
 		return battleSlots.First(pair => pair.Value.activeCreature == c).Key;
->>>>>>> 0d244c8... Rewrite of battle class. Move attack into separate file.
 	}
 }
 }

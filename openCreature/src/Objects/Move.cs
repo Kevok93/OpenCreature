@@ -31,7 +31,7 @@ public class Move : DeserializedElement {
 			temp.world_effect_id = System.Convert.ToByte (row["world_effect_id"]);
 			temp.battle_effect_id = System.Convert.ToByte (row["battle_effect_id"]);
 			temp.affinity = (MoveAffinity)(System.Convert.ToByte (row["affinity"]));
-			temp.misc_info = SqliteConnection.getBitsFromBlob(row["misc_info"]);
+			temp.misc_info = SqliteWrapper.getBitsFromBlob(row["misc_info"]);
 			temp.misc_value = System.Convert.ToByte(row["misc_val"]);
 			temp.description = row["description"];
             switch (temp.affinity) {

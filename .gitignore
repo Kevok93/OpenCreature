@@ -11,3 +11,4 @@ OpenCover*
 testrunner_out*
 *.suo
 *.pdb
+packages/

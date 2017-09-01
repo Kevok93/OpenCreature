@@ -8,13 +8,8 @@ public class PlayerCreature : Creature {
     
     public int exp;
     public short ot, secret_ot;
-<<<<<<< HEAD
-    public short[] evs;
-    public short[] ivs;
-=======
 	public BetterEnumArray<StatsType,short> evs;
 	public BetterEnumArray<StatsType,short> ivs;
->>>>>>> ccffb5f... Replacing the 'BetterEnum' class with a 'BetterEnumArray' class, allowing arrays to be indexed by enums.
 	private byte[] pp_cur, pp_max;
     public short happiness;
     
@@ -38,7 +33,7 @@ public class PlayerCreature : Creature {
 			temp.hp = Convert.ToInt16(row["hp_cur"]);
 			temp.exp = Convert.ToByte(row["exp"]);
 			temp.level = Convert.ToByte(row["level"]);
-			temp.misc_info = SqliteConnection.getBitsFromBlob(row["misc_info"]);
+			temp.misc_info = SqliteWrapper.getBitsFromBlob(row["misc_info"]);
 			temp.stats = new short[] {
 			    Convert.ToInt16(row["atk"]),
 			    Convert.ToInt16(row["def"]),
@@ -151,12 +146,8 @@ public class PlayerCreature : Creature {
                     ""+c.ivs[StatsType.sp_def],
                     ""+c.ivs[StatsType.hp],
                     ""+c.ivs[StatsType.speed],
-<<<<<<< HEAD
->>>>>>> ccffb5f... Replacing the 'BetterEnum' class with a 'BetterEnumArray' class, allowing arrays to be indexed by enums.
-=======
->>>>>>> b16250a... Missed a couple of diff tags
                     ""+c.happiness,
-                    ""+SqliteConnection.getBlobFromBits(c.misc_info)
+                    ""+SqliteWrapper.getBlobFromBits(c.misc_info)
                 }
             ));
         }

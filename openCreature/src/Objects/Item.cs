@@ -7,11 +7,7 @@ public class Item : DeserializedElement {
 	public string name, description;
 	public short price;
 	public sbyte misc_val1, misc_val2;
-<<<<<<< HEAD
-	public bool[] misc_info;
-=======
 	public BetterEnumArray<ItemData,bool> misc_info;
->>>>>>> ccffb5f... Replacing the 'BetterEnum' class with a 'BetterEnumArray' class, allowing arrays to be indexed by enums.
 	public string sprite_path;
 	
 	public byte item_type_id;
@@ -29,7 +25,7 @@ public class Item : DeserializedElement {
 			temp.price = Convert.ToInt16(row["price"]);
 			temp.misc_val1 = Convert.ToSByte(row["misc_val1"]);
 			temp.misc_val2 = Convert.ToSByte(row["misc_val2"]);
-			temp.misc_info = SqliteConnection.getBitsFromBlob(row["misc_info"]);
+			temp.misc_info = SqliteWrapper.getBitsFromBlob(row["misc_info"]);
 			temp.battle_effect_id = Convert.ToInt32(row["battle_effect"]);
 			temp.world_effect_id = Convert.ToInt32(row["world_effect"]);
 			temp.held_effect_id = Convert.ToInt32(row["held_effect"]);

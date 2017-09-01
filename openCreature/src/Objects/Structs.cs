@@ -48,12 +48,12 @@ public class Nature : DeserializedElement {
 			temp.id = Convert.ToInt32 (row ["id"]);
 			temp.name = row ["name"];
 			temp.stats_mod = new sbyte[] {
-				Convert.ToSByte(row["atk"]),
-				Convert.ToSByte(row["def"]),
-				Convert.ToSByte(row["spatk"]),
-				Convert.ToSByte(row["spdef"]),
+				Globals.toRoundedSbyte(row["atk"]),
+				Globals.toRoundedSbyte(row["def"]),
+				Globals.toRoundedSbyte(row["spatk"]),
+				Globals.toRoundedSbyte(row["spdef"]),
 				0,
-				Convert.ToSByte(row["speed"]),
+				Globals.toRoundedSbyte(row["speed"]),
 			};
 			NATURES [temp.id] = temp;
 		}

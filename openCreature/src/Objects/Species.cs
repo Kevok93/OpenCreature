@@ -54,8 +54,8 @@ public class Species : DeserializedElement {
 			temp.ev_val = Convert.ToByte (row["ev_val"]);
 			temp.ev_type = (StatsType) Convert.ToByte (row["ev_type"]);
 			temp.max_exp = Convert.ToInt32 (row["max_exp"]);
-			temp.tm_list = SqliteConnection.getBitsFromBlob(row["tm_list"]);
-			temp.misc_info = SqliteConnection.getBitsFromBlob(row["misc_info"]);
+			temp.tm_list = SqliteWrapper.getBitsFromBlob(row["tm_list"]);
+			temp.misc_info = SqliteWrapper.getBitsFromBlob(row["misc_info"]);
 			temp.ability_id1 = Convert.ToByte(row["ability1"]);
 			temp.ability_id2 = Convert.ToByte(row["ability2"]);
 			temp.egg_steps = Convert.ToUInt16(row["egg_steps"]);
