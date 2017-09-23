@@ -2,7 +2,7 @@ using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using opencreature;
+using opencreature; 
 
 namespace Tests{
 	[TestFixture]

@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.0.0
 MinimumVisualStudioVersion = 10.0.0.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "openCreature", "openCreature\openCreature.csproj", "{8A01647F-C413-44E7-B5F0-CF8809894DC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "openCreatureTest", "openCreature\openCreatureTest.csproj", "{83BF32FD-F509-418D-92DE-47784847F3A0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "openCreatureTest", "openCreature\test\openCreatureTest.csproj", "{83BF32FD-F509-418D-92DE-47784847F3A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8A01647F-C413-44E7-B5F0-CF8809894DC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8A01647F-C413-44E7-B5F0-CF8809894DC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8A01647F-C413-44E7-B5F0-CF8809894DC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8A01647F-C413-44E7-B5F0-CF8809894DC5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{83BF32FD-F509-418D-92DE-47784847F3A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{83BF32FD-F509-418D-92DE-47784847F3A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{83BF32FD-F509-418D-92DE-47784847F3A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{83BF32FD-F509-418D-92DE-47784847F3A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A01647F-C413-44E7-B5F0-CF8809894DC5}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{8A01647F-C413-44E7-B5F0-CF8809894DC5}.Debug|Any CPU.Build.0 = Debug|x86
+		{83BF32FD-F509-418D-92DE-47784847F3A0}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{83BF32FD-F509-418D-92DE-47784847F3A0}.Debug|Any CPU.Build.0 = Debug|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
