@@ -1,49 +1,41 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
+using Mono.Data.Sqlite;
 using System.Linq;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 namespace opencreature {
     public class SqliteWrapper {
         static log4net.ILog log = log4net.LogManager.GetLogger("SqliteWrapper");
-        SQLiteConnection dbh;
+        SqliteConnection dbh;
+        
         public SqliteWrapper(String connect_string) {
-            dbh = new SQLiteConnection(connect_string);
+            log.Debug("Attemting to open logfile "+connect_string);
+            dbh = new SqliteConnection(connect_string);
             dbh.Open();
         }
 
         public List<Dictionary<string,string>> simpleQuery(string query) {
-            SQLiteCommand cmd = new SQLiteCommand(query,dbh);
+            SqliteCommand cmd = new SqliteCommand(query,dbh);
             var reader = cmd.ExecuteReader();
             
             List<Dictionary<string,string>> results = new List<Dictionary<string, string>>();
             while (reader.Read()) {
                 Dictionary<string,string> row = new Dictionary<string, string>();
-                for (int i = 0; i < reader.FieldCount; i++) {
-                    try {
-                        if (reader.GetFieldType(i).IsArray) {
-                            row.Add(
-                                reader.GetName(i),
-                                new SoapHexBinary((byte[])reader.GetValue(i)).ToString()
-                            );
-                        } else {
-                            row.Add(
-                                reader.GetName(i),
-                                reader.GetValue(i).ToString()
-                            );
-                        }
-                    } catch (Exception e) {
-                        log.ErrorFormat(
-                            "Error converting row to string. {0}.{1}'s type is {2}.",
-                            reader.GetTableName(i),
-                            reader.GetName(i), 
-                            reader.GetFieldType(i)
-                        );
-                        throw e;
-                    }
+                for (int i = 0; i < reader.FieldCount; i++) try {
+                    row.Add(
+                        reader.GetName(i),
+                        reader.GetFieldType(i).IsArray
+                            ? new SoapHexBinary((byte[])reader.GetValue(i)).ToString()
+                            : reader.GetValue(i).ToString()
+                    );
+                } catch (Exception e) {
+                    log.ErrorFormat(
+                        "Error converting row to string. {0}'s type is {1}.",
+                        reader.GetName(i), 
+                        reader.GetFieldType(i)
+                    );
+                    throw;
                 }
                 results.Add(row);
             }

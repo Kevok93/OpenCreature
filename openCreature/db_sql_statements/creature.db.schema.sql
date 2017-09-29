@@ -63,11 +63,11 @@ CREATE TABLE egg_groups (
 CREATE TABLE natures (
 	`id` tinyint check (`id` between 0 and 255),
 	`name` varchar(16),
-	`atk` tinyint check (`atk` between -127 and 127),
-	`def` tinyint check (`def` between -127 and 127),
-	`spatk` tinyint check (`spatk` between -127 and 127),
-	`spdef` tinyint check (`spdef` between -127 and 127),
-	`speed` tinyint check (`speed` between -127 and 127),
+	`atk` signed tinyint check (`atk` between -127 and 127),
+	`def` signed tinyint check (`def` between -127 and 127),
+	`spatk` signed tinyint check (`spatk` between -127 and 127),
+	`spdef` signed tinyint check (`spdef` between -127 and 127),
+	`speed` signed tinyint check (`speed` between -127 and 127),
 	constraint `pk_natures` primary key (`id`) on conflict rollback
 );
 CREATE TABLE moves (
