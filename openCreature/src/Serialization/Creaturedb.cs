@@ -6,7 +6,7 @@ namespace opencreature {
 public class Creaturedb {
 	const string PREFIX = "CREATURE.DB";
 	private static bool init = false;
-	private static SqliteWrapper db;
+	private static SqliteConnection db;
     public static Dictionary<string, TypeCastDictionary<int, DeserializedElement>> TABLE_OBJECTS;
 	
 	private Creaturedb(){}
@@ -14,11 +14,9 @@ public class Creaturedb {
 	    if (init) return false;
 	    var log = log4net.LogManager.GetLogger("Creature.db");
 		log.Debug(Globals.binary_location);
-	    db = new SqliteWrapper(
-			"Data Source="+Globals.binary_directory+"creature.db;"+
-		    "Version=3;"+
-			"Read Only=True;"+
-			"FailIfMissing=True;"
+	    db = new SqliteConnection(
+			Globals.binary_directory+"creature.db", 
+			SqliteOpenOpts.SQLITE_OPEN_READONLY
 	    );
 	    log.Info("Deserializing creature.db");
 	    long count;
@@ -26,46 +24,46 @@ public class Creaturedb {
 	    
 	    #region Init
 	    count = Element.init(
-	        db["SELECT * FROM types"],
-	        db["SELECT * FROM type_bonus"]
+	        db["SELECT * FROM types"][0],
+	        db["SELECT * FROM type_bonus"][0]
 	    );
 	    log.Debug(count + " Elements loaded");
 
 	    count = Species.init(
-	        db["SELECT * FROM species;"],
-	        db["SELECT * FROM level_moves"],
-	        db["SELECT * FROM evolution"]
+	        db["SELECT * FROM species;"][0],
+	        db["SELECT * FROM level_moves"][0],
+	        db["SELECT * FROM evolution"][0]
 	    );
 	    log.Debug(count + " Species loaded");
 
-	    count = Move.init(db["SELECT * FROM moves"]);
+	    count = Move.init(db["SELECT * FROM moves"][0]);
 	    log.Debug(count + " Moves loaded");
 
-	    count = Ability.init(db["SELECT * FROM abilities"]);
+	    count = Ability.init(db["SELECT * FROM abilities"][0]);
 	    log.Debug(count + " Abilities loaded");
 
-	    count = Effect.init(db["SELECT * FROM effects"]);
+	    count = Effect.init(db["SELECT * FROM effects"][0]);
 	    log.Debug(count + " Effects loaded");
 
-	    count = Nature.init(db["SELECT * FROM natures"]);
+	    count = Nature.init(db["SELECT * FROM natures"][0]);
 	    log.Debug(count + " Natures loaded");
 
-	    count = EggGroup.init(db["SELECT * FROM egg_groups"]);
+	    count = EggGroup.init(db["SELECT * FROM egg_groups"][0]);
 	    log.Debug(count + " Egg Types loaded");
 
-	    count = ItemType.init(db["SELECT * FROM item_type"]);
+	    count = ItemType.init(db["SELECT * FROM item_type"][0]);
 	    log.Debug(count + " Item Types loaded");
 
-	    count = Item.init(db["SELECT * FROM items"]);
+	    count = Item.init(db["SELECT * FROM items"][0]);
 	    log.Debug(count + " Items loaded");
 	    
-	    count = Creature.init_unique(db["SELECT * FROM unique_creature"]);
+	    count = Creature.init_unique(db["SELECT * FROM unique_creature"][0]);
 	    log.Debug(count + " Creatures loaded");
 
-	    count = PlotFlag.init(db["SELECT * FROM plot_flag"]);
+	    count = PlotFlag.init(db["SELECT * FROM plot_flag"][0]);
 	    log.Debug(count + " Plot Flags loaded");
 
-	    count = Npc.init(db["SELECT * FROM npc"]);
+	    count = Npc.init(db["SELECT * FROM npc"][0]);
 	    log.Debug(count + " NPCs loaded");
 
 	    #endregion

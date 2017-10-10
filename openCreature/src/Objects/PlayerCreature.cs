@@ -33,7 +33,7 @@ public class PlayerCreature : Creature {
 			temp.hp = Convert.ToInt16(row["hp_cur"]);
 			temp.exp = Convert.ToByte(row["exp"]);
 			temp.level = Convert.ToByte(row["level"]);
-			temp.misc_info = SqliteWrapper.getBitsFromBlob(row["misc_info"]);
+			temp.misc_info = SqliteConnection.getBitsFromBlob(row["misc_info"]);
 			temp.stats = new short[] {
 			    Convert.ToInt16(row["atk"]),
 			    Convert.ToInt16(row["def"]),
@@ -147,7 +147,7 @@ public class PlayerCreature : Creature {
                     ""+c.ivs[StatsType.hp],
                     ""+c.ivs[StatsType.speed],
                     ""+c.happiness,
-                    ""+SqliteWrapper.getBlobFromBits(c.misc_info)
+                    ""+SqliteConnection.getBlobFromBits(c.misc_info)
                 }
             ));
         }

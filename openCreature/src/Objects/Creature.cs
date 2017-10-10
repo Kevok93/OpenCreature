@@ -101,7 +101,7 @@ namespace opencreature {
 			temp.id = Convert.ToInt32(row["id"]);
 			temp.nickname = row["nickname"];
 			temp.level = Convert.ToByte(row["level"]);
-			temp.misc_info = SqliteWrapper.getBitsFromBlob(row["misc_info"]);
+			temp.misc_info = SqliteConnection.getBitsFromBlob(row["misc_info"]);
             temp.hp = Convert.ToInt16(row["hp_max"]);
 			temp.stats = new short[] {
 			    Convert.ToInt16(row["atk"]),

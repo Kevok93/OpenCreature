@@ -28,7 +28,7 @@ public class Npc  : DeserializedElement {
 			temp.y = Convert.ToInt16(row["y"]);
 			temp.plotflag_id = Convert.ToInt16(row["plot_flag"]);
 			temp.trainer_id = Convert.ToInt32(row["trainer"]);
-			temp.misc_info = SqliteWrapper.getBitsFromBlob(row["misc_info"]);
+			temp.misc_info = SqliteConnection.getBitsFromBlob(row["misc_info"]);
 			NPCS[temp.id] = temp;
 		}
 		return NPCS.Count;
