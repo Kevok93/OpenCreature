@@ -280,29 +280,28 @@ CREATE TABLE sounds (
 	constraint `pk_sounds` primary key (`id`) ON CONFLICT ROLLBACK
 );
 CREATE TABLE battle_type  ( 
-	`battle_type_id` tinyint check (`battle_type_id` between 0 AND 127),
-	`battle_type_name` text,
-	`battle_team_id` tinyint check (`battle_team_id` between 0 AND 127),
-	`team_creature_count` tinyint check(`team_creature_count` between 1 AND 127),
-	constraint `pk_battle_type` primary key (`battle_type_id`) ON CONFLICT ROLLBACK
+    `battle_type_id` tinyint check (`battle_type_id` between 0 AND 127),
+    `battle_team_id` tinyint check (`battle_team_id` between 0 AND 127),
+    `team_creature_count` tinyint check(`team_creature_count` between 1 AND 127),
+    constraint `pk_battle_type` primary key (`battle_type_id`,`battle_team_id`) ON CONFLICT ROLLBACK
 );
 CREATE TABLE battle_team_alliances (
-	`battle_type_id` tinyint,
-	`battle_team_id_A` tinyint,
-	`battle_team_id_B` tinyint,
-	constraint `pk_battle_team_type` primary key (`battle_type_id`,`battle_team_id_A`,`battle_team_id_B`) ON CONFLICT ROLLBACK,
-	constraint `uq_team_id` check (`battle_team_id_A` < `battle_team_id_B`),
-	constraint `fk_battle_team_type` foreign key (`battle_type_id`) references battle_type(`battle_type_id`) deferrable initially deferred,
-	constraint `fk_battle_team_id_A` foreign key (`battle_type_id`,`battle_team_id_A`) references battle_type(`battle_type_id`,`battle_team_id`) deferrable initially deferred,
-	constraint `fk_battle_team_id_B` foreign key (`battle_type_id`,`battle_team_id_B`) references battle_type(`battle_type_id`,`battle_team_id`) deferrable initially deferred
+    `battle_type_id` tinyint check (`battle_type_id` between 0 AND 127),
+    `battle_team_id_A` tinyint check (`battle_team_id_A` between 0 AND 127),
+    `battle_team_id_B` tinyint check (`battle_team_id_B` between 0 AND 127),
+    constraint `pk_battle_team_type` primary key (`battle_type_id`,`battle_team_id_A`,`battle_team_id_B`) ON CONFLICT ROLLBACK,
+    constraint `uq_team_id` check (`battle_team_id_A` < `battle_team_id_B`),
+    constraint `fk_battle_team_id_A` foreign key (`battle_type_id`,`battle_team_id_A`) references battle_type(`battle_type_id`,`battle_team_id`) deferrable initially deferred,
+    constraint `fk_battle_team_id_B` foreign key (`battle_type_id`,`battle_team_id_B`) references battle_type(`battle_type_id`,`battle_team_id`) deferrable initially deferred
 );
 CREATE TABLE translation_strings (
-	`language_id` smallint check (`language_id` between 0 AND 65535),
-	`table_id` smallint check (`table_id` between 0 AND 65535),
-	`id` int,
-	`text` text,
-	constraint `pk_translation` primary key (`language_id`,`table_id`,`id`) ON CONFLICT ROLLBACK
+    `language_id` smallint check (`language_id` between 0 AND 65535),
+    `table_id` smallint check (`table_id` between 0 AND 65535),
+    `id` int,
+    `text` text,
+    constraint `pk_translation` primary key (`language_id`,`table_id`,`id`) ON CONFLICT ROLLBACK
 );
+
 
 CREATE TRIGGER tr_translation_strings_il before insert ON translation_strings 
 WHEN new.table_id NOT IN (0,1) 
