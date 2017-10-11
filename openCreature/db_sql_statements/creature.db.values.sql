@@ -1455,4 +1455,11 @@ INSERT INTO "egg_groups" VALUES(14,'Saurian');
 INSERT INTO "trainer_style" VALUES(0,'Null',0,'./');
 INSERT INTO "npc_style" VALUES(0,'Null','./');
 INSERT INTO "plot_flag" VALUES(0,'Null',0);
+
+INSERT INTO "translation_strings" VALUES(0,0,0,'table_def');
+INSERT INTO "translation_strings" VALUES(0,0,1,'language_def');
+INSERT INTO "translation_strings" VALUES(0,0,2,'species_name');
+INSERT INTO "translation_strings" VALUES(0,1,0,'INTERNAL');
+INSERT INTO "translation_strings" VALUES(0,1,1,'English');
+INSERT INTO "translation_strings" VALUES(1,2,1,'Bulbasaur');
 COMMIT;
