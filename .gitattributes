@@ -1,2 +1,3 @@
 * text eol=lf
 *.dll -text
+*.sql linguist-vendored
