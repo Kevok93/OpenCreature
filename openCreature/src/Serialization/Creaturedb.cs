@@ -1,19 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Diagnostics;
 
 namespace opencreature {
 public class Creaturedb {
 	const string PREFIX = "CREATURE.DB";
 	private static bool init = false;
-	private static SqliteConnection db;
-    public static Dictionary<string, TypeCastDictionary<int, DeserializedElement>> TABLE_OBJECTS;
+	private static AbstractDatabase db;
+    public static Dictionary<string, Dictionary<int, DeserializedElement>> TABLE_OBJECTS;
 	
 	private Creaturedb(){}
+	
+	
 	public static bool initialize() {
 	    if (init) return false;
 	    var log = log4net.LogManager.GetLogger("Creature.db");
-		log.Debug(Globals.binary_location);
 	    db = new SqliteConnection(
 			Globals.binary_directory+"creature.db", 
 			SqliteOpenOpts.SQLITE_OPEN_READONLY
@@ -65,6 +67,13 @@ public class Creaturedb {
 
 	    count = Npc.init(db["SELECT * FROM npc"][0]);
 	    log.Debug(count + " NPCs loaded");
+		
+		
+		//count = BattleType.init(
+		//	db["SELECT * FROM npc"][0],
+		//	db["Select * from "][0]
+		//);
+		//log.Debug(count + " NPCs loaded");
 
 	    #endregion
 
@@ -89,7 +98,7 @@ public class Creaturedb {
 
 	    #endregion
 
-        TABLE_OBJECTS = new Dictionary<string, TypeCastDictionary<int, DeserializedElement>>() {
+        TABLE_OBJECTS = new Dictionary<string, Dictionary<int, DeserializedElement>>() {
                 {"Elements"     , Element.TYPES         },
                 {"Abilities"    , Ability.ABILITIES     },
                 {"Egg Groups"   , EggGroup.EGG_GROUPS   },
@@ -102,7 +111,7 @@ public class Creaturedb {
                 {"NPCs"         , Npc.NPCS              },
                 {"Plot Flags"   , PlotFlag.PLOT_FLAG_ID },
         };
-
+		
 	    init = true;
 	    log.Info("Creature.db fully deserialized!");
 	    return init;

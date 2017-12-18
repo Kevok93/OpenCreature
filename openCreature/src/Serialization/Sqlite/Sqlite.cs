@@ -52,4 +52,7 @@ public static class Sqlite {
 
     [DllImport("sqlite3", CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
 	public static extern void sqlite3_free_table(IntPtr tableResult);
+	
+	//[DllImport("sqlite3", CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
+	//public static extern void sqlite3_prepare_v2(IntPtr db, byte[] sql,int length, out IntPtr stmt, out IntPtr remainder);
 }

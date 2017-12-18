@@ -4,7 +4,7 @@ using System;
 
 namespace opencreature {
 public class Species : DeserializedElement {
-	public static TypeCastDictionary<int,DeserializedElement> SPECIES;
+	public static TypeCastDictionary<int,DeserializedElement,Species> SPECIES;
 	public string name;
 	public short ability_id1, ability_id2;
 	public byte type_id1, type_id2;
@@ -42,7 +42,7 @@ public class Species : DeserializedElement {
 	
 	private Species(){}
 	public static long init(List<Dictionary<string,string>> species_defs, List<Dictionary<string,string>> level_move_defs, List<Dictionary<string,string>> evolution_defs) {
-		SPECIES = new TypeCastDictionary<int,DeserializedElement>(typeof(Species),species_defs.Count);
+		SPECIES = new TypeCastDictionary<int,DeserializedElement,Species>(species_defs.Count);
 		foreach (Dictionary<string,string> row in species_defs) {
 			Species temp = new Species();
 			temp.id = Convert.ToInt32 (row ["id"]);
@@ -54,8 +54,8 @@ public class Species : DeserializedElement {
 			temp.ev_val = Convert.ToByte (row["ev_val"]);
 			temp.ev_type = (StatsType) Convert.ToByte (row["ev_type"]);
 			temp.max_exp = Convert.ToInt32 (row["max_exp"]);
-			temp.tm_list = SqliteConnection.getBitsFromBlob(row["tm_list"]);
-			temp.misc_info = SqliteConnection.getBitsFromBlob(row["misc_info"]);
+			temp.tm_list = AbstractDatabase.getBitsFromBlob(row["tm_list"]);
+			temp.misc_info = AbstractDatabase.getBitsFromBlob(row["misc_info"]);
 			temp.ability_id1 = Convert.ToByte(row["ability1"]);
 			temp.ability_id2 = Convert.ToByte(row["ability2"]);
 			temp.egg_steps = Convert.ToUInt16(row["egg_steps"]);

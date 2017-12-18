@@ -22,10 +22,10 @@ public class Evolution {
 }
 
 public class EggGroup : DeserializedElement {
-	public static TypeCastDictionary<int,DeserializedElement> EGG_GROUPS;
+	public static TypeCastDictionary<int,DeserializedElement,EggGroup> EGG_GROUPS;
 	public string name;
 	public static long init(List<Dictionary<string,string>> egg_group_defs) {
-		EGG_GROUPS = new TypeCastDictionary<int,DeserializedElement> (typeof(EggGroup), egg_group_defs.Count);
+		EGG_GROUPS = new TypeCastDictionary<int,DeserializedElement,EggGroup> (egg_group_defs.Count);
 		foreach (Dictionary<string,string> row in egg_group_defs) {
 			EggGroup temp = new EggGroup ();
 			temp.id = Convert.ToInt32 (row ["id"]);
@@ -37,12 +37,11 @@ public class EggGroup : DeserializedElement {
 }
 
 public class Nature : DeserializedElement {
-	public static TypeCastDictionary<int,DeserializedElement> NATURES;
+	public static TypeCastDictionary<int,DeserializedElement,Nature> NATURES;
 	public string name;
 	public BetterEnumArray<StatsType,sbyte> stats_mod;
 	public static long init(List<Dictionary<string,string>> nature_defs) {
-		NATURES = new TypeCastDictionary<int,DeserializedElement> 
-			(typeof(Nature), nature_defs.Count);
+		NATURES = new TypeCastDictionary<int,DeserializedElement,Nature> (nature_defs.Count);
 		foreach (Dictionary<string,string> row in nature_defs) {
 			Nature temp = new Nature ();
 			temp.id = Convert.ToInt32 (row ["id"]);
@@ -77,12 +76,12 @@ public class Nature : DeserializedElement {
 }
 
 public class ItemType : DeserializedElement {
-	public static TypeCastDictionary<int,DeserializedElement> ITEM_TYPES;
+	public static TypeCastDictionary<int,DeserializedElement,ItemType> ITEM_TYPES;
 	public string name;
 	public string description;
 	public static long init(List<Dictionary<string,string>> item_type_defs) {
-		ITEM_TYPES = new TypeCastDictionary<int,DeserializedElement> 
-			(typeof(ItemType), item_type_defs.Count);
+		ITEM_TYPES = new TypeCastDictionary<int,DeserializedElement,ItemType> 
+			(item_type_defs.Count);
 		foreach (Dictionary<string,string> row in item_type_defs) {
 			ItemType temp = new ItemType ();
 			temp.id = Convert.ToInt32 (row ["id"]);
@@ -95,7 +94,7 @@ public class ItemType : DeserializedElement {
 }
 
 public class TrainerStyle : DeserializedElement {
-	public static TypeCastDictionary<int,DeserializedElement> TRAINER_STYLES;
+	public static TypeCastDictionary<int,DeserializedElement,TrainerStyle> TRAINER_STYLES;
 	public string name;
 	public string sprite_path;
 	/*	public Sprite sprite;
@@ -103,7 +102,7 @@ public class TrainerStyle : DeserializedElement {
 }
 
 public class NPCStyle : DeserializedElement {
-	public static TypeCastDictionary<int,DeserializedElement> NPC_STYLES;
+	public static TypeCastDictionary<int,DeserializedElement,NPCStyle> NPC_STYLES;
 	public string name;
 	public string sprite_path;
 	/*public Sprite sprite;*/
@@ -111,13 +110,13 @@ public class NPCStyle : DeserializedElement {
 
 public class PlotFlag : DeserializedElement {
 		//TODO: unify by_name and by_id variables?
-	public static TypeCastDictionary<string,DeserializedElement> PLOT_FLAG_NAME;
-	public static TypeCastDictionary<int   ,DeserializedElement> PLOT_FLAG_ID;
+	public static TypeCastDictionary<string,DeserializedElement,PlotFlag> PLOT_FLAG_NAME;
+	public static TypeCastDictionary<int   ,DeserializedElement,PlotFlag> PLOT_FLAG_ID;
 	public string name;
 	public sbyte value;
 	public static long init(List<Dictionary<string,string>> plot_flag_defs) {
-		PLOT_FLAG_ID =   new TypeCastDictionary<int   ,DeserializedElement> (typeof(PlotFlag),plot_flag_defs.Count);
-		PLOT_FLAG_NAME = new TypeCastDictionary<string,DeserializedElement> (typeof(PlotFlag),plot_flag_defs.Count);
+		PLOT_FLAG_ID =   new TypeCastDictionary<int   ,DeserializedElement,PlotFlag> (plot_flag_defs.Count);
+		PLOT_FLAG_NAME = new TypeCastDictionary<string,DeserializedElement,PlotFlag> (plot_flag_defs.Count);
 		foreach (Dictionary<string,string> row in plot_flag_defs) {
 			PlotFlag temp = new PlotFlag ();
 			temp.id = Convert.ToInt32 (row ["id"]);

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace opencreature {
 public class PlayerCreature : Creature {
-    public static TypeCastDictionary<int,DeserializedElement> PLAYER_CREATURES;
+    public static TypeCastDictionary<int,DeserializedElement,PlayerCreature> PLAYER_CREATURES;
     
     public int exp;
     public short ot, secret_ot;
@@ -23,7 +23,7 @@ public class PlayerCreature : Creature {
         exp = 0; //TODO are we truncating or aggregating?
     }
 	public static long init(List<Dictionary<string,string>> player_creature_defs) {
-    	PLAYER_CREATURES = new TypeCastDictionary<int,DeserializedElement> (typeof(PlayerCreature), player_creature_defs.Count);
+    	PLAYER_CREATURES = new TypeCastDictionary<int,DeserializedElement,PlayerCreature> (player_creature_defs.Count);
 		foreach (Dictionary<string,string> row in player_creature_defs) {
 			PlayerCreature temp = new PlayerCreature();
 			temp.id = Convert.ToInt32(row["id"]);
@@ -33,7 +33,7 @@ public class PlayerCreature : Creature {
 			temp.hp = Convert.ToInt16(row["hp_cur"]);
 			temp.exp = Convert.ToByte(row["exp"]);
 			temp.level = Convert.ToByte(row["level"]);
-			temp.misc_info = SqliteConnection.getBitsFromBlob(row["misc_info"]);
+			temp.misc_info = AbstractDatabase.getBitsFromBlob(row["misc_info"]);
 			temp.stats = new short[] {
 			    Convert.ToInt16(row["atk"]),
 			    Convert.ToInt16(row["def"]),
@@ -147,7 +147,7 @@ public class PlayerCreature : Creature {
                     ""+c.ivs[StatsType.hp],
                     ""+c.ivs[StatsType.speed],
                     ""+c.happiness,
-                    ""+SqliteConnection.getBlobFromBits(c.misc_info)
+                    ""+AbstractDatabase.getBlobFromBits(c.misc_info)
                 }
             ));
         }

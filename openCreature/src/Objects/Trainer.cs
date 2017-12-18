@@ -55,11 +55,12 @@ public class Trainer : DeserializedElement {
 				Convert.ToInt32(row["item5"]),
 				Convert.ToInt32(row["item6"]),
 			};
-			temp.misc_info = SqliteConnection.getBitsFromBlob (row ["misc_info"]);
+			temp.misc_info = AbstractDatabase.getBitsFromBlob (row ["misc_info"]);
 			TRAINERS[temp.id] = temp;
 		}
 	}
 	public static void link() {
+		//Todo: Normalize
 		foreach (Trainer temp in TRAINERS.Values) {
 			temp.trainer_style = TrainerStyle.TRAINER_STYLES [temp.trainer_style_id];
 			temp.rematch_trainer = TRAINERS [temp.rematch_trainer_id];

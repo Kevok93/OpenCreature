@@ -1,23 +1,21 @@
 using System;
-using System.Linq.Expressions;
-using System.Linq;
 using System.Text;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
+using opencreature;
 
-public class SqliteConnection {
+public class SqliteConnection : AbstractDatabase {
 	const string PREFIX = "SQLITE";
 	protected IntPtr db;
 	public static IntPtr null_ptr = (IntPtr)0;
 	public static char[] delim_semi = {';'};
-	
-	public static log4net.ILog log;
+	public static new log4net.ILog log;
 	static SqliteConnection() {
-		log = log4net.LogManager.GetLogger("SQLITE");
+		log = log4net.LogManager.GetLogger(PREFIX);
 	}
+	
+	
 	public SqliteConnection(string path, SqliteOpenOpts mode = SqliteOpenOpts.SQLITE_OPEN_READONLY) {
         if (!System.IO.File.Exists(path)) throw new FileNotFoundException(path);
 		SqliteErrorCode retc = Sqlite.sqlite3_open_v2(
@@ -32,7 +30,7 @@ public class SqliteConnection {
         }
 	}
 	
-	public List<List<Dictionary<string,string>>> sql(string query) {
+	public override List<List<Dictionary<string,string>>> sql(string query) {
 		if (db == null_ptr) return null;
 		
 		var results = new List<List<Dictionary<string, string>>>();
@@ -40,7 +38,7 @@ public class SqliteConnection {
 		string[] querytok = query.Split(delim_semi,StringSplitOptions.RemoveEmptyEntries);
 		
 		foreach (string subquery in querytok) {
-			string subquery_mod = subquery + ";";
+			string subquery_mod = subquery+ ";";
 			
             log.Trace(subquery_mod);
             results.Add(getTable(subquery_mod));
@@ -49,70 +47,10 @@ public class SqliteConnection {
 		return results;
 	}
 	
-	public List<List<Dictionary<string,string>>> this[string query] {
+	public override List<List<Dictionary<string,string>>> this[string query] {
 		get{return sql(query);}
 	}
-
-	~SqliteConnection() {
-        try {Sqlite.sqlite3_close_v2(db);} catch (Exception e) { Console.Out.WriteLine(e); }
-        db = null_ptr;
-	}
-
-	public static string printResultSet(List<List<Dictionary<string,string>>> resultSet) {
-		string output = "";
-		foreach (List<Dictionary<string,string>> result in resultSet) {
-			output += "Result: {\n";
-			output += printResult(result);
-			output += "}\n";
-		}
-		return output;
-	}
-
-	public static string printResult(List<Dictionary<string,string>> resultSet) {
-		string output = "";
-		foreach (Dictionary<string,string> result in resultSet) {
-			output += "\tRow: [\n";
-			output += printResultRow(result);
-			output += "\t]\n";
-		}
-		return output;
-	}
-
-	public static string printResultRow(Dictionary<string,string> row) {
-		string output = "";
-		foreach (string key in row.Keys) {
-			output += "\t\t" + key + " = " + row[key] + "\n";
-		}
-		return output;
-	}
-
-	public static bool getBitFromBlob(string blob, int position) {
-		int size = blob.Length * 4;
-		int realPos = size - position - 1;
-		int macro_pos = (realPos / 8) * 2;
-		int micro_pos = 1 << 7-(realPos % 8);
-		string hexbyte = blob.Substring(macro_pos, 2);
-		byte extractedByte = SoapHexBinary.Parse(hexbyte).Value[0];
-		bool bit = ((extractedByte & micro_pos) > 0);
-		//Debug.Log("TM"+(position+1)+" = "+bit+" ["+hexbyte+"]");
-		return bit;
-	}
-	
-	public static bool[] getBitsFromBlob(string blob) {
-        //return new bool[] { };
-		int size = blob.Length * 4;
-		bool[] bits = new bool[size];
-		for (int i = 0; i < size; i++) {
-			bits[i] = SqliteConnection.getBitFromBlob(blob, i);
-		}
-		return bits;
-	}
-	
-	public static string getBlobFromBits(bool[] bits) {
-        byte[] blob = (from x in bits select x ? (byte)0x1 : (byte)0x0).ToArray();
-        string blobhex = (new SoapHexBinary(blob)).ToString();
-        return blobhex;
-	}
+	/*
 	private List<Dictionary<string,string>> getTable(string sql) {
         int sizeofptr = Marshal.SizeOf(typeof(IntPtr));
         int cols, rows;
@@ -148,12 +86,65 @@ public class SqliteConnection {
         Sqlite.sqlite3_free_table(results_c);
         return result;
 	}
+	*/
+	private unsafe List<Dictionary<string,string>> getTable(string sql) {
+		int cols, rows;
+		IntPtr results_c;
+		byte[] error_c;
+		SqliteErrorCode retc;
+
+		IntPtr stmt = null_ptr;
+		IntPtr useless_tail = null_ptr;
+		List<Dictionary<string, string>> result = null;
 	
-	public string getError() {
-        return Marshal.PtrToStringAnsi(Sqlite.sqlite3_errmsg(db)) + "\n" + Marshal.PtrToStringAnsi(Sqlite.sqlite3_errstr(db));
+		retc = Sqlite.sqlite3_prepare_v2(
+			db,
+			Encoding.Default.GetBytes(sql),
+			Encoding.Default.GetBytes(sql).Length + 1,
+			ref stmt,
+			ref useless_tail
+		);
+		if (retc != SqliteErrorCode.SQLITE_OK) {
+			throw new ArgumentException("Error reading table; SQLITE exited with code " + retc + "  " + getError());
+		}
+		Sqlite.sqlite3_finalize(stmt);
+
+		retc = Sqlite.sqlite3_get_table(
+			db,
+			Encoding.Default.GetBytes(sql),
+			out results_c,
+			out rows,
+			out cols,
+			out error_c
+		);
+		int dataCount = cols + rows * cols;
+		if (retc != SqliteErrorCode.SQLITE_OK || error_c != null) {
+			throw new ArgumentException(
+				"Error reading table; SQLITE exited with code " + retc + "\n " + Encoding.Default.GetString(error_c) + "\n" +
+				getError());
+		}
+		sbyte** results_array = (sbyte**)results_c.ToPointer();
+
+		string[] keys = new string[cols];
+		if (rows < 1) return new List<Dictionary<string, string>>(0);
+		result = new List<Dictionary<string, string>>(rows - 1);
+		for (int i = 0; i < cols; i++) { keys[i] = new String(results_array[i]); }
+		for (int i = cols; i < dataCount; i += cols) {
+			var row = new Dictionary<string, string>(cols);
+			for (int j = 0; j < cols; j++) { row[keys[j]] = new String(results_array[i + j]); }
+			result.Add(row);
+		}
+		Sqlite.sqlite3_free_table(results_c);
+		return result;
 	}
-	#region extern
+
+	~SqliteConnection() {
+		try {Sqlite.sqlite3_close_v2(db);} catch (Exception e) { Console.Out.WriteLine(e); }
+		db = null_ptr;
+	}
 
 	
-	#endregion
+	public override string getError() {
+        return Marshal.PtrToStringAnsi(Sqlite.sqlite3_errmsg(db)) + "\n" + Marshal.PtrToStringAnsi(Sqlite.sqlite3_errstr(db));
+	}
 }

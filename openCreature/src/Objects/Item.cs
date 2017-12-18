@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace opencreature {
 public class Item : DeserializedElement {
-	public static TypeCastDictionary<int,DeserializedElement> ITEMS;
+	public static TypeCastDictionary<int,DeserializedElement, Item> ITEMS;
 	public string name, description;
 	public short price;
 	public sbyte misc_val1, misc_val2;
@@ -17,7 +17,7 @@ public class Item : DeserializedElement {
 	
 	private Item(){}
 	public static long init(List<Dictionary<string,string>> item_defs) {
-		ITEMS = new TypeCastDictionary<int,DeserializedElement> (typeof(Item), item_defs.Count);
+		ITEMS = new TypeCastDictionary<int,DeserializedElement, Item> (item_defs.Count);
 		foreach (Dictionary<string,string> row in item_defs) {
 		    Item temp = new Item();
 			temp.id = Convert.ToInt32(row["id"]);
@@ -25,7 +25,7 @@ public class Item : DeserializedElement {
 			temp.price = Convert.ToInt16(row["price"]);
 			temp.misc_val1 = Convert.ToSByte(row["misc_val1"]);
 			temp.misc_val2 = Convert.ToSByte(row["misc_val2"]);
-			temp.misc_info = SqliteConnection.getBitsFromBlob(row["misc_info"]);
+			temp.misc_info = AbstractDatabase.getBitsFromBlob(row["misc_info"]);
 			temp.battle_effect_id = Convert.ToInt32(row["battle_effect"]);
 			temp.world_effect_id = Convert.ToInt32(row["world_effect"]);
 			temp.held_effect_id = Convert.ToInt32(row["held_effect"]);

@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace opencreature {
 public class Ability : DeserializedElement {
-	public static TypeCastDictionary<int,DeserializedElement> ABILITIES;
+	public static TypeCastDictionary<int,DeserializedElement,Ability> ABILITIES;
 	public string name, description;
 	public int battle_effect_id, world_effect_id;
 	public Effect world_effect, battle_effect;
 	
 	private Ability(){}
 	public static long init(List<Dictionary<string,string>> ability_defs) {
-		ABILITIES = new TypeCastDictionary<int,DeserializedElement>(typeof(Ability),ability_defs.Count);
+		ABILITIES = new TypeCastDictionary<int,DeserializedElement,Ability>(ability_defs.Count);
 		foreach (Dictionary<string,string> row in ability_defs) {
 		    Ability temp = new Ability();
 			temp.id = Convert.ToInt32(row["id"]);

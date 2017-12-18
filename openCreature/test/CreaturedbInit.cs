@@ -2,6 +2,10 @@ using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Timers;
 using opencreature; 
 
 namespace Tests{
@@ -10,14 +14,19 @@ namespace Tests{
 		[Test]
 		[SetUp]
 		public void Initialization () {
+			Globals.loadDynamicCache("Please");
+			Stopwatch timer = new Stopwatch();
+			timer.Start();
 			Creaturedb.initialize();
+			timer.Stop();
+			Console.Error.WriteLine("System took {0} ms to init!", timer.ElapsedMilliseconds);
 			Assert.False(Creaturedb.initialize());
 		}
 
         [Test]
         public void CheckForNulls() {
             foreach (string DeserializedElementDictionary_name in Creaturedb.TABLE_OBJECTS.Keys) {
-                TypeCastDictionary<int, DeserializedElement> DeserializedElementDictionary_collection = Creaturedb.TABLE_OBJECTS[DeserializedElementDictionary_name];
+                Dictionary<int, DeserializedElement> DeserializedElementDictionary_collection = Creaturedb.TABLE_OBJECTS[DeserializedElementDictionary_name];
                 foreach (DeserializedElement element in DeserializedElementDictionary_collection.Values) {
                     Assert.IsNotNull(element);
                     Assert.IsNotNull(element.id);
@@ -74,6 +83,23 @@ namespace Tests{
 	            if (i.item_type_id     != 0) Assert.IsNotNull(i.item_type     );
 	        }
 	    }
+		
+		[Test]
+		public void CheckLinksBonuses() {
+			foreach (Element e in Element.TYPES.Values) {
+				foreach (int def_id in e.bonus.Keys) {
+					Assert.IsTrue(Element.TYPES.Keys.Contains(def_id));	
+				}
+			}
+		}
+
+		[Test]
+		public void TestInvalidBonus() {
+			Assert.Throws(typeof(InvalidDataException), () => Element.validateBonus(999, 1, 100)); 
+			Assert.Throws(typeof(InvalidDataException), () => Element.validateBonus(1, 999, 100)); 
+			Assert.Throws(typeof(InvalidDataException), () => Element.validateBonus(1,   2, 999)); 
+			
+		}
 
 	}
 }

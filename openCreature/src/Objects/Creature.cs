@@ -5,7 +5,7 @@ using System.Linq;
 namespace opencreature {
 	public class Creature : DeserializedElement {
 
-	public static TypeCastDictionary<int,DeserializedElement> UNIQUE_CREATURES;
+	public static TypeCastDictionary<int,DeserializedElement,Creature> UNIQUE_CREATURES;
 	public string nickname;
 	public short hp;
 	public byte level;
@@ -94,14 +94,13 @@ namespace opencreature {
         nature = caughtCreature.nature;
 	}
 	public static long init_unique(List<Dictionary<string,string>> unique_creature_defs) {
-		UNIQUE_CREATURES = new TypeCastDictionary<int,DeserializedElement> 
-			(typeof(Creature),unique_creature_defs.Count);
+		UNIQUE_CREATURES = new TypeCastDictionary<int,DeserializedElement,Creature> (unique_creature_defs.Count);
 		foreach (Dictionary<string,string> row in unique_creature_defs) {
 			Creature temp = new Creature();
 			temp.id = Convert.ToInt32(row["id"]);
 			temp.nickname = row["nickname"];
 			temp.level = Convert.ToByte(row["level"]);
-			temp.misc_info = SqliteConnection.getBitsFromBlob(row["misc_info"]);
+			temp.misc_info = AbstractDatabase.getBitsFromBlob(row["misc_info"]);
             temp.hp = Convert.ToInt16(row["hp_max"]);
 			temp.stats = new short[] {
 			    Convert.ToInt16(row["atk"]),

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace opencreature {
 public class Npc  : DeserializedElement {
-	public static TypeCastDictionary<int,DeserializedElement> NPCS;
+	public static TypeCastDictionary<int,DeserializedElement,Npc> NPCS;
     public byte style_id;
     public short map_id;
     public short x, y;
@@ -17,7 +17,7 @@ public class Npc  : DeserializedElement {
     
 	private Npc(){}
 	public static long init(List<Dictionary<string,string>> npc_defs) {
-		NPCS = new TypeCastDictionary<int,DeserializedElement> (typeof(Npc),npc_defs.Count);
+		NPCS = new TypeCastDictionary<int,DeserializedElement,Npc> (npc_defs.Count);
 		foreach (Dictionary<string,string> row in npc_defs) {
 		    Npc temp = new Npc();
 			temp.id = Convert.ToInt32(row["id"]);
@@ -28,7 +28,7 @@ public class Npc  : DeserializedElement {
 			temp.y = Convert.ToInt16(row["y"]);
 			temp.plotflag_id = Convert.ToInt16(row["plot_flag"]);
 			temp.trainer_id = Convert.ToInt32(row["trainer"]);
-			temp.misc_info = SqliteConnection.getBitsFromBlob(row["misc_info"]);
+			temp.misc_info = AbstractDatabase.getBitsFromBlob(row["misc_info"]);
 			NPCS[temp.id] = temp;
 		}
 		return NPCS.Count;

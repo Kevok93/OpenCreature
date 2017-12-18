@@ -69,6 +69,7 @@
     <Compile Include="src\Objects\Structs.cs" />
     <Compile Include="src\Objects\Trainer.cs" />
     <Compile Include="src\Serialization\Creaturedb.cs" />
+    <Compile Include="src\Serialization\AbstractDatabase.cs" />
     <Compile Include="src\Serialization\Sqlite\Sqlite.cs" />
     <Compile Include="src\Serialization\Sqlite\SqliteConnection.cs" />
     <Compile Include="src\Serialization\Sqlite\SqliteEnums.cs" />
