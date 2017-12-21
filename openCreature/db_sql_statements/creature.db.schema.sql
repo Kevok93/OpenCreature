@@ -1,42 +1,46 @@
-BEGIN;
+CREATE TABLE trigger_control (
+  `name` text,
+  `enabled` int
+);
+
 CREATE TABLE species (
-    `id` int,
-    `name` varchar(16),
-    `ability1` smallint check (`ability1` between 0 AND 65535),
-    `ability2` smallint NULL check (`ability2` between 0 AND 65535),
-    `gender_ratio` tinyint check (`gender_ratio` between 0 AND 255),
-    `type1` tinyint check (`type1` between 0 AND 255),
-    `type2` tinyint NULL check (`type2` between 0 AND 255),
-    `capture_rate` tinyint check (`capture_rate` between 0 AND 255),
-    `max_exp` int,
-    `ev_type` tinyint check (`ev_type` between 1 AND 6),
-    `ev_val` tinyint check (`ev_val` between 0 AND 255),
-    `base_atk` smallint check (`base_atk` between 0 AND 65535),
-    `base_def` smallint check (`base_def` between 0 AND 65535),
-    `base_spatk` smallint check (`base_spatk` between 0 AND 65535),
-    `base_spdef` smallint check (`base_spdef` between 0 AND 65535),
-    `base_hp` smallint check (`base_hp` between 0 AND 65535),
-    `base_speed` smallint check (`base_speed` between 0 AND 65535),
-    `max_atk` smallint check (`max_atk` between 0 AND 65535),
-    `max_def` smallint check (`max_def` between 0 AND 65535),
-    `max_spatk` smallint check (`max_spatk` between 0 AND 65535),
-    `max_spdef` smallint check (`max_spdef` between 0 AND 65535),
-    `max_hp` smallint check (`max_hp` between 0 AND 65535),
-    `max_speed` smallint check (`max_speed` between 0 AND 65535),
-    `tm_list` blob(16),
-	`misc_info` blob(1) NULL,
+  `id` int,
+  `name` varchar(16),
+  `ability1` smallint check (`ability1` between 0 AND 65535),
+  `ability2` smallint check (`ability2` between 0 AND 65535),
+  `gender_ratio` tinyint check (`gender_ratio` between 0 AND 255),
+  `type1` tinyint check (`type1` between 0 AND 255),
+  `type2` tinyint check (`type2` between 0 AND 255),
+  `capture_rate` tinyint check (`capture_rate` between 0 AND 255),
+  `max_exp` int,
+  `ev_type` tinyint check (`ev_type` between 1 AND 6),
+  `ev_val` tinyint check (`ev_val` between 0 AND 255),
+  `base_atk` smallint check (`base_atk` between 0 AND 65535),
+  `base_def` smallint check (`base_def` between 0 AND 65535),
+  `base_spatk` smallint check (`base_spatk` between 0 AND 65535),
+  `base_spdef` smallint check (`base_spdef` between 0 AND 65535),
+  `base_hp` smallint check (`base_hp` between 0 AND 65535),
+  `base_speed` smallint check (`base_speed` between 0 AND 65535),
+  `max_atk` smallint check (`max_atk` between 0 AND 65535),
+  `max_def` smallint check (`max_def` between 0 AND 65535),
+  `max_spatk` smallint check (`max_spatk` between 0 AND 65535),
+  `max_spdef` smallint check (`max_spdef` between 0 AND 65535),
+  `max_hp` smallint check (`max_hp` between 0 AND 65535),
+  `max_speed` smallint check (`max_speed` between 0 AND 65535),
+  `tm_list` blob(16),
+	`misc_info` blob(1),
 	`egg_steps` smallint NULL check (`egg_steps` between 0 AND 65535),
 	`egg_group1` tinyint NULL check (`egg_group1` between 0 AND 255),
 	`egg_group2` tinyint NULL check (`egg_group2` between 0 AND 255),
-	`wild_item` int NULL,
-	`wild_item_pct` int NULL,
-	`height` decimal(4,2) NULL,
-	`weight` decimal(4,2) NULL,
-	`classification` varchar(16) NULL,
-	`dex_entry` text NULL,
-	`cry` int NULL,
+	`wild_item` int,
+	`wild_item_pct` int,
+	`height` decimal(4,2),
+	`weight` decimal(4,2),
+	`classification` varchar(16),
+	`dex_entry` text,
+	`cry` int,
 	`sprite_path` text,
-    constraint `pk_species` primary key (`id`) ON CONFLICT ROLLBACK,
+  constraint `pk_species` primary key (`id`) ON CONFLICT ROLLBACK,
 	constraint `fk_type1` foreign key (`type1`) references types(`id`) deferrable initially deferred,
 	constraint `fk_type2` foreign key (`type2`) references types(`id`) deferrable initially deferred,
 	constraint `fk_ability1` foreign key (`ability1`) references abilities(`id`) deferrable initially deferred,
@@ -97,14 +101,6 @@ CREATE TABLE type_bonus (
 	constraint `pk_type_bonus` primary key (`atk_id`,`def_id`) ON CONFLICT ROLLBACK,
 	constraint `fk_atk_id` foreign key (`atk_id`) references types(`id`) deferrable initially deferred,
 	constraint `fk_def_id` foreign key (`def_id`) references types(`id`) deferrable initially deferred
-);
-CREATE TABLE level_moves (
-	`species_id` int,
-	`move_id` int,
-	`level` tinyint check (`level` between 0 AND 255),
-	constraint `pk_level_moves` primary key (`species_id`,`move_id`,`level`) ON CONFLICT IGNORE,
-	constraint `fk_species_id` foreign key (`species_id`) references species(`id`) deferrable initially deferred,
-	constraint `fk_move_id` foreign key (`move_id`) references moves(`id`) deferrable initially deferred
 );
 CREATE TABLE types (
 	`id` tinyint check (`id` between 0 AND 255),
@@ -191,37 +187,29 @@ CREATE TABLE trainer (
 	`id` int,
 	`name` varchar(10),
 	`style` tinyint check (`style` between 0 AND 255),
-	`poke1` int,
-	`poke2` int NULL,
-	`poke3` int NULL,
-	`poke4` int NULL,
-	`poke5` int NULL,
-	`poke6` int NULL,
-	`item1` int NULL,
-	`item2` int NULL,
-	`item3` int NULL,
-	`item4` int NULL,
-	`item5` int NULL,
-	`item6` int NULL,
 	`reward` int,
 	`quote` text,
 	`rematch_id` int NULL,
 	`misc_info` blob(1) NULL,
 	constraint `pk_trainer` primary key (`id`) ON CONFLICT ROLLBACK,
 	constraint `fk_style` foreign key (`style`) references trainer_style(`id`) deferrable initially deferred,
-	constraint `fk_poke1` foreign key (`poke1`) references unique_creature(`id`) deferrable initially deferred,
-	constraint `fk_poke2` foreign key (`poke2`) references unique_creature(`id`) deferrable initially deferred,
-	constraint `fk_poke3` foreign key (`poke3`) references unique_creature(`id`) deferrable initially deferred,
-	constraint `fk_poke4` foreign key (`poke4`) references unique_creature(`id`) deferrable initially deferred,
-	constraint `fk_poke5` foreign key (`poke5`) references unique_creature(`id`) deferrable initially deferred,
-	constraint `fk_poke6` foreign key (`poke6`) references unique_creature(`id`) deferrable initially deferred,
-	constraint `fk_item1` foreign key (`item1`) references items(`id`) deferrable initially deferred,
-	constraint `fk_item2` foreign key (`item2`) references items(`id`) deferrable initially deferred,
-	constraint `fk_item3` foreign key (`item3`) references items(`id`) deferrable initially deferred,
-	constraint `fk_item4` foreign key (`item4`) references items(`id`) deferrable initially deferred,
-	constraint `fk_item5` foreign key (`item5`) references items(`id`) deferrable initially deferred,
-	constraint `fk_item6` foreign key (`item6`) references items(`id`) deferrable initially deferred,
 	constraint `rematch_id` foreign key (`rematch_id`) references trainer(`id`) deferrable initially deferred
+);
+CREATE TABLE trainer_creature (
+  `trainer_id` int,
+  `creature_id` int,
+  `slot` tinyint CHECK (`slot` >= 0),
+  CONSTRAINT `pk_trainer_creature` PRIMARY KEY (`trainer_id`,`slot`) ON CONFLICT ROLLBACK,
+  CONSTRAINT `fk_creature_trainer` FOREIGN KEY (`trainer_id`) REFERENCES trainer(`id`) DEFERRABLE INITIALLY DEFERRED,
+  CONSTRAINT `fk_trainer_creature` FOREIGN KEY (`creature_id`) REFERENCES unique_creature(`id`) DEFERRABLE INITIALLY DEFERRED
+);
+CREATE TABLE trainer_item (
+  `trainer_id` int,
+  `item_id` int,
+  `count` tinyint CHECK (`count` > 0),
+  CONSTRAINT `pk_trainer_creature` PRIMARY KEY (`trainer_id`,`item_id`) ON CONFLICT ROLLBACK,
+  CONSTRAINT `fk_item_trainer` FOREIGN KEY (`trainer_id`) REFERENCES trainer(`id`) DEFERRABLE INITIALLY DEFERRED,
+  CONSTRAINT `fk_trainer_item` FOREIGN KEY (`item_id`) REFERENCES items(`id`) DEFERRABLE INITIALLY DEFERRED
 );
 CREATE TABLE trainer_style (
 	`id` tinyint check (`id` between 0 AND 255),
@@ -253,6 +241,24 @@ CREATE table npc_style (
 	`sprite_path` text,
 	constraint `pk_npc_style` primary key (`id`) ON CONFLICT ROLLBACK
 );
+CREATE TABLE training_machine (
+  `item_id` int,
+  `move_id` int,
+  `uses` tinyint CHECK(`uses` BETWEEN 0 AND 255),
+  CONSTRAINT `pk_training_machine` PRIMARY KEY (`item_id`) ON CONFLICT rollback,
+  CONSTRAINT `fk_training_machine_item` FOREIGN KEY (`item_id`) REFERENCES items(`id`) DEFERRABLE INITIALLY DEFERRED,
+  CONSTRAINT `fk_training_machine_move` FOREIGN KEY (`move_id`) REFERENCES moves(`id`) DEFERRABLE INITIALLY DEFERRED 
+);
+
+CREATE TABLE learnable_moves (
+  `species_id` int,
+  `move_id` int,
+  `source_type` tinyint,
+  `level` tinyint check (`level` between 0 AND 255),
+  constraint `pk_level_moves` primary key (`species_id`,`move_id`,`source_type`) ON CONFLICT IGNORE,
+  constraint `fk_species_id` foreign key (`species_id`) references species(`id`) deferrable initially deferred,
+  constraint `fk_move_id` foreign key (`move_id`) references moves(`id`) deferrable initially deferred
+);
 CREATE TABLE plot_flag (
 	`id` int,
 	`name` varchar(10),
@@ -280,19 +286,19 @@ CREATE TABLE sounds (
 	constraint `pk_sounds` primary key (`id`) ON CONFLICT ROLLBACK
 );
 CREATE TABLE battle_type  ( 
-    `battle_type_id` tinyint check (`battle_type_id` between 0 AND 127),
-    `battle_team_id` tinyint check (`battle_team_id` between 0 AND 127),
-    `team_creature_count` tinyint check(`team_creature_count` between 1 AND 127),
-    constraint `pk_battle_type` primary key (`battle_type_id`,`battle_team_id`) ON CONFLICT ROLLBACK
+  `battle_type_id` tinyint check (`battle_type_id` between 0 AND 127),
+  `battle_team_id` tinyint check (`battle_team_id` between 0 AND 127),
+  `team_creature_count` tinyint check(`team_creature_count` between 1 AND 127),
+  constraint `pk_battle_type` primary key (`battle_type_id`,`battle_team_id`) ON CONFLICT ROLLBACK
 );
 CREATE TABLE battle_team_alliances (
-    `battle_type_id` tinyint check (`battle_type_id` between 0 AND 127),
-    `battle_team_id_A` tinyint check (`battle_team_id_A` between 0 AND 127),
-    `battle_team_id_B` tinyint check (`battle_team_id_B` between 0 AND 127),
-    constraint `pk_battle_team_type` primary key (`battle_type_id`,`battle_team_id_A`,`battle_team_id_B`) ON CONFLICT ROLLBACK,
-    constraint `uq_team_id` check (`battle_team_id_A` < `battle_team_id_B`),
-    constraint `fk_battle_team_id_A` foreign key (`battle_type_id`,`battle_team_id_A`) references battle_type(`battle_type_id`,`battle_team_id`) deferrable initially deferred,
-    constraint `fk_battle_team_id_B` foreign key (`battle_type_id`,`battle_team_id_B`) references battle_type(`battle_type_id`,`battle_team_id`) deferrable initially deferred
+  `battle_type_id` tinyint check (`battle_type_id` between 0 AND 127),
+  `battle_team_id_A` tinyint check (`battle_team_id_A` between 0 AND 127),
+  `battle_team_id_B` tinyint check (`battle_team_id_B` between 0 AND 127),
+  constraint `pk_battle_team_type` primary key (`battle_type_id`,`battle_team_id_A`,`battle_team_id_B`) ON CONFLICT ROLLBACK,
+  constraint `uq_team_id` check (`battle_team_id_A` < `battle_team_id_B`),
+  constraint `fk_battle_team_id_A` foreign key (`battle_type_id`,`battle_team_id_A`) references battle_type(`battle_type_id`,`battle_team_id`) deferrable initially deferred,
+  constraint `fk_battle_team_id_B` foreign key (`battle_type_id`,`battle_team_id_B`) references battle_type(`battle_type_id`,`battle_team_id`) deferrable initially deferred
 );
 CREATE TABLE translation_strings (
     `language_id` smallint check (`language_id` between 0 AND 65535),
@@ -302,41 +308,93 @@ CREATE TABLE translation_strings (
     constraint `pk_translation` primary key (`language_id`,`table_id`,`id`) ON CONFLICT ROLLBACK
 );
 
+CREATE TABLE lua_text (
+	`id` int identity,
+	`name` text,
+  `type` int,
+	`text` text,
+	constraint `pk_translation` primary key (`name`) ON CONFLICT ROLLBACK
+);
 
-CREATE TRIGGER tr_translation_strings_il before insert ON translation_strings 
+CREATE VIEW translation_strings_internal as
+  select
+    ts.table_id,
+    ts_def.text as table_name,
+    ts.id,
+    ts.text
+  from translation_strings ts join
+    translation_strings ts_def on ts_def.id = ts.table_id
+  where ts.language_id = 0
+    and ts_def.language_id = 0
+    and ts_def.table_id = 0;
+
+
+
+
+
+CREATE TRIGGER tr_translation_strings_il after insert ON translation_strings 
 WHEN new.table_id NOT IN (0,1) 
 AND new.language_id NOT IN (SELECT id FROM translation_strings WHERE table_id = 1 AND language_id = 0)
+AND (SELECT enabled FROM trigger_control WHERE name='tr_translation_strings_il') > 0
 BEGIN SELECT raise(rollback,"Language not defined in languages subcategory"); END;
-CREATE TRIGGER tr_translation_strings_it before insert ON translation_strings 
+
+CREATE TRIGGER tr_translation_strings_it after insert ON translation_strings 
 WHEN new.table_id NOT IN (0,1) 
 AND new.table_id NOT IN (SELECT id FROM translation_strings WHERE table_id = 0 AND language_id = 0)
+AND (SELECT enabled FROM trigger_control WHERE name='tr_translation_strings_it') > 0
 BEGIN SELECT raise(rollback,"Table not defined in tables subcategory"); END;
-CREATE TRIGGER tr_translation_strings_uil before UPDATE ON translation_strings 
+
+CREATE TRIGGER tr_translation_strings_uil after UPDATE ON translation_strings 
 WHEN new.table_id NOT IN (0,1) 
 AND new.language_id NOT IN (SELECT id FROM translation_strings WHERE table_id = 1 AND language_id = 0)
+AND (SELECT enabled FROM trigger_control WHERE name='tr_translation_strings_uil') > 0
 BEGIN SELECT raise(rollback,"Language not defined in languages subcategory"); END;
-CREATE TRIGGER tr_translation_strings_uit before UPDATE ON translation_strings 
+
+CREATE TRIGGER tr_translation_strings_uit after UPDATE ON translation_strings 
 WHEN new.table_id NOT IN (0,1) 
 AND new.table_id NOT IN (SELECT id FROM translation_strings WHERE table_id = 0 AND language_id = 0)
+AND (SELECT enabled FROM trigger_control WHERE name='tr_translation_strings_uit') > 0
 BEGIN SELECT raise(rollback,"Table not defined in tables subcategory"); END;
 
-CREATE TRIGGER tr_translation_strings_dl before DELETE ON translation_strings 
-WHEN old.table_id = 1 
-AND old.id IN (SELECT language_id FROM translation_strings)
-BEGIN SELECT raise(rollback,"Cannot delete translation definition in use"); END;
-CREATE TRIGGER tr_translation_strings_dt before DELETE ON translation_strings 
-WHEN old.table_id = 0 
-AND old.id IN (SELECT table_id FROM translation_strings)
-BEGIN SELECT raise(rollback,"Cannot delete table definition in use"); END;
-CREATE TRIGGER tr_translation_strings_udl before UPDATE ON translation_strings 
-WHEN old.table_id = 1 
-AND old.id IN (SELECT language_id FROM translation_strings)
-BEGIN SELECT raise(rollback,"Cannot delete translation definition in use"); END;
-CREATE TRIGGER tr_translation_strings_udt before UPDATE ON translation_strings 
-WHEN old.table_id = 0 
-AND old.id IN (SELECT table_id FROM translation_strings)
-BEGIN SELECT raise(rollback,"Cannot delete table definition in use"); END;
-	
 
-	
-COMMIT;
+
+CREATE TRIGGER tr_translation_strings_dl after DELETE ON translation_strings 
+WHEN old.table_id = 1 
+AND old.id IN (SELECT language_id FROM translation_strings)
+AND (SELECT enabled FROM trigger_control WHERE name='tr_translation_strings_dl') > 0
+BEGIN SELECT raise(rollback,"Cannot delete translation definition in use"); END;
+
+CREATE TRIGGER tr_translation_strings_dt after DELETE ON translation_strings 
+WHEN old.table_id = 0 
+AND old.id IN (SELECT table_id FROM translation_strings)
+AND (SELECT enabled FROM trigger_control WHERE name='tr_translation_strings_dt') > 0
+BEGIN SELECT raise(rollback,"Cannot delete table definition in use"); END;
+
+CREATE TRIGGER tr_translation_strings_udl after UPDATE ON translation_strings 
+WHEN old.table_id = 1 
+AND old.id IN (SELECT language_id FROM translation_strings)
+AND (old.id != new.id OR old.table_id != new.table_id OR old.language_id != new.language_id)
+AND (SELECT enabled FROM trigger_control WHERE name='tr_translation_strings_udl')
+BEGIN SELECT raise(rollback,"Cannot delete translation definition in use"); END;
+
+CREATE TRIGGER tr_translation_strings_udt after UPDATE ON translation_strings 
+WHEN old.table_id = 0 
+AND old.id IN (SELECT table_id FROM translation_strings)
+AND (old.id != new.id OR old.table_id != new.table_id OR old.language_id != new.language_id)
+AND (SELECT enabled FROM trigger_control WHERE name='tr_translation_strings_udt') > 0
+BEGIN SELECT raise(rollback,"Cannot delete table definition in use"); END;
+
+
+
+CREATE TRIGGER i_translation_strings_internal instead of INSERT on translation_strings_internal
+WHEN (SELECT enabled FROM trigger_control WHERE name='i_translation_strings_internal') > 0
+BEGIN insert into translation_strings (language_id,table_id,id,text) values (0,new.'table_id',new.'id',new.'text'); END;
+
+CREATE TRIGGER u_translation_strings_internal instead of UPDATE on translation_strings_internal
+  WHEN (SELECT enabled FROM trigger_control WHERE name='u_translation_strings_internal') > 0
+BEGIN update translation_strings SET table_id = new.table_id, id = new.id, text = new.text WHERE language_id = 0 AND table_id = old.table_id AND id = old.id AND text = old.text; END;
+
+CREATE TRIGGER d_translation_strings_internal instead of DELETE on translation_strings_internal
+  WHEN (SELECT enabled FROM trigger_control WHERE name='d_translation_strings_internal') > 0
+BEGIN DELETE from translation_strings WHERE language_id = 0 AND table_id = old.table_id AND id = old.id; END;
+

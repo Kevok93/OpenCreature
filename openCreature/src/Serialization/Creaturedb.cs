@@ -33,7 +33,7 @@ public class Creaturedb {
 
 	    count = Species.init(
 	        db["SELECT * FROM species;"][0],
-	        db["SELECT * FROM level_moves"][0],
+	        db["SELECT * FROM learnable_moves"][0],
 	        db["SELECT * FROM evolution"][0]
 	    );
 	    log.Debug(count + " Species loaded");

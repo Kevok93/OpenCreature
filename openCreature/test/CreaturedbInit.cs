@@ -14,7 +14,6 @@ namespace Tests{
 		[Test]
 		[SetUp]
 		public void Initialization () {
-			Globals.loadDynamicCache("Please");
 			Stopwatch timer = new Stopwatch();
 			timer.Start();
 			Creaturedb.initialize();

@@ -1,4 +1,4 @@
-#!/bin/perl
+#!/usr/bin/perl
 use Data::Dumper;
 use Getopt::Long qw(:config pass_through no_ignore_case bundling); # local option handling
 #use Sys::OOSyslog qw(:ALL); # syslog constants like LOG_ERR ...

@@ -7,6 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "openCreature", "openCreatur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "openCreatureTest", "openCreature\test\openCreatureTest.csproj", "{83BF32FD-F509-418D-92DE-47784847F3A0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder1", "SolutionFolder1", "{3834A70F-C404-4B73-910E-6D3BFEC38CD7}"
+ProjectSection(SolutionItems) = preProject
+	openCreature\db_sql_statements\check_cons.pl = openCreature\db_sql_statements\check_cons.pl
+	openCreature\db_sql_statements\creature.db.schema.sql = openCreature\db_sql_statements\creature.db.schema.sql
+	openCreature\db_sql_statements\creature.db.values.sql = openCreature\db_sql_statements\creature.db.values.sql
+EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

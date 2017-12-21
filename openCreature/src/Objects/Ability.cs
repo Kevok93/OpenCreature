@@ -12,12 +12,13 @@ public class Ability : DeserializedElement {
 	public static long init(List<Dictionary<string,string>> ability_defs) {
 		ABILITIES = new TypeCastDictionary<int,DeserializedElement,Ability>(ability_defs.Count);
 		foreach (Dictionary<string,string> row in ability_defs) {
-		    Ability temp = new Ability();
-			temp.id = Convert.ToInt32(row["id"]);
-			temp.name = row["name"];
-			temp.description = row["description"];
-			temp.battle_effect_id = Convert.ToInt32(row["battle_effect_id"]);
-			temp.world_effect_id = Convert.ToInt32(row["world_effect_id"]);
+			Ability temp = new Ability {
+				              id = Convert.ToInt32(row["id"]),
+				            name = row["name"],
+				     description = row["description"],
+				battle_effect_id = Convert.ToInt32(row["battle_effect_id"]),
+				 world_effect_id = Convert.ToInt32(row["world_effect_id"])
+			};
 			ABILITIES[temp.id] = temp;
 		}
 		return ABILITIES.Count;
