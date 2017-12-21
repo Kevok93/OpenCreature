@@ -1,5 +1,7 @@
-using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using NUnit.Framework;
 using opencreature;
 
 namespace Tests
@@ -111,6 +113,34 @@ namespace Tests
 			
 			//queue empty again
 			Assert.Throws<InvalidOperationException>(delegate {single_battle.executeAttackQueue();});
+		}
+		
+		
+		[Test]
+		public void Target_Test() {
+			var targetList = new TargetList(
+				"target_all",
+				@"foreach team_slots in teams do
+					foreach slot_id in team_slots do
+						targets.Add(slot_id)
+					end
+				end"
+			);
+			
+			List<List<Byte>> teams     = new List<List<byte>>{new List<Byte>{0}, new List<Byte>{1}};
+			List<List<Byte>> alliances = new List<List<byte>>{new List<Byte>( ), new List<Byte>( )};
+			List<Byte> targetSlotsMono = new List<Byte>();
+			{
+				List<List<byte>>.Enumerator teamEnum = teams.GetEnumerator();
+				while (teamEnum.MoveNext()) {
+					List<byte> slots = teamEnum.Current;
+					List<byte>.Enumerator slotEnum = slots.GetEnumerator();
+					while (slotEnum.MoveNext()) { targetSlotsMono.Add(slotEnum.Current); }
+				}
+			}
+			List<Byte> targetSlotsLua = targetList.getTargets(0, teams, alliances).ToList();
+			Assert.AreEqual(new List<Byte> {0, 1}, targetSlotsMono);
+			Assert.AreEqual(targetSlotsMono, targetSlotsLua);
 		}
 		
 		
