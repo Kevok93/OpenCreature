@@ -10,10 +10,10 @@ namespace System.Collections.Generic {
 	//Stores and retrieves information encoded as a subclass in a list backed by a generic class
 	public class TypeCastDictionary<key_type,parent_type,sub_type> : Dictionary<key_type,parent_type> where sub_type : parent_type  {
 		public new sub_type this[key_type key] {
-			get => (sub_type) base[key];
-			set => base[key] = value;
+			get { return (sub_type) base[key]; }
+			set { base[key] = value; }
 		}
-		
+
 		public TypeCastDictionary() { }
 		public TypeCastDictionary(int capacity) : base(capacity) { }
 		public TypeCastDictionary(IEqualityComparer<key_type> comparer) : base(comparer) { }
