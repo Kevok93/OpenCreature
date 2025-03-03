@@ -1,11 +1,11 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.0.0
 MinimumVisualStudioVersion = 10.0.0.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "openCreature", "openCreature\openCreature.csproj", "{8A01647F-C413-44E7-B5F0-CF8809894DC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "openCreature", "openCreature\openCreature.csproj", "{8A01647F-C413-44E7-B5F0-CF8809894DC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "openCreatureTest", "openCreature\test\openCreatureTest.csproj", "{83BF32FD-F509-418D-92DE-47784847F3A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "openCreatureTest", "openCreature\test\openCreatureTest.csproj", "{83BF32FD-F509-418D-92DE-47784847F3A0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder1", "SolutionFolder1", "{3834A70F-C404-4B73-910E-6D3BFEC38CD7}"
 ProjectSection(SolutionItems) = preProject

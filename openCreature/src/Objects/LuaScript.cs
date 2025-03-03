@@ -9,7 +9,7 @@ using Neo.IronLua;
 namespace opencreature {
     public class LuaScript : CompiledScript {
         private static Lua lua;
-        private LuaGlobalPortable lua_environment;
+        private LuaGlobal lua_environment;
         private LuaChunk function;
         private String[] orderedVariableNames;
 

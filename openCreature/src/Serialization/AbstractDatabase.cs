@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 namespace opencreature {
     public abstract class AbstractDatabase {
@@ -52,9 +52,8 @@ namespace opencreature {
             int macro_pos = (realPos / 8) * 2;
             int micro_pos = 1 << 7-(realPos % 8);
             string hexbyte = blob.Substring(macro_pos, 2);
-            byte extractedByte = SoapHexBinary.Parse(hexbyte).Value[0];
+            byte extractedByte = Convert.ToByte(hexbyte, 16);
             bool bit = ((extractedByte & micro_pos) > 0);
-            //Debug.Log("TM"+(position+1)+" = "+bit+" ["+hexbyte+"]");
             return bit;
         }
 	
@@ -69,8 +68,8 @@ namespace opencreature {
         }
 	
         public static string getBlobFromBits(bool[] bits) {
-            byte[] blob = (from x in bits select x ? (byte)0x1 : (byte)0x0).ToArray();
-            string blobhex = (new SoapHexBinary(blob)).ToString();
+            byte[] blob    = (from x in bits select x ? (byte)0x1 : (byte)0x0).ToArray();
+            string blobhex = BitConverter.ToString(blob).Replace("-", "");
             return blobhex;
         }
     }

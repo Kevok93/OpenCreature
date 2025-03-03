@@ -4,6 +4,7 @@ using System.Linq;
 using NUnit.Framework;
 using opencreature;
 
+using Assert = NUnit.Framework.Legacy.ClassicAssert;
 namespace Tests
 {
 	[TestFixture]

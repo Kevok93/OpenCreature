@@ -7,11 +7,12 @@ using Neo.IronLua;
 using NUnit.Framework;
 using opencreature;
 
+using Assert = NUnit.Framework.Legacy.ClassicAssert;
 namespace Tests {
     [TestFixture]
     public class LUATest {
         private Lua lua;
-        private LuaGlobalPortable lua_environment;
+        private LuaGlobal lua_environment;
 
         [SetUp]
         [Test]

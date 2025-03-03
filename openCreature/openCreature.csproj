@@ -1,97 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\SQLite.3.13.0\build\net45\SQLite.props" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8A01647F-C413-44E7-B5F0-CF8809894DC5}</ProjectGuid>
-    <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFramework>net8.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>openCreature</RootNamespace>
-    <AssemblyName>openCreature</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <OutputPath>bin\x86\Release\</OutputPath>
-    <PlatformTarget>x86</PlatformTarget>
-	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <PlatformTarget>x86</PlatformTarget>
-	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a">
-      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Neo.Lua, Version=5.3.0.0, Culture=neutral, PublicKeyToken=fdb0cd4fe8a6e3b2">
-      <HintPath>..\packages\NeoLua.1.2.23\lib\net45\Neo.Lua.dll</HintPath>
-    </Reference>
-    <Reference Include="Neo.Lua.Desktop, Version=5.3.0.0, Culture=neutral, PublicKeyToken=fdb0cd4fe8a6e3b2">
-      <HintPath>..\packages\NeoLua.1.2.23\lib\net45\Neo.Lua.Desktop.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="src\Enumerators\MoveAffinity.cs" />
-    <Compile Include="src\GlobalNamespace.cs" />
-    <Compile Include="src\Objects\Ability.cs" />
-    <Compile Include="src\Objects\Battle\Attack.cs" />
-    <Compile Include="src\Objects\Battle\Battle.cs" />
-    <Compile Include="src\Objects\Battle\BattleType.cs" />
-    <Compile Include="src\Objects\Battle\DoubleBattle.cs" />
-    <Compile Include="src\Objects\Battle\MultiBattle.cs" />
-    <Compile Include="src\Objects\Battle\SingleBattle.cs" />
-    <Compile Include="src\Objects\CompiledScript.cs" />
-    <Compile Include="src\Objects\Creature.cs" />
-    <Compile Include="src\Objects\DeserializedElementDictionary.cs" />
-    <Compile Include="src\Objects\Effect.cs" />
-    <Compile Include="src\Objects\Element.cs" />
-    <Compile Include="src\Objects\Enumerators.cs" />
-    <Compile Include="src\Objects\Globals.cs" />
-    <Compile Include="src\Objects\IDeserializedElement.cs" />
-    <Compile Include="src\Objects\Interfaces.cs" />
-    <Compile Include="src\Objects\Item.cs" />
-    <Compile Include="src\Objects\LuaScript.cs" />
-    <Compile Include="src\Objects\Move.cs" />
-    <Compile Include="src\Objects\Npc.cs" />
-    <Compile Include="src\Objects\PlayerCreature.cs" />
-    <Compile Include="src\Objects\Species.cs" />
-    <Compile Include="src\Objects\Structs.cs" />
-    <Compile Include="src\Objects\TargetList.cs" />
-    <Compile Include="src\Objects\Trainer.cs" />
-    <Compile Include="src\Serialization\Creaturedb.cs" />
-    <Compile Include="src\Serialization\AbstractDatabase.cs" />
-    <Compile Include="src\Serialization\Sqlite\Sqlite.cs" />
-    <Compile Include="src\Serialization\Sqlite\SqliteConnection.cs" />
-    <Compile Include="src\Serialization\Sqlite\SqliteEnums.cs" />
-    <Compile Include="src\Serialization\Sqlite\SqliteModel.cs" />
-    <Compile Include="src\TestRuner.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
   <ItemGroup>
     <Folder Include="src\Objects\Graphics" />
   </ItemGroup>
@@ -100,12 +20,19 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <ItemGroup>
+    <PackageReference Include="log4net" Version="3.1.0-preview.1" />
+    <PackageReference Include="NeoLua" Version="1.3.15-beta.4" />
+    <PackageReference Include="SQLite" Version="3.13.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="src\Objects\Graphics\Image.cs" />
+    <Compile Remove="src\Objects\Graphics\Model.cs" />
+    <Compile Remove="test\CreaturedbInit.cs" />
+    <Compile Remove="test\LUATest.cs" />
+    <Compile Remove="test\obj\Debug\.NETFramework,Version=v4.5.2.AssemblyAttributes.cs" />
+    <Compile Remove="test\obj\x86\Debug\.NETFramework,Version=v4.5.2.AssemblyAttributes.cs" />
+    <Compile Remove="test\Properties\AssemblyInfo.cs" />
+    <Compile Remove="test\SingleBattleTest.cs" />
+  </ItemGroup>
 </Project>

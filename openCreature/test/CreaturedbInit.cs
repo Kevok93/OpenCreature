@@ -8,6 +8,7 @@ using System.Linq;
 using System.Timers;
 using opencreature; 
 
+using Assert = NUnit.Framework.Legacy.ClassicAssert;
 namespace Tests{
 	[TestFixture]
 	public class CreaturedbInit {

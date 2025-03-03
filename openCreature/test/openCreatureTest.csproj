@@ -1,75 +1,27 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{83BF32FD-F509-418D-92DE-47784847F3A0}</ProjectGuid>
-    <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFramework>net9.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>openCreatureTest</RootNamespace>
-    <AssemblyName>openCreatureTest</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <OutputPath>bin\x86\Release\</OutputPath>
-    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-    <Reference Include="Neo.Lua, Version=5.3.0.0, Culture=neutral, PublicKeyToken=fdb0cd4fe8a6e3b2">
-      <HintPath>..\..\packages\NeoLua.1.2.23\lib\net45\Neo.Lua.dll</HintPath>
-    </Reference>
-    <Reference Include="Neo.Lua.Desktop, Version=5.3.0.0, Culture=neutral, PublicKeyToken=fdb0cd4fe8a6e3b2">
-      <HintPath>..\..\packages\NeoLua.1.2.23\lib\net45\Neo.Lua.Desktop.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=3.8.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb">
-      <HintPath>..\..\packages\NUnit.3.8.1\lib\net40\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <ProjectReference Include="../openCreature.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LUATest.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CreaturedbInit.cs" />
-    <Compile Include="SingleBattleTest.cs" />
+    <PackageReference Include="NeoLua" Version="1.3.15-beta.4" />
+    <PackageReference Include="NUnit" Version="4.3.2" />
+    <PackageReference Include="NUnit.Console" Version="3.19.2" />
+    <PackageReference Include="NUnit.ConsoleRunner" Version="3.19.2" />
+    <PackageReference Include="NUnit.Extension.NUnitProjectLoader" Version="3.8.0" />
+    <PackageReference Include="NUnit.Extension.NUnitV2Driver" Version="3.9.0" />
+    <PackageReference Include="NUnit.Extension.NUnitV2ResultWriter" Version="3.8.0" />
+    <PackageReference Include="NUnit.Extension.TeamCityEventListener" Version="1.0.9" />
+    <PackageReference Include="NUnit.Extension.VSProjectLoader" Version="3.9.0" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="../openCreature.csproj">
-      <Project>{8a01647f-c413-44e7-b5f0-cf8809894dc5}</Project>
-      <Name>openCreature</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
